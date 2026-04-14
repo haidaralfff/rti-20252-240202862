@@ -53,25 +53,31 @@ Mata kuliah ini menggunakan pendekatan **Positivist** (fenomena TI bisa diukur o
 ## Template A.1 — Research Mindset Self-Assessment
 
 ```
-Nama Peneliti    : ____________________
-Tanggal          : ____________________
+Nama Peneliti    : Haidar Habibi Al Farisi
+Tanggal          : 14 April 2026
 
 1. Ketika membaca klaim "metode X 95% akurat":
-   - Pertanyaan pertama saya: ____________________
+   - Pertanyaan pertama saya: 
+Dataset apa yang digunakan?
+-Apakah ada bias atau overfitting?
+Data yang dibutuhkan untuk verifikasi:
+-Dataset testing vs training
+-Confusion matrix
+Metode evaluasi (cross-validation / tidak)
    - Data yang dibutuhkan untuk verifikasi: ____________________
 
 2. Posisi paradigma:
-   - Pendekatan: [ ] Positivis  [ ] Interpretivis  [ ] Design Science  [ ] Mixed
-   - Alasan: ____________________
+   - Pendekatan: [☑] Positivis  [] Interpretivis  [☑] Design Science  [ ] Mixed
+   - Alasan: Karena penelitian berbasis data dan menggunakan framework sebagai alat evaluasi.
 
 3. Identifikasi distorsi:
-   - Asumsi tersembunyi: ____________________
-   - Sumber bias potensial: ____________________
-   - Langkah mitigasi: ____________________
+   - Asumsi tersembunyi: Semua instansi memiliki kebutuhan TI yang sama
+   - Sumber bias potensial: Dataset paper terbatas
+   - Langkah mitigasi: Dominasi studi kasus universitas
 
 4. Komitmen etika:
-   - Data yang tidak akan dimanipulasi: ____________________
-   - Batasan yang diakui sejak awal: ____________________
+   - Data yang tidak akan dimanipulasi: Hasil analisis dan interpretasi paper
+   - Batasan yang diakui sejak awal: Data hanya dari Indonesia
 ```
 
 ---
@@ -81,8 +87,8 @@ Tanggal          : ____________________
 Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
 
 **Paper yang dipilih:**
-> Judul: _______________________________________________
-> Penulis (Tahun): ______________________________________
+> Judul: Pengukuran Kinerja Teknologi Informasi di Indonesia dalam General Control: Literature Review
+> Penulis (Tahun): Puguh Jayadi, Puji Sarwono, Melgisaputra Dwi Nanda (2022)
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
@@ -95,8 +101,8 @@ Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan perfor
 **Distorsi paling besar di tahap:** ________________________
 
 **Dua distorsi spesifik yang teridentifikasi:**
-1. ___________________________________________________
-2. ___________________________________________________
+1. Selection bias
+2. Overgeneralization
 
 ---
 
@@ -135,5 +141,10 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 > Sebelum membaca materi ini, apakah pernah mempertanyakan klaim "95% akurat"? Setelah memahami rantai distorsi, pertanyaan apa yang sekarang akan diajukan saat membaca paper?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+>Setelah memahami materi ini, saya akan bertanya:
+Datasetnya bagaimana?
+Apakah ada bias?
+Bagaimana metode evaluasinya?
+Apakah bisa digeneralisasi?
+Apakah ada data yang dihilangkan?
+
