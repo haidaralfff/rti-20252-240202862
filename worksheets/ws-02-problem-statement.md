@@ -181,7 +181,7 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 | Testability |*4* |*Hipotesis dapat diuji secara empiris; namun bergantung pada ketersediaan dataset klinis yang memadai dan representatif.* |
 | Impact |*5* | *Hasil riset dapat langsung menjadi panduan pemilihan algoritma ML untuk implementasi di rumah sakit.*|
 
-**Skor total:** _____ / 25
+**Skor total:** 24 / 25
 
 **Problem statement versi final (1 paragraf):**
 > Penerapan machine learning di bidang kesehatan terbukti mampu meningkatkan kecepatan dan konsistensi diagnosis, namun berbagai penelitian menunjukkan bahwa performa algoritma seperti KNN, CNN, dan Neural Network sangat bergantung pada jenis penyakit, ukuran dataset, dan kualitas data yang digunakan. Masalah riset yang diajukan adalah belum adanya kajian komparatif yang terukur dan sistematis mengenai efektivitas berbagai algoritma ML dalam mengklasifikasi penyakit pada dataset klinis skala kecil-menengah di konteks layanan kesehatan Indonesia. Oleh karena itu, penelitian perlu mengevaluasi dan membandingkan metode ML secara simultan berdasarkan metrik akurasi, sensitivitas, spesifisitas, dan AUC agar teknologi ini dapat diadopsi secara tepat sasaran dan berbasis bukti.
