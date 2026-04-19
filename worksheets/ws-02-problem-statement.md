@@ -67,33 +67,68 @@ Masalah riset yang layak harus memenuhi 5 kriteria:
 PROBLEM STATEMENT BUILDER
 
 Domain & Konteks
-  Domain   : ____________________
-  Konteks  : ____________________
+  Domain   : Sistem Informasi Kesehatan berbasis Machine Learning
+  Konteks  : Penerapan algoritma machine learning (KNN, CNN, Neural Network,
+             dll.) untuk klasifikasi dan prediksi penyakit di rumah sakit Indonesia
 
 System Context
-  Input       : ____________________
-  Process     : ____________________
-  Output      : ____________________
-  Outcome     : ____________________
-  Constraints : ____________________
-  Stakeholders: ____________________
+  Input       : Data rekam medis pasien (hasil lab, citra X-ray/USG, riwayat
+                diagnosis), dataset klinis terstruktur dan tidak terstruktur
+  Process     : Preprocessing data medis, pelatihan model ML (KNN, CNN, dll.),
+                evaluasi akurasi model, dan penyajian hasil prediksi/klasifikasi
+  Output      : Prediksi penyakit (jantung, TB, demensia, dll.), klasifikasi
+                citra medis, serta rekomendasi tindakan perawatan
+  Outcome     : Diagnosis lebih cepat dan akurat, beban kerja tenaga medis
+                berkurang, dan kualitas pelayanan kesehatan meningkat
+  Constraints : Dataset klinis yang kecil dan tidak seragam, variasi kualitas
+                citra medis, keterbatasan referensi terbaru, serta minimnya
+                integrasi sistem ML ke infrastruktur rumah sakit Indonesia
+  Stakeholders: Dokter dan tenaga medis, pasien, manajemen rumah sakit,
+                peneliti informatika, serta pengembang sistem informasi kesehatan
 
 Fenomena → Problem
-  Fenomena yang diamati             : ____________________
-  Gejala (symptom) yang terukur     : ____________________
-  Masalah yang didiagnosis          : ____________________
-  Masalah riset (researchable)      : ____________________
-  Variabel yang terukur             : ____________________
+  Fenomena yang diamati         : Adopsi machine learning di bidang kesehatan
+                                  global terus meningkat untuk mendukung
+                                  diagnosis otomatis berbagai penyakit
+  Gejala (symptom) yang terukur : Diagnosis manual memakan waktu lama,
+                                  tingkat akurasi diagnosis bervariasi antar
+                                  tenaga medis, dan deteksi penyakit kronis
+                                  sering terlambat
+  Masalah yang didiagnosis      : Dataset klinis yang tersedia di Indonesia
+                                  masih kecil dan tidak terstandarisasi, serta
+                                  belum ada evaluasi komparatif metode ML
+                                  yang komprehensif untuk konteks layanan
+                                  kesehatan lokal
+  Masalah riset (researchable)  : Belum jelas metode ML mana (KNN, CNN,
+                                  Neural Network, dsb.) yang paling efektif
+                                  dalam mengklasifikasi penyakit tertentu pada
+                                  dataset klinis skala kecil-menengah di
+                                  rumah sakit Indonesia
+  Variabel yang terukur         : Akurasi (%), sensitivitas, spesifisitas, AUC,
+                                  ukuran dataset, jenis algoritma ML, waktu
+                                  komputasi, dan jenis penyakit yang diklasifikasi
 
 Problem Quality Check
-  [ ] Clarity — Apakah satu orang membaca akan paham?
-  [ ] Measurability — Apakah ada metrik kuantitatif?
-  [ ] Relevance — Apakah penting untuk domain?
-  [ ] Testability — Apakah bisa gagal?
-  [ ] Impact — Apakah ada kontribusi jika terjawab?
+  [x] Clarity      — Apakah satu orang membaca akan paham?
+  [x] Measurability — Apakah ada metrik kuantitatif?
+  [x] Relevance    — Apakah penting untuk domain?
+  [x] Testability  — Apakah bisa gagal?
+  [x] Impact       — Apakah ada kontribusi jika terjawab?
 
-Problem Statement (1 paragraf):
-  ____________________
+Problem Statement :
+  Perkembangan machine learning membuka peluang besar untuk mempercepat
+  dan meningkatkan akurasi diagnosis penyakit di bidang kesehatan. Namun,
+  berbagai studi yang telah dilakukan menunjukkan bahwa metode ML yang
+  digunakan (KNN, CNN, Neural Network, Forward Chaining) menghasilkan
+  performa berbeda-beda tergantung pada jenis penyakit, ukuran dataset,
+  dan kualitas data citra medis yang digunakan. Masalah riset yang
+  dirumuskan adalah belum adanya kajian komparatif yang terukur mengenai
+  efektivitas berbagai algoritma machine learning dalam mengklasifikasi
+  penyakit pada dataset klinis skala kecil-menengah, khususnya dalam
+  konteks layanan kesehatan di Indonesia. Oleh karena itu, diperlukan
+  evaluasi sistematis terhadap metode ML berdasarkan metrik akurasi,
+  sensitivitas, spesifisitas, dan AUC agar rekomendasi penggunaan teknologi
+  ini dapat didasarkan pada bukti yang valid dan dapat direplikasi.
 ```
 
 ---
@@ -106,14 +141,14 @@ Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Pro
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | *Contoh: Aplikasi e-commerce sering ditinggalkan saat checkout* |
-| Observed Issue (Symptom) | *Contoh: Bounce rate checkout 68%* |
-| Diagnosed Problem (Root Cause) | |
-| Researchable Problem | |
-| Measurable Variable | |
+| Reality | *Rumah sakit membutuhkan diagnosis yang cepat dan akurat, tetapi banyak proses diagnosis masih bergantung pada pengalaman subjektif tenaga medis.* |
+| Observed Issue (Symptom) | *Waktu diagnosis manual lama, akurasi bervariasi antar dokter, dan deteksi penyakit kronis seperti jantung, TB, dan demensia sering terlambat.* |
+| Diagnosed Problem (Root Cause) |*Dataset klinis yang tersedia masih kecil dan tidak terstandarisasi; belum ada evaluasi komparatif metode ML yang komprehensif untuk konteks layanan kesehatan Indonesia.* |
+| Researchable Problem |*ProblemBelum diketahui algoritma ML mana (KNN, CNN, Neural Network) yang paling efektif untuk klasifikasi penyakit tertentu pada dataset klinis skala kecil-menengah di rumah sakit Indonesia.* |
+| Measurable Variable |*Akurasi (%), sensitivitas, spesifisitas, AUC model, ukuran dan jenis dataset, jenis algoritma, waktu komputasi, dan jenis penyakit yang diklasifikasi.* |
 
-**Apakah terjebak solution-first thinking?** [ ] Ya / [ ] Tidak
-> Jika ya, kembali ke tahap mana? ________________________
+**Apakah terjebak solution-first thinking?** [ YA] Ya / [ ] Tidak
+> "Belum diketahui algoritma ML mana yang paling efektif untuk klasifikasi penyakit pada dataset klinis skala kecil-menengah di Indonesia"
 
 ---
 
@@ -123,14 +158,14 @@ Gambarkan konteks sistem dari masalah riset di Latihan 1.
 
 | Komponen | Deskripsi |
 |----------|----------|
-| Input | *Contoh: Request HTTP dari browser pengguna* |
-| Process | |
-| Output | |
-| Outcome | |
+| Input | *Data rekam medis (hasil lab, citra X-ray/USG/B-mode), dataset pasien terdiagnosis (jantung, TB, MS, demensia, hati kronis), dan literatur klinis sebagai referensi pelatihan model.* |
+| Process |*Preprocessing dan normalisasi data medis, pemilihan dan pelatihan algoritma ML, validasi silang model, evaluasi performa (akurasi, AUC), dan perbandingan antar metode.* |
+| Output |*Preprocessing dan normalisasi data medis, pemilihan dan pelatihan algoritma ML, validasi silang model, evaluasi performa (akurasi, AUC), dan perbandingan antar metode.* |
+| Outcome |*Hasil klasifikasi/prediksi penyakit, nilai akurasi dan metrik evaluasi per metode, serta rekomendasi algoritma terbaik per jenis penyakit.* |
 | Constraints | |
-| Stakeholders | |
+| Stakeholders |*Waktu diagnosis lebih singkat, konsistensi hasil meningkat, tenaga medis terbantu dalam pengambilan keputusan klinis, dan potensi deteksi dini penyakit kronis.* |
 
-**Komponen mana yang paling relevan dengan masalah riset?** _______________
+**Komponen mana yang paling relevan dengan masalah riset?** Process dan Constraints
 
 ---
 
@@ -140,17 +175,17 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Clarity | *Contoh: 4 — cukup jelas tapi perlu spesifikasi dataset* | |
-| Measurability | | |
-| Relevance | | |
-| Testability | | |
-| Impact | | |
+| Clarity | *5* |*Problem statement menyebut domain, gap komparatif antar metode ML, dan konteks spesifik (dataset skala kecil-menengah, Indonesia).* |
+| Measurability |*5* |*Variabel terukur jelas: akurasi, sensitivitas, spesifisitas, AUC, ukuran dataset, jenis algoritma.* |
+| Relevance |*5* |*Kebutuhan diagnosis cepat dan akurat sangat relevan bagi layanan kesehatan Indonesia yang terus berkembang.* |
+| Testability |*4* |*Hipotesis dapat diuji secara empiris; namun bergantung pada ketersediaan dataset klinis yang memadai dan representatif.* |
+| Impact |*5* | *Hasil riset dapat langsung menjadi panduan pemilihan algoritma ML untuk implementasi di rumah sakit.*|
 
 **Skor total:** _____ / 25
 
 **Problem statement versi final (1 paragraf):**
-> ___________________________________________________
-> ___________________________________________________
+> Penerapan machine learning di bidang kesehatan terbukti mampu meningkatkan kecepatan dan konsistensi diagnosis, namun berbagai penelitian menunjukkan bahwa performa algoritma seperti KNN, CNN, dan Neural Network sangat bergantung pada jenis penyakit, ukuran dataset, dan kualitas data yang digunakan. Masalah riset yang diajukan adalah belum adanya kajian komparatif yang terukur dan sistematis mengenai efektivitas berbagai algoritma ML dalam mengklasifikasi penyakit pada dataset klinis skala kecil-menengah di konteks layanan kesehatan Indonesia. Oleh karena itu, penelitian perlu mengevaluasi dan membandingkan metode ML secara simultan berdasarkan metrik akurasi, sensitivitas, spesifisitas, dan AUC agar teknologi ini dapat diadopsi secara tepat sasaran dan berbasis bukti.
+
 
 ---
 
@@ -159,5 +194,6 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 > Bandingkan "masalah" yang biasa ditemui saat coding (bug, error) dengan masalah riset. Apa perbedaan fundamental dalam cara mendefinisikan dan mendekati keduanya?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> Bandingkan "masalah" coding dengan masalah riset. Apa perbedaan fundamentalnya?
+Masalah saat coding bersifat deterministik dan teknis: ada perilaku sistem yang tidak sesuai harapan, dianalisis penyebabnya, lalu diperbaiki hingga sistem kembali berfungsi benar. Fokusnya adalah penyelesaian yang konkret dan terverifikasi secara langsung oleh output sistem.
+Masalah riset bersifat epistemik dan kontekstual: yang dicari bukan sekadar "apa yang salah", melainkan "apa yang belum diketahui" — yaitu gap pengetahuan yang memerlukan bukti terukur, variabel yang terdefinisi operasional, hipotesis yang falsifiable, dan metodologi yang dapat direplikasi. Dalam konteks ML di kesehatan, misalnya, "algoritma KNN tidak akurat" adalah masalah teknis; sedangkan "belum diketahui algoritma mana yang paling optimal untuk dataset klinis skala kecil di Indonesia" adalah masalah riset — karena jawabannya membutuhkan eksperimen sistematis, bukan sekadar perbaikan kode.
