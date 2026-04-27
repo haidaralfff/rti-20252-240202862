@@ -107,10 +107,9 @@ Gap 2: [Jenis: Data + Context Gap]
 
 Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google Scholar atau database lain.
 
-**Topik riset:*Analisis Komparatif Algoritma Machine Learning untuk Klasifikasi Penyakit pada Dataset Klinis Skala Kecil-Menengah di Indonesia.* ________________________________________
-**Query pencarian:*machine learning" AND "comparative study" AND "small medical dataset" AND "Indonesia" AND "accuracy* ____________________________________
-**Database:*Google Scholar, IEEE Xplore, ResearchGate, dan Neliti (Repositori Jurnal Indonesia).* ___________________________________________
-
+**Topik riset:*Analisis Komparatif Algoritma Machine Learning untuk Klasifikasi Penyakit pada Dataset Klinis Skala Kecil-Menengah di Indonesia.* 
+**Query pencarian:*machine learning" AND "comparative study" AND "small medical dataset" AND "Indonesia" AND "accuracy* 
+**Database:*Google Scholar, IEEE Xplore, ResearchGate, dan Neliti (Repositori Jurnal Indonesia).* 
 ### Literature Matrix (Concept-Centric)
 
 | Study                     | Tahun | Method                          | Dataset                                      | Result                                      | Limitation                                              |
