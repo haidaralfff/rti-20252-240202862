@@ -68,36 +68,36 @@ Ancaman validitas harus diidentifikasi **sebelum** eksperimen dan mitigasinya di
 ```
 EXPERIMENT DESIGN
 
-Research Question : ____________________
-Hypothesis        : ____________________
-Tipe Eksperimen   : [ ] Comparison  [ ] Ablation  [ ] Parameter
+Research Question : Bagaimana perbandingan efektivitas 5 algoritma ML ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?
+Hypothesis        : Setiap algoritma akan memiliki tingkat efektivitas (F1-score) yang dominan hanya pada tipe dataset dengan karakteristik spesifik (misal: Naive Bayes unggul di data Teks Sentimen, XGBoost di data tabular Imbalance NIDS/Beasiswa).
+Tipe Eksperimen   : [x] Comparison  [ ] Ablation  [ ] Parameter
 
 Kondisi Eksperimen:
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control |           |          |             |
-| Treatment |         |          |             |
+| Control | Algoritma Baseline Klasik pada tiap dataset | Naive Bayes / KNN | Dataset, Preprocessing, Seed = 42 |
+| Treatment | Algoritma Ensemble/Lanjutan pada tiap dataset | Random Forest, XGBoost, NN | Dataset, Preprocessing, Seed = 42 |
 
 Fairness Checklist:
-  [ ] Dataset identik untuk semua kondisi
-  [ ] Preprocessing setara
-  [ ] Tuning effort setara
-  [ ] Environment identik
-  [ ] Metrik evaluasi sama
+  [x] Dataset identik untuk semua kondisi
+  [x] Preprocessing setara
+  [x] Tuning effort setara
+  [x] Environment identik
+  [x] Metrik evaluasi sama
 
 Threat Analysis:
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal    |                 |          |
-| External    |                 |          |
-| Construct   |                 |          |
-| Conclusion  |                 |          |
+| Internal    | Data leakage saat proses SMOTE/CV | Terapkan SMOTE hanya pada data latih (training set), bukan di keseluruhan data. |
+| External    | Dataset 5 domain tidak mewakili masalah riil global | Gunakan dataset standar publik (misal dataset Jantung Cleveland UCI, NIDS CIC). |
+| Construct   | Akurasi menipu pada data yang *imbalance* | Gunakan F1-Score sebagai metrik primer (Primary Metric). |
+| Conclusion  | Perbedaan akurasi antar algoritma hanya karena kebetulan (random noise) | Lakukan uji statistik T-Test berpasangan (Paired T-Test) atau ANOVA lintas K-Fold CV. |
 
 Statistical Plan:
-  Uji statistik   : ____________________
-  Justifikasi      : ____________________
-  Alpha            : ____________________
-  Effect size min  : ____________________
+  Uji statistik   : ANOVA berulang (Repeated Measures ANOVA) atau Paired T-Test
+  Justifikasi     : Membandingkan performa >2 algoritma pada sampel/dataset yang persis sama.
+  Alpha           : 0.05
+  Effect size min : Cohen's d > 0.5 (Medium Effect)
 ```
 
 ---
@@ -106,13 +106,13 @@ Statistical Plan:
 
 Susun desain eksperimen berdasarkan RQ, variabel, dan sistem dari WS-04 sampai WS-06.
 
-**RQ:** __________________________________________________
-**Tipe eksperimen:** [ ] Comparison / [ ] Ablation / [ ] Parameter
+**RQ:** *Bagaimana perbandingan efektivitas 5 algoritma Machine Learning ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?*
+**Tipe eksperimen:** [x] Comparison / [ ] Ablation / [ ] Parameter
 
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | *Contoh: RF baseline dari literatur* | *RF* | *Dataset X, 80:20 split, seed 42* |
-| Treatment | | | |
+| Control | *Algoritma konvensional sebagai Baseline (misal di kasus beasiswa/jantung)* | *KNN & Naive Bayes* | *Dataset yang sama, 80:20 split, seed 42, SMOTE/TF-IDF konstan* |
+| Treatment | *Algoritma kompleks (Ensemble/Deep Learning)* | *RF, XGBoost, NN* | *Dataset yang sama, 80:20 split, seed 42, SMOTE/TF-IDF konstan* |
 
 ---
 
@@ -122,14 +122,14 @@ Evaluasi apakah desain eksperimen di Latihan 1 sudah fair.
 
 | Kriteria | Status | Detail |
 |----------|--------|--------|
-| Dataset identik | *Contoh: ✅ — sama-sama pakai CIC-MalMem-2022* | |
-| Preprocessing setara | | |
-| Tuning effort setara | | |
-| Environment identik | | |
-| Metrik evaluasi sama | | |
+| Dataset identik | *✅* | *Semua 5 algoritma dilatih dan diuji pada file dataset (CSV) yang persis sama per domain kasus.* |
+| Preprocessing setara | *✅* | *Fitur SMOTE/TF-IDF diumpankan ke semua 5 algoritma tanpa terkecuali melalui arsitektur pipeline.* |
+| Tuning effort setara | *✅* | *Semua model dikenakan GridSearchCV dengan batasan iterasi pencarian parameter yang seragam.* |
+| Environment identik | *✅* | *Dieksekusi di OS dan runtime yang sama (misal Python 3.10, RAM sama, versi Scikit-Learn sama).* |
+| Metrik evaluasi sama | *✅* | *Kesemuanya diukur murni dengan library fungsi `classification_report` yang sama (Akurasi, F1-Score).* |
 
-**Ada yang tidak fair?** [ ] Ya / [ ] Tidak
-> Jika ya, bagaimana cara memperbaikinya? ________________
+**Ada yang tidak fair?** [ ] Ya / [x] Tidak
+> Jika ya, bagaimana cara memperbaikinya? *Desain ini sudah sangat adil. Membandingkan algoritma klasik (NB) dengan modern (NN) adalah perbandingan yang sah (*apples-to-apples*) selama dataset dan pra-pemrosesan yang diberikan kepada mereka benar-benar identik.*
 
 ---
 
@@ -139,14 +139,14 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal | *Contoh: Data leakage antara train-test* | *Contoh: Gunakan stratified split, validasi tidak ada overlap* |
-| External | | |
-| Construct | | |
-| Conclusion | | |
+| Internal | *Data leakage (kebocoran) saat menangani imbalance data (SMOTE).* | *Eksekusi SMOTE secara ketat hanya pada fase/data *training*, biarkan dataset *testing* murni tak tersentuh.* |
+| External | *Dataset spesifik seperti opini aksi 212 atau beasiswa di satu universitas lokal sulit digeneralisasi global.* | *Berikan batasan (scoping) yang sangat jelas di judul paper bahwa kesimpulan bersifat eksklusif untuk demografi/studi kasus tersebut.* |
+| Construct | *F1-score menjadi tumpul jika peneliti salah menentukan kelas target (positive class) pada kasus medis.* | *Wajib menggunakan parameter evaluasi `average='macro'` atau `weighted`.* |
+| Conclusion | *Klaim 1 algoritma "menang mutlak" hanya karena fluktuasi akurasi 0,5%.* | *Klaim kemenangan baru sah jika didukung oleh nilai p-value < 0.05 dari K-Fold Cross Validation t-test.* |
 
-**Ancaman mana yang paling sulit dimitigasi?** _____________
+**Ancaman mana yang paling sulit dimitigasi?** *External Validity (Generalisasi).*
 **Mengapa?**
-> ___________________________________________________
+> *Karena dataset yang dipakai di mayoritas paper ini (kecuali NIDS publik dan dataset Medis Cleveland) bersifat sangat sempit secara geografi/waktu (misal sentimen aksi 212 di tahun tertentu). Karakteristik kalimat dan pola teks ini akan cepat usang, sehingga tidak ada algoritma manapun yang performanya abadi jika dihadapkan pada tren masa depan.*
 
 ---
 
@@ -155,6 +155,6 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 > Sebuah paper melaporkan "metode kami mengalahkan semua baseline." Apa 3 pertanyaan pertama yang harus diajukan untuk mengevaluasi klaim ini?
 
 **Jawaban:**
-1. ___________________________________________________
-2. ___________________________________________________
-3. ___________________________________________________
+1. *Apakah dataset, pra-pemrosesan (seperti imputasi nilai kosong/balancing), dan seed random yang diberikan ke metode/paper baru tersebut PERSIS sama dengan metode baseline pembandingnya?*
+2. *Apakah effort tuning parameter pada metode baru lebih dianakemaskan/dioptimalkan, sementara metode baseline sengaja dibiarkan pada parameter default/kualitas buruk (*straw man baseline*)?*
+3. *Apakah margin kemenangan akurasi tersebut diuji secara statistik untuk membuktikan kebolehjadian, atau hanya sekadar kebetulan angka acak yang lebih besar sedikit?*
