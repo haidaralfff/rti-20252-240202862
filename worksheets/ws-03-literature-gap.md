@@ -107,24 +107,25 @@ Gap 2: [Jenis: Data + Context Gap]
 
 Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google Scholar atau database lain.
 
-**Topik riset: *Analisis Komparatif Algoritma Machine Learning untuk Klasifikasi Penyakit pada Dataset Klinis Skala Kecil-Menengah di Indonesia.*
+**Topik riset:** *Analisis Komparatif Algoritma Machine Learning dan Seleksi Fitur untuk Klasifikasi Penyakit Jantung pada Dataset Medis.*
 
-**Query pencarian: *machine learning" AND "comparative study" AND "small medical dataset" AND "Indonesia" AND "accuracy* 
+**Query pencarian:** *"machine learning" AND "heart disease classification" AND ("chi-square" OR "feature selection")* 
 
-**Database: *Google Scholar, IEEE Xplore, ResearchGate, dan Neliti (Repositori Jurnal Indonesia).* 
+**Database:** *Google Scholar, IEEE Xplore, Kaggle/UCI Repo, dan Jurnal Nasional (Sinta).* 
+
 ### Literature Matrix (Concept-Centric)
 
 | Study                     | Tahun | Method                          | Dataset                                      | Result                                      | Limitation                                              |
 |--------------------------|-------|----------------------------------|---------------------------------------------|---------------------------------------------|---------------------------------------------------------|
-| Prasetyo et al.          | 2023  | KNN vs Naive Bayes               | Rekam medis penyakit jantung (lokal)         | KNN akurasi 88.5%                           | Sensitif terhadap outliers pada data kecil               |
-| Wicaksono & Santoso      | 2024  | CNN vs SVM (Citra X-ray)         | Citra TB paru (dataset RS daerah)            | CNN AUC 0.94                                | Membutuhkan komputasi tinggi (GPU)                       |
-| Lestari et al.           | 2024  | Random Forest & ANN              | Dataset diabetes & hipertensi                | RF lebih stabil pada data < 500              | ANN sulit diinterpretasi secara klinis                   |
-| Hidayat et al.           | 2025  | Optimized XGBoost                | Risiko stunting (Kaggle Indonesia)           | F1-Score 0.91                               | Overfitting jika data tidak seimbang                     |
-| Nugroho & Putri          | 2026  | Ensemble Learning (Hybrid)       | Multi-disease (jantung & ginjal)             | Akurasi naik 5% dibanding model tunggal      | Kompleksitas tinggi untuk implementasi di sistem RS      |
+| Hirmayanti & Utami       | 2025  | KNN, NB, LR, SVM, RF + Chi-square| Heart Disease Cleveland (UCI)                | KNN akurasi 93.51% (dengan 8 fitur utama)   | Hanya dievaluasi pada algoritma dasar, belum ensemble kompleks |
+| Yulianto et al.          | 2024  | Random Forest + SMOTE            | Dataset Penyakit Jantung                     | SMOTE berhasil mengatasi data tidak seimbang| Fokus hanya pada Random Forest (tidak komparatif luas)  |
+| Jusia et al.             | 2024  | KNN & C4.5 + Particle Swarm (PSO)| Dataset Penyakit Jantung                     | PSO signifikan meningkatkan performa KNN    | Komputasi sangat lambat akibat proses PSO (metaheuristik)|
+| Sarra et al.             | 2022  | SVM + Chi-square                 | Cleveland & Statlog                          | SVM akurasi 89.40% (dengan 6 fitur)         | Performa menurun pada dataset dengan noise tinggi        |
+| Reddy et al.             | 2021  | SMO, NB, LR, KNN + CFS/Relief    | Heart Disease Cleveland                      | SMO unggul dengan akurasi 86.46%            | Akurasi keseluruhan masih di bawah 90% pada semua model  |
 
-**Pola yang terlihat — Metode dominan:*Metode Supervised Learning konvensional (terutama KNN, Random Forest, dan SVM) masih menjadi pilihan utama untuk data klinis berbentuk rekam medis (tabular) karena efisiensinya pada sampel kecil. Namun, terdapat pergeseran kuat ke arah Convolutional Neural Networks (CNN) untuk riset berbasis citra medis (X-ray/USG) guna mencapai sensitivitas diagnosis yang lebih tinggi.* 
+**Pola yang terlihat — Metode dominan:** *Penerapan Machine Learning tradisional (terutama KNN, Random Forest, dan SVM) mendominasi riset klasifikasi penyakit jantung. Hampir seluruh studi mengandalkan tahap preprocessing ekstra seperti Feature Selection (Chi-square, PSO, CFS) atau Data Balancing (SMOTE) untuk mendongkrak akurasi model pada dataset berukuran kecil hingga menengah.* 
 
-**Limitasi yang berulang:*Masalah Ketidakseimbangan Data (Data Imbalance) antara jumlah pasien sehat dan sakit, serta kecilnya ukuran dataset (small-scale dataset) yang berasal dari satu rumah sakit saja, sehingga model sering kali mengalami overfitting dan sulit untuk diterapkan secara general di faskes lain di Indonesia.* 
+**Limitasi yang berulang:** *Banyak studi mencapai akurasi baik, namun terbatas pada satu atau dua algoritma (kurang komprehensif), atau masih terjebak di akurasi 80-89% tanpa optimasi hyperparameter (GridSearchCV) secara maksimal.* 
 
 ---
 
@@ -134,14 +135,14 @@ Berdasarkan tabel di Latihan 1, identifikasi gap.
 
 | Jenis Gap | Ditemukan? | Gap Statement |
 |-----------|-----------|---------------|
-| Performance Gap | [x] Ya / [ ] Tidak | *Akurasi model (seperti CNN atau KNN) menurun drastis hingga di bawah 75% saat diuji pada dataset dengan tingkat imbalance yang tinggi.* |
-| Method Gap | [x] Ya / [ ] Tidak |*Belum ada penggunaan teknik optimasi parameter (seperti Hyperparameter Tuning) yang sistematis pada perbandingan KNN, CNN, dan RF untuk dataset klinis lokal.* |
-| Data Gap | [x] Ya / [ ] Tidak |*Dataset yang digunakan pada studi sebelumnya bersifat privat dan sangat kecil (<300 baris), sehingga reliabilitas model untuk skala rumah sakit menengah diragukan.* |
-| Context Gap | [x] Ya / [ ] Tidak |*Mayoritas riset dilakukan pada data rumah sakit kota besar; belum ada evaluasi efektivitas algoritma pada infrastruktur data di rumah sakit daerah dengan kualitas citra/input yang tidak seragam.* |
+| Performance Gap | [x] Ya / [ ] Tidak | *Mayoritas penelitian sebelumnya seperti Reddy (2021) dan Sarra (2022) masih menghasilkan akurasi di bawah 90% karena pemilihan parameter algoritma yang kurang optimal.* |
+| Method Gap | [x] Ya / [ ] Tidak | *Belum banyak penelitian yang menggabungkan perbandingan 5 algoritma sekaligus (KNN, NB, LR, SVM, RF) yang dikombinasikan dengan Chi-square Feature Selection DAN optimasi hyperparameter (GridSearchCV).* |
+| Data Gap | [ ] Ya / [x] Tidak | *Tidak ada data gap signifikan, rata-rata riset menggunakan dataset Cleveland yang tervalidasi secara medis.* |
+| Context Gap | [x] Ya / [ ] Tidak | *Model yang dioptimasi masih jarang diimplementasikan sebagai landasan sistem deteksi mandiri yang efisien (hanya berhenti pada eksperimen metrik evaluasi).* |
 
-**Gap utama yang dipilih:** (Ketiadaan standar komparatif algoritma ML yang dioptimasi untuk dataset klinis skala kecil-menengah di Indonesia).
+**Gap utama yang dipilih:** (Kekosongan komparasi algoritma Machine Learning yang ekstensif menggunakan kombinasi seleksi fitur Chi-square dan hyperparameter tuning GridSearchCV untuk mendapatkan akurasi di atas 93% pada dataset medis yang tidak seimbang).
 **Mengapa gap ini penting (bukan sekadar "belum ada yang meneliti")?**
-> Gap ini penting karena kesalahan dalam memilih algoritma pada dataset kecil berisiko tinggi menghasilkan False Positive atau False Negative dalam diagnosis medis. Tanpa adanya kajian komparatif yang sistematis (bukan sekadar coba-coba satu metode), pihak rumah sakit tidak memiliki panduan berbasis bukti (evidence-based) untuk memilih teknologi yang paling hemat sumber daya namun tetap akurat. Jika hanya menggunakan model "berat" seperti CNN tanpa pembanding, risiko overfitting pada data kecil sangat besar, yang justru akan membahayakan keselamatan pasien jika hasil predisinya salah.
+> Gap ini sangat esensial karena dalam deteksi kardiovaskular/penyakit jantung, setiap peningkatan 1% akurasi dapat menyelamatkan nyawa pasien (mengurangi tingkat *false negative*). Jika kita hanya menggunakan algoritma bawaan tanpa seleksi fitur dan optimasi, banyak fitur yang redundan/tidak relevan justru merusak prediksi model. Mengisi gap ini berarti membangun model diagnosis medis yang jauh lebih ringkas (fitur lebih sedikit), komputasinya ringan, namun sangat akurat secara klinis.
 
 ---
 
@@ -151,10 +152,10 @@ Pilih 2 baseline dari literatur yang sudah dibaca.
 
 | # | Baseline                           | Mengapa Relevan                                                                           | Mengapa Representatif                                                                  | Apakah SOTA?                                                             | Sumber                    |
 |---|------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------|---------------------------|
-| 1 | KNN (K-Nearest Neighbor)           | Digunakan untuk klasifikasi data medis berbasis teks/tabular dengan jumlah fitur terbatas | Sering digunakan sebagai pembanding awal dalam riset kesehatan karena kesederhanaannya | Bukan, namun tetap menjadi common practice untuk dataset kecil           | Prasetyo et al., 2023     |
-| 2 | CNN (Convolutional Neural Network) | Relevan untuk pengolahan data citra medis (seperti X-ray/USG)                             | Merupakan standar industri saat ini untuk deteksi otomatis di bidang medis             | Ya, merupakan State-of-the-Art (SOTA) untuk computer vision di kesehatan | Wicaksono & Santoso, 2024 |
+| 1 | SVM + Chi-square                   | Merupakan salah satu metode paling stabil untuk klasifikasi penyakit jantung berdimensi kecil | Banyak digunakan di studi medis karena sifat hyperplane-nya yang kokoh                 | Bukan, namun metrik 89% adalah baseline standar yang sangat baik          | Sarra et al. (2022)       |
+| 2 | Model Dasar (Tanpa Seleksi Fitur)  | Menggunakan model yang di-train dengan seluruh dataset awal (14 atribut)                  | Praktik konvensional sebelum masuk ke tahap optimasi dan seleksi                       | Bukan, digunakan sebagai pembanding untuk membuktikan peran seleksi fitur | Reddy et al. (2021)       |
 **Apakah pemilihan baseline ini bisa dianggap straw man?** [ ] Ya / [x] Tidak
-> Justifikasi: Pemilihan baseline ini bukan straw man karena melibatkan dua spektrum algoritma yang berbeda namun valid. KNN mewakili algoritma statistik konvensional yang tangguh untuk data kecil, sedangkan CNN mewakili standar tercanggih saat ini. Dengan membandingkan keduanya, riset ini benar-benar menguji apakah kompleksitas Deep Learning (CNN) memberikan hasil yang lebih baik secara signifikan daripada metode sederhana (KNN) dalam konteks dataset lokal yang terbatas, bukan sekadar membandingkan dengan algoritma yang sudah usang atau tidak relevan.
+> Justifikasi: Baseline ini sangat adil. Dengan membandingkan model kita terhadap model SVM beroptimasi fitur (Sarra 2022) dan model dasar konvensional (Reddy 2021), riset kita dapat membuktikan apakah metode baru (misalnya KNN + Chi-Square + GridSearchCV) memberikan peningkatan nyata (significant improvement) secara *state-of-the-art*, atau hanya kebetulan semata. Ini menjauhkan riset dari *straw man comparison*.
 
 ---
 

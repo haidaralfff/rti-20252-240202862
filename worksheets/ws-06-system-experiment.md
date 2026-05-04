@@ -67,25 +67,26 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 ```
 SYSTEM-EXPERIMENT MAPPING
 
-Research Question: ____________________
+Research Question: Bagaimana perbandingan efektivitas 5 algoritma Machine Learning ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
 |----------|------|-----------------|---------------------------|
-|          | IV   |                 |                           |
-|          | DV   |                 |                           |
-|          | CV   |                 |                           |
+| Jenis Algoritma | IV | Modul Model ML (Scikit-Learn/TensorFlow) | Mengganti argumen `model_type` di file YAML |
+| Jenis Dataset | IV | Modul Data Ingestion/Loader | Mengganti path input direktori dataset |
+| F1-Score & Akurasi | DV | Modul Metrics Evaluator | Output JSON file berisi `classification_report` |
+| Skema Preprocessing | CV | Modul Preprocessor (SMOTE/TF-IDF) | Dikunci konfigurasinya per jenis dataset |
 
 4 Prinsip Desain:
-  [ ] Traceability — Setiap komponen bisa ditelusuri ke variabel
-  [ ] Variable Isolation — IV bisa diubah tanpa mengubah CV
-  [ ] Measurement Integration — Pengukuran DV built-in
-  [ ] Reproducibility — Setup bisa direkonstruksi
+  [x] Traceability — Setiap komponen bisa ditelusuri ke variabel
+  [x] Variable Isolation — IV bisa diubah tanpa mengubah CV
+  [x] Measurement Integration — Pengukuran DV built-in
+  [x] Reproducibility — Setup bisa direkonstruksi
 
 Experimental Setup:
-  Input data     : ____________________
-  Parameter      : ____________________
-  Output format  : ____________________
+  Input data     : 5 format CSV/Log dari berbagai domain (Sentimen, Beasiswa, NIDS, dsb).
+  Parameter      : Konfigurasi model ML (contoh: k-value pada KNN, depth pada XGB).
+  Output format  : File `.json` atau `.csv` berisi metrik performa & confusion matrix.
 ```
 
 ---
@@ -94,16 +95,18 @@ Experimental Setup:
 
 Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 
-**RQ:** __________________________________________________
+**RQ:** *Bagaimana perbandingan efektivitas 5 algoritma Machine Learning ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?*
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
 |----------|------|-----------------|---------------------------|
-| *Contoh: Jenis model* | *IV* | *Modul classifier (swap RF ↔ CNN)* | *Ganti config `model_type`* |
-| | DV | | |
-| | CV | | |
+| *Algoritma ML* | *IV* | *Modul Classifier Pipeline* | *Swap nilai dari parameter `algorithm` di config* |
+| *Dataset* | *IV* | *Modul Data Loader* | *Ganti path `dataset_url` pada konfigurasi* |
+| *Kinerja Klasifikasi* | *DV* | *Modul Metrics Logger* | *Otomatis menghitung Akurasi & F1-Score dari Confusion Matrix* |
+| *Waktu Komputasi* | *DV* | *Modul Profiler* | *Menghitung `time.time()` sebelum dan sesudah `model.fit()`* |
+| *Data Prapemrosesan* | *CV* | *Modul Preprocessor* | *Memastikan fungsi spesifik jalan (misal TF-IDF wajib untuk teks)* |
 
-**Apakah semua variabel bisa di-map?** [ ] Ya / [ ] Tidak
-> Jika tidak, komponen apa yang perlu ditambahkan? _________
+**Apakah semua variabel bisa di-map?** [x] Ya / [ ] Tidak
+> Jika tidak, komponen apa yang perlu ditambahkan? *Sudah ter-map seluruhnya.*
 
 ---
 
@@ -113,14 +116,14 @@ Evaluasi desain sistem terhadap 4 prinsip.
 
 | Prinsip | Status | Bukti / Penjelasan |
 |---------|--------|-------------------|
-| Traceability | *Contoh: ✅ — setiap modul punya label variabel* | |
-| Modularity | | |
-| Controllability | | |
-| Measurability | | |
+| Traceability | *✅* | *Setiap variabel (seperti Algoritma dan Dataset) direpresentasikan oleh *Class*/*Fungsi* terpisah di dalam *script* Python eksperimen.* |
+| Modularity | *✅* | *Bisa menukar dataset teks ke dataset numerik tanpa mengganggu baris kode evaluasi akurasinya.* |
+| Controllability | *✅* | *Hyperparameter spesifik untuk kelima model dieksternalisasi menggunakan satu file `config.yaml` terpusat.* |
+| Measurability | *✅* | *F1-score dan *training time* otomatis di-ekstrak dan disimpan di folder *results/* setelah program selesai.* |
 
-**Prinsip mana yang paling sulit dipenuhi?** _______________
+**Prinsip mana yang paling sulit dipenuhi?** *Controllability*.
 **Strategi untuk mengatasinya:**
-> ___________________________________________________
+> *Mengelola hyperparameter 5 algoritma untuk 5 dataset yang berbeda di dalam satu file raksasa sangat sulit dan rawan salah. Strategi mengatasinya adalah menggunakan arsitektur "Modular Configuration" (membuat 1 file YAML khusus per domain/dataset).*
 
 ---
 
@@ -130,14 +133,14 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 | Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
 |---------|-----------|-----------|-----------|----------------------|
-| Full | *Contoh: ✅ CNN* | *Contoh: ✅ Temporal features* | *Contoh: ✅ Z-score norm* | *Baseline penuh* |
-| – A | ❌ (ganti RF) | ✅ | ✅ | |
-| – B | ✅ | ❌ (tanpa temporal) | ✅ | |
-| – C | ✅ | ✅ | ❌ (tanpa normalisasi) | |
+| Full | *✅ XGBoost* | *✅ SMOTE (Oversampling)* | *✅ Seleksi Fitur* | *Performa baseline penuh maksimal (Akurasi Tinggi, F1 Tinggi).* |
+| – A | ❌ (Ganti Naive Bayes) | ✅ | ✅ | *Waktu eksekusi jauh lebih cepat, namun F1-score turun karena algoritma kurang kompleks (kurang robust terhadap noise).* |
+| – B | ✅ | ❌ (Tanpa SMOTE) | ✅ | *Akurasi global tetap tinggi, tetapi Precision dan Recall untuk minoritas (kelas rentan) akan anjlok drastis (hampir 0).* |
+| – C | ✅ | ✅ | ❌ (Tanpa Seleksi) | *Performa mungkin stagnan, tapi *Training Time* akan membengkak, dan risiko *overfitting* semakin tinggi.* |
 
-**Komponen mana yang diprediksi paling berkontribusi?** _____
+**Komponen mana yang diprediksi paling berkontribusi?** *Komponen B (SMOTE)*.
 **Mengapa?**
-> ___________________________________________________
+> *Dalam mayoritas paper kasus medis, NIDS, dan beasiswa, masalah utamanya adalah "Imbalanced Data" ekstrem (misalnya sampel fraud/serangan sangat sedikit dibanding data normal). Tanpa SMOTE (Komponen B), secerdas apapun algoritma utamanya (XGBoost), model pasti akan bias menebak kelas mayoritas.*
 
 ---
 
@@ -146,5 +149,4 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 > Apa risiko jika sistem dibangun seperti produk (monolitik, fitur lengkap) lalu baru dilakukan eksperimen? Mengapa arsitektur modular penting untuk riset?
 
 **Jawaban:**
-> ___________________________________________________
-> ___________________________________________________
+> *Risiko utamanya adalah "Confounding Variables" tidak bisa dilacak. Jika sistem dibangun monolitik (hardcoded), ketika akurasi naik, kita tidak tahu secara pasti apakah itu karena kehebatan algoritma (IV) atau karena "kebocoran data" saat pra-pemrosesan (CV) yang tergabung di satu fungsi raksasa. Arsitektur modular sangat krusial agar kita bisa melakukan "Variable Isolation" dan membuktikan relasi sebab-akibat (causality) dalam penelitian secara ilmiah.*

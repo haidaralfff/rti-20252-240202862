@@ -57,21 +57,21 @@ Nama Peneliti    : Haidar Habibi Al Farisi
 Tanggal          : 14 April 2026
 
 1. Ketika membaca klaim "metode X 95% akurat":
-   - Pertanyaan pertama saya: Dataset apa yang digunakan? Apakah ada bias atau overfitting?
-   - Data yang dibutuhkan untuk verifikasi: Dataset testing vs training, Confusion matrix, dan Metode evaluasi (misal cross-validation).
+   - Pertanyaan pertama saya: Dataset apa yang digunakan? Apakah ada bias pelabelan atau overfitting?
+   - Data yang dibutuhkan untuk verifikasi: Metrik evaluasi lengkap (Precision, Recall), metode pembagian dataset, dan justifikasi proses pra-pemrosesan.
 
 2. Posisi paradigma:
-   - Pendekatan: [☑] Positivis  [] Interpretivis  [☑] Design Science  [ ] Mixed
-   - Alasan: Karena penelitian berbasis data dan menggunakan framework sebagai alat evaluasi.
+   - Pendekatan: [☑] Positivis  [] Interpretivis  [ ] Design Science  [ ] Mixed
+   - Alasan: Karena penelitian ini berfokus pada hasil pengukuran kuantitatif (akurasi algoritma) secara objektif.
 
 3. Identifikasi distorsi:
-   - Asumsi tersembunyi: Semua instansi memiliki kebutuhan TI yang sama
-   - Sumber bias potensial: Dataset paper terbatas
-   - Langkah mitigasi: Dominasi studi kasus universitas
+   - Asumsi tersembunyi: Asumsi independensi atribut (kata) pada Naive Bayes selalu berlaku.
+   - Sumber bias potensial: Pelabelan (labeling) data sentimen secara manual.
+   - Langkah mitigasi: Evaluasi dengan *inter-rater reliability* saat melabeli data, atau komparasi dengan algoritma lain.
 
 4. Komitmen etika:
-   - Data yang tidak akan dimanipulasi: Hasil analisis dan interpretasi paper
-   - Batasan yang diakui sejak awal: Data hanya dari Indonesia
+   - Data yang tidak akan dimanipulasi: Hasil pengukuran Precision dan Recall yang rendah pada kelas tertentu.
+   - Batasan yang diakui sejak awal: Data hanya berjumlah 873 komentar dan diambil dari satu proses crawling manual.
 ```
 
 ---
@@ -81,22 +81,22 @@ Tanggal          : 14 April 2026
 Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
 
 **Paper yang dipilih:**
-> Judul: Klasifikasi Penyakit Diabetes Mellitus Menggunakan Algoritma Support Vector Machine (SVM)
-> Penulis (Tahun): Penulis Anonim (Contoh kasus adaptasi dari tema Machine Learning WS-04)
+> Judul: Algoritma Machine Learning Naive Bayes pada Analisis Sentimen Kesepakatan Polri dan GNPF-MUI pada Aksi Bela Islam III '212'
+> Penulis (Tahun): Hananto et al. (2023)
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
-| Reality → Data | *Mengumpulkan dataset rekam medis pasien diabetes dari satu rumah sakit.* | *Selection bias: Pasien di satu RS mungkin tidak merepresentasikan seluruh populasi.* |
-| Data → Processing | *Membersihkan data kosong (missing values) dan menormalisasi skala fitur.* | *Menghapus data penting secara tidak sengaja atau merusak distribusi asli (information loss).* |
-| Processing → Analysis | *Melatih model klasifikasi (SVM) pada dataset yang sudah diproses.* | *Overfitting karena dataset terlalu kecil dan tidak menggunakan metode cross-validation.* |
-| Analysis → Inference | *Menyimpulkan bahwa SVM mencapai akurasi 95% untuk deteksi diabetes.* | *Mengabaikan metrik kritis medis seperti False Negative (pasien sakit didiagnosis sehat).* |
-| Inference → Knowledge | *Mengklaim bahwa SVM adalah algoritma terbaik untuk diagnosa medis tanpa komparator.* | *Overgeneralization: Klaim terlalu luas dan merupakan asumsi straw man.* |
+| Reality → Data | *Melakukan crawling 873 komentar dan melabelinya menjadi sentimen positif/negatif secara manual.* | *Selection bias & Human Bias: 873 sampel terlalu kecil untuk isu nasional, dan pelabelan manual rentan subjektivitas.* |
+| Data → Processing | *Pre-processing teks (cleaning) dan pembobotan menggunakan TF-IDF.* | *Information loss: Penghapusan kata (stopword removal) mungkin menghilangkan konteks sarkasme atau emosi asli.* |
+| Processing → Analysis | *Melatih model Naive Bayes menggunakan RapidMiner pada dataset yang ada.* | *Algorithmic Bias: Asumsi independensi Naive Bayes sering meleset pada kalimat bahasa manusia yang saling terkait.* |
+| Analysis → Inference | *Menyimpulkan model "baik" dengan Akurasi 89,70% dan Recall kelas negatif 100%.* | *Mengabaikan fakta bahwa Precision kelas negatif hanya 70,19% (artinya banyak salah prediksi).* |
+| Inference → Knowledge | *Mengklaim efektivitas metode Naive Bayes untuk analisis sentimen opini masyarakat.* | *Overgeneralization: Menyimpulkan keandalan metode tanpa membandingkannya (baseline) dengan algoritma lain (misal SVM).* |
 
-**Distorsi paling besar di tahap:** *Analysis → Inference (karena menyimpulkan keberhasilan hanya dari 1 metrik akurasi tanpa memedulikan metrik esensial medis).*
+**Distorsi paling besar di tahap:** *Reality → Data (Pelabelan sentimen secara manual pada isu sensitif sangat rentan terhadap bias personal penilai, serta jumlah data 873 komentar sangat tidak representatif untuk opini skala nasional).*
 
 **Dua distorsi spesifik yang teridentifikasi:**
-1. Selection bias (Pada saat pengumpulan data medis).
-2. Overgeneralization (Pada saat membuat klaim keandalan metode).
+1. *Measurement Bias / Human Bias* (terjadi saat proses pelabelan opini secara manual).
+2. *Overgeneralization* (kesimpulan efektivitas model yang ditarik hanya dari satu kasus tanpa uji algoritma komparatif).
 
 ---
 
@@ -117,16 +117,16 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 
 ## Latihan 3 — Posisi Paradigma
 
-**Topik riset:** *Analisis Komparatif Algoritma Machine Learning untuk Klasifikasi Penyakit pada Dataset Klinis Skala Kecil-Menengah di Indonesia.*
+**Topik riset:** *Analisis Sentimen Kesepakatan Polri dan GNPF-MUI pada Aksi Bela Islam III '212' menggunakan Algoritma Machine Learning Naive Bayes.*
 
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
-| Kesesuaian dengan topik (1–5) | *5* | *1* | *4* |
-| Jenis data yang dikumpulkan | *Kuantitatif (Rekam medis pasien, Metrik evaluasi ML seperti Akurasi, F1-Score)* | *Kualitatif (Wawancara dokter terkait kepuasan diagnosis)* | *Pembuatan artefak (Model/Sistem prediksi berjalan)* |
-| Limitasi paradigma | *Bisa mengabaikan faktor human-error dokter di lapangan nyata.* | *Sulit memberikan ukuran pasti apakah model ML tersebut bagus atau tidak.* | *Cenderung condong ke engineering (pembuatan sistem) daripada penelitian pembuktian.* |
+| Kesesuaian dengan topik (1–5) | *5* | *2* | *3* |
+| Jenis data yang dikumpulkan | *Kuantitatif (Nilai probabilitas TF-IDF, metrik performa: Akurasi, Precision, Recall)* | *Kualitatif (Pemahaman makna dan nuansa bahasa saat melabeli sentimen opini teks secara manual)* | *Pembuatan artefak (Model klasifikasi Naive Bayes di RapidMiner)* |
+| Limitasi paradigma | *Gagal menangkap makna sarkasme mendalam atau konteks emosi kompleks di balik teks komentar.* | *Labeling yang sangat subjektif membuat hasil sulit direproduksi dengan presisi sama oleh orang lain.* | *Sistem yang berjalan di RapidMiner belum tentu efisien jika diimplementasikan secara real-time pada skala besar.* |
 
-**Paradigma yang dipilih:** *Positivis (dengan dukungan metodologis Design Science).*
-**Alasan:** *Topik Machine Learning dan klasifikasi menuntut adanya eksperimen empiris, pengukuran metrik matematis yang objektif (Akurasi, F1-Score), serta pembuktian hipotesis kuantitatif secara statistik. Hal ini selaras 100% dengan prinsip dasar filosofi positivis yang mengejar fakta terukur dan dapat digeneralisasi.*
+**Paradigma yang dipilih:** *Positivis.*
+**Alasan:** *Walaupun data awalnya berupa teks opini masyarakat yang sangat subjektif (kualitatif), tujuan utama penelitian ini adalah mengukur secara empiris dan matematis (kuantitatif) seberapa akurat algoritma Naive Bayes dalam mengklasifikasikan teks tersebut. Karena kesimpulan ditarik sepenuhnya berdasarkan statistik metrik evaluasi model (seperti Akurasi 89.70%), maka pendekatan yang mendominasi adalah Positivis.*
 
 ---
 

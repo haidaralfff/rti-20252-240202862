@@ -67,16 +67,16 @@ Jika rantai ini tidak lengkap, RQ belum mature. Bi-directional: RQ yang tidak bi
 ```
 RQ-CONTRIBUTION-HYPOTHESIS
 
-Gap Statement  : Ketiadaan standar komparatif algoritma ML yang dioptimasi untuk dataset klinis skala kecil-menengah di Indonesia.
+Gap Statement  : Kekosongan komparasi algoritma Machine Learning yang ekstensif menggunakan kombinasi seleksi fitur Chi-square dan hyperparameter tuning GridSearchCV untuk mendapatkan akurasi di atas 93% pada dataset medis yang tidak seimbang.
 
 Research Question:
   Tipe         : [x] Comparison  [ ] Improvement  [ ] Exploratory
-  Formulasi    : Apakah CNN menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan KNN ketika diterapkan pada dataset rekam medis klinis dengan sampel < 500 baris?
-  Variabel IV  : Jenis Algoritma Machine Learning (CNN dan KNN)
+  Formulasi    : Apakah kombinasi KNN dengan Chi-Square dan GridSearchCV menghasilkan Akurasi dan F1-Score yang secara signifikan lebih tinggi dibandingkan algoritma baseline (SVM/Base Model) pada dataset penyakit jantung?
+  Variabel IV  : Penggunaan seleksi fitur Chi-Square dan GridSearchCV pada algoritma (KNN vs SVM dll)
   Variabel DV  : Kinerja Prediksi Klasifikasi
-  Metrik       : F1-Score dan Akurasi (%)
-  Dataset      : Dataset rekam medis publik/lokal berukuran kecil (< 500 sampel)
-  Baseline     : K-Nearest Neighbor (KNN)
+  Metrik       : Akurasi (%) dan F1-Score
+  Dataset      : Dataset penyakit jantung (Cleveland/UCI) dengan kelas tidak seimbang
+  Baseline     : SVM + Chi-square dan Model Dasar tanpa optimasi
 
 Quality Check RQ:
   [x] Variabel spesifik
@@ -86,15 +86,15 @@ Quality Check RQ:
   [x] Memerlukan eksperimen (bukan hanya survei literatur)
 
 Contribution Statement:
-  Apa yang baru diketahui : Adanya standar bukti komparatif antara metode canggih (CNN) dan metode konvensional (KNN) pada skala data klinis kecil.
+  Apa yang baru diketahui : Adanya standar bukti komparatif algoritma ML konvensional yang paling efisien (KNN) jika dipadukan dengan seleksi fitur dan tuning parameter untuk dataset penyakit jantung tidak seimbang.
   Jenis kontribusi        : [ ] Improvement  [x] Comparison  [ ] Novel approach
-  Gap yang diisi          : Gap Kinerja dan Konteks (Performance & Context Gap) untuk faskes menengah ke bawah.
+  Gap yang diisi          : Gap Kinerja dan Metode (Performance & Method Gap) untuk menembus ambang batas akurasi 90-93%.
 
 Hypothesis Pair:
-  H₀ : Tidak ada perbedaan signifikan pada metrik F1-Score dan Akurasi antara algoritma CNN dan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).
-  H₁ : Algoritma CNN menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).
-  Threshold              : Perbedaan metrik > 5% dan p-value < 0.05 dari uji T-Test.
-  Justifikasi threshold  : Peningkatan 5% berdampak signifikan secara klinis untuk mengurangi salah diagnosis (False Positives/Negatives) di rumah sakit daerah.
+  H₀ : Tidak ada perbedaan signifikan pada metrik Akurasi dan F1-Score antara KNN (Chi-square + GridSearchCV) dengan model baseline (SVM/Base Model) pada dataset penyakit jantung.
+  H₁ : KNN (Chi-square + GridSearchCV) menghasilkan Akurasi dan F1-Score yang secara signifikan lebih tinggi dibandingkan model baseline pada dataset penyakit jantung.
+  Threshold              : Peningkatan akurasi melewati angka 93% dan p-value < 0.05 dari uji T-Test/ANOVA.
+  Justifikasi threshold  : Peningkatan melewati 93% menembus state-of-the-art sebelumnya (Sarra 2022 di angka 89%), sangat berdampak klinis dalam mengurangi misdiagnosis penyakit jantung.
 ```
 
 ---
@@ -103,24 +103,24 @@ Hypothesis Pair:
 
 Gunakan gap yang ditemukan di WS-03. Transformasikan menjadi Research Question.
 
-**Gap dari WS-03:** *Ketiadaan standar komparatif algoritma ML yang dioptimasi untuk dataset klinis skala kecil-menengah di Indonesia.*
+**Gap dari WS-03:** *Kekosongan komparasi algoritma Machine Learning yang ekstensif menggunakan kombinasi seleksi fitur Chi-square dan hyperparameter tuning GridSearchCV untuk mendapatkan akurasi di atas 93% pada dataset medis yang tidak seimbang.*
 
 **RQ versi pertama (tulis bebas):**
-> *Apakah algoritma CNN lebih baik daripada KNN untuk mengklasifikasi penyakit pada dataset medis kecil di rumah sakit daerah?*
+> *Apakah optimasi fitur Chi-square dan algoritma membuat model lebih baik untuk mengklasifikasi penyakit jantung?*
 
 **Evaluasi RQ:**
 
 | Komponen | Ada? | Isi |
 |----------|------|-----|
-| Metode spesifik | *Ya* | *CNN vs KNN* |
-| Metrik terukur | *Tidak* | *Masih sekadar "lebih baik", belum spesifik* |
-| Baseline | *Ya* | *KNN* |
-| Dataset/konteks | *Ya* | *Dataset medis kecil di rumah sakit daerah* |
+| Metode spesifik | *Ya* | *Optimasi fitur Chi-square* |
+| Metrik terukur | *Tidak* | *Masih sekadar "lebih baik", belum ada metrik Akurasi/F1-Score* |
+| Baseline | *Tidak* | *Belum ada algoritma pembanding eksplisit* |
+| Dataset/konteks | *Ya* | *Dataset klasifikasi penyakit jantung* |
 
 **Tipe RQ:** [x] Comparison / [ ] Improvement / [ ] Exploratory
 
 **RQ versi revisi (setelah evaluasi):**
-> *Apakah Convolutional Neural Network (CNN) menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan K-Nearest Neighbor (KNN) ketika diterapkan pada dataset rekam medis klinis dengan sampel kurang dari 500 baris?*
+> *Apakah algoritma K-Nearest Neighbor (KNN) yang dioptimasi menggunakan seleksi fitur Chi-Square dan GridSearchCV menghasilkan metrik Akurasi dan F1-Score yang secara signifikan lebih tinggi dibandingkan model baseline (SVM) ketika diterapkan pada dataset penyakit jantung yang tidak seimbang?*
 
 ---
 
@@ -130,14 +130,14 @@ Rumuskan pasangan hipotesis dari RQ di Latihan 1.
 
 | Komponen | Isi |
 |----------|-----|
-| H₀ | *Tidak ada perbedaan signifikan pada metrik F1-Score dan Akurasi antara algoritma CNN dan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).* |
-| H₁ | *Algoritma CNN menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).* |
-| Metrik | *F1-Score dan Akurasi (%).* |
-| Threshold | *Perbedaan metrik > 5% dan p-value < 0.05 dari uji T-Test.* |
-| Justifikasi threshold | *Peningkatan 5% berdampak signifikan secara klinis untuk mengurangi False Positives/Negatives. P-value < 0.05 membuktikan hasil bukan karena kebetulan acak.* |
+| H₀ | *Tidak ada perbedaan signifikan pada metrik Akurasi dan F1-Score antara KNN (Chi-Square + GridSearchCV) dibandingkan model baseline (SVM) dalam klasifikasi dataset penyakit jantung.* |
+| H₁ | *Algoritma KNN (Chi-Square + GridSearchCV) menghasilkan metrik Akurasi dan F1-Score yang secara signifikan lebih tinggi (menembus >93%) dibandingkan model baseline (SVM) dalam klasifikasi dataset penyakit jantung.* |
+| Metrik | *Akurasi (%) dan F1-Score.* |
+| Threshold | *Akurasi > 93% dan p-value < 0.05 (Statistical Test).* |
+| Justifikasi threshold | *Meningkatkan akurasi di atas baseline 89% sangat berdampak signifikan secara klinis untuk mengurangi misdiagnosis. P-value < 0.05 membuktikan peningkatannya signifikan secara statistik.* |
 
 **Apakah hipotesis ini falsifiable?** [x] Ya / [ ] Tidak
-> Bagaimana cara membuktikannya salah? *Dengan menjalankan eksperimen komparasi. Jika nilai F1-Score CNN sama dengan atau lebih rendah dari KNN, atau peningkatannya tidak mencapai 5% dengan p-value >= 0.05, maka H₀ gagal ditolak.*
+> Bagaimana cara membuktikannya salah? *Dengan menjalankan eksperimen komparasi. Jika nilai Akurasi KNN (Chi-Square + GridSearchCV) sama dengan atau lebih rendah dari baseline, atau tidak menembus threshold 93%, maka H₀ gagal ditolak.*
 
 ---
 
@@ -147,15 +147,15 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 | Tahap | Isi |
 |-------|-----|
-| RQ | *Apakah CNN menghasilkan F1-Score dan Akurasi yang lebih tinggi dari KNN pada dataset rekam medis < 500 baris?* |
-| Variable (IV) | *Jenis Algoritma Machine Learning (CNN dan KNN).* |
-| Variable (DV) | *Kinerja Prediksi Klasifikasi.* |
-| Metric | *F1-Score, Akurasi (%).* |
-| Data source | *Dataset rekam medis publik/lokal berukuran kecil (contoh: dataset diabetes/jantung < 500 sampel).* |
-| Analysis method | *Eksperimen Cross-Validation (K-Fold) & Statistical T-Test untuk perbandingan metrik.* |
+| RQ | *Apakah KNN yang dioptimasi (Chi-Square + GridSearchCV) lebih akurat dibandingkan baseline SVM pada dataset penyakit jantung?* |
+| Variable (IV) | *Penerapan metode seleksi fitur (Chi-Square) dan hyperparameter tuning (GridSearchCV) pada algoritma.* |
+| Variable (DV) | *Kinerja Prediksi Klasifikasi Penyakit Jantung.* |
+| Metric | *Akurasi (%), F1-Score.* |
+| Data source | *Dataset penyakit jantung medis (misal: Cleveland/UCI Repository) yang berdimensi kecil.* |
+| Analysis method | *Eksperimen K-Fold Cross-Validation, dievaluasi dengan Confusion Matrix dan Statistical Test.* |
 
 **Apakah rantai lengkap?** [x] Ya / [ ] Tidak
-> Jika tidak, tahap mana yang perlu direvisi? *Sudah lengkap dan saling terhubung dari RQ hingga metodologi analisis.*
+> Jika tidak, tahap mana yang perlu direvisi? *Sudah lengkap dan operasional dari pertanyaan, variabel, sumber data, hingga metode analisis.*
 
 ---
 
@@ -163,6 +163,6 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 > Ambil satu judul skripsi/paper yang pernah dibaca. Coba ekstrak RQ-nya. Apakah RQ tersebut memenuhi semua komponen (metode, metrik, baseline, konteks)? Jika tidak, apa yang hilang?
 
-**Judul:** *Klasifikasi Penyakit Diabetes Mellitus Menggunakan Algoritma Support Vector Machine (SVM)*
-**RQ yang diekstrak:** *Bagaimana tingkat akurasi algoritma Support Vector Machine (SVM) dalam mengklasifikasikan penyakit Diabetes Mellitus?*
-**Komponen yang hilang:** *Baseline (tidak ada algoritma pembanding) dan Metrik spesifik (hanya menyebut akurasi tanpa target threshold) serta Konteks Dataset.*
+**Judul:** *Klasifikasi Penyakit Jantung Menggunakan Algoritma K-Nearest Neighbor (KNN)*
+**RQ yang diekstrak:** *Bagaimana tingkat akurasi algoritma K-Nearest Neighbor (KNN) dalam mengklasifikasikan penyakit Jantung?*
+**Komponen yang hilang:** *Baseline (tidak ada algoritma pembanding) dan Metrik spesifik (hanya menyebut akurasi tanpa target threshold) serta Konteks Dataset (tidak menyebutkan dari rumah sakit mana atau dataset publik apa).*

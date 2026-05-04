@@ -67,46 +67,23 @@ Masalah riset yang layak harus memenuhi 5 kriteria:
 PROBLEM STATEMENT BUILDER
 
 Domain & Konteks
-  Domain   : Sistem Informasi Kesehatan berbasis Machine Learning
-  Konteks  : Penerapan algoritma machine learning (KNN, CNN, Neural Network,
-             dll.) untuk klasifikasi dan prediksi penyakit di rumah sakit Indonesia
+  Domain   : Sistem Informasi dan Kecerdasan Buatan (Machine Learning)
+  Konteks  : Evaluasi kinerja algoritma machine learning (Naive Bayes, Random Forest, XGBoost, KNN, Neural Network) pada beragam studi kasus (analisis sentimen, seleksi beasiswa, keamanan jaringan, medis, dan DSS).
 
 System Context
-  Input       : Data rekam medis pasien (hasil lab, citra X-ray/USG, riwayat
-                diagnosis), dataset klinis terstruktur dan tidak terstruktur
-  Process     : Preprocessing data medis, pelatihan model ML (KNN, CNN, dll.),
-                evaluasi akurasi model, dan penyajian hasil prediksi/klasifikasi
-  Output      : Prediksi penyakit (jantung, TB, demensia, dll.), klasifikasi
-                citra medis, serta rekomendasi tindakan perawatan
-  Outcome     : Diagnosis lebih cepat dan akurat, beban kerja tenaga medis
-                berkurang, dan kualitas pelayanan kesehatan meningkat
-  Constraints : Dataset klinis yang kecil dan tidak seragam, variasi kualitas
-                citra medis, keterbatasan referensi terbaru, serta minimnya
-                integrasi sistem ML ke infrastruktur rumah sakit Indonesia
-  Stakeholders: Dokter dan tenaga medis, pasien, manajemen rumah sakit,
-                peneliti informatika, serta pengembang sistem informasi kesehatan
+  Input       : Dataset yang bervariasi dari 5 domain berbeda (teks komentar opini, data riwayat akademik/ekonomi, log trafik jaringan/NIDS, rekam medis jantung, dan data kriteria DSS).
+  Process     : Pra-pemrosesan data (termasuk TF-IDF, SMOTE, Chi-square), pelatihan 5 algoritma berbeda, evaluasi prediksi, dan komparasi performa model.
+  Output      : Hasil klasifikasi (sentimen positif/negatif, layak/tidak beasiswa, intrusi jaringan, penyakit jantung, keputusan kelayakan).
+  Outcome     : Pengambilan keputusan otomatis yang lebih objektif, transparan, dan akurat di berbagai sektor (sosial, pendidikan, keamanan, dan medis).
+  Constraints : Ketidakseimbangan data (imbalanced data), kompleksitas preprocessing teks vs numerik, serta perbedaan metrik optimal untuk tiap jenis data.
+  Stakeholders: Instansi pemerintah/institusi (Polri/MUI, Universitas), administrator jaringan komputer, praktisi kesehatan, dan pengembang sistem.
 
 Fenomena → Problem
-  Fenomena yang diamati         : Adopsi machine learning di bidang kesehatan
-                                  global terus meningkat untuk mendukung
-                                  diagnosis otomatis berbagai penyakit
-  Gejala (symptom) yang terukur : Diagnosis manual memakan waktu lama,
-                                  tingkat akurasi diagnosis bervariasi antar
-                                  tenaga medis, dan deteksi penyakit kronis
-                                  sering terlambat
-  Masalah yang didiagnosis      : Dataset klinis yang tersedia di Indonesia
-                                  masih kecil dan tidak terstandarisasi, serta
-                                  belum ada evaluasi komparatif metode ML
-                                  yang komprehensif untuk konteks layanan
-                                  kesehatan lokal
-  Masalah riset (researchable)  : Belum jelas metode ML mana (KNN, CNN,
-                                  Neural Network, dsb.) yang paling efektif
-                                  dalam mengklasifikasi penyakit tertentu pada
-                                  dataset klinis skala kecil-menengah di
-                                  rumah sakit Indonesia
-  Variabel yang terukur         : Akurasi (%), sensitivitas, spesifisitas, AUC,
-                                  ukuran dataset, jenis algoritma ML, waktu
-                                  komputasi, dan jenis penyakit yang diklasifikasi
+  Fenomena yang diamati         : Machine Learning semakin diandalkan secara luas di Indonesia untuk memecahkan berbagai kasus dari NLP hingga klasifikasi klinis.
+  Gejala (symptom) yang terukur : Seringkali satu metode ML diunggulkan tanpa uji komparatif, dan model kerap gagal menangani kelas minoritas pada data yang tidak seimbang.
+  Masalah yang didiagnosis      : Penerapan algoritma seringkali tidak disesuaikan dengan karakteristik unik tiap dataset, sehingga implementasinya masih bersifat trial-and-error tanpa framework komparasi yang baku.
+  Masalah riset (researchable)  : Bagaimana perbandingan efektivitas 5 algoritma Machine Learning yang berbeda ketika diimplementasikan pada 5 studi kasus spesifik dengan karakteristik dataset yang sangat bervariasi di Indonesia?
+  Variabel yang terukur         : Akurasi (%), F1-Score, Precision, Recall, metode pra-pemrosesan (TF-IDF, SMOTE, Chi-square), jenis dataset, dan jenis algoritma ML.
 
 Problem Quality Check
   [x] Clarity      — Apakah satu orang membaca akan paham?
@@ -116,19 +93,7 @@ Problem Quality Check
   [x] Impact       — Apakah ada kontribusi jika terjawab?
 
 Problem Statement :
-  Perkembangan machine learning membuka peluang besar untuk mempercepat
-  dan meningkatkan akurasi diagnosis penyakit di bidang kesehatan. Namun,
-  berbagai studi yang telah dilakukan menunjukkan bahwa metode ML yang
-  digunakan (KNN, CNN, Neural Network, Forward Chaining) menghasilkan
-  performa berbeda-beda tergantung pada jenis penyakit, ukuran dataset,
-  dan kualitas data citra medis yang digunakan. Masalah riset yang
-  dirumuskan adalah belum adanya kajian komparatif yang terukur mengenai
-  efektivitas berbagai algoritma machine learning dalam mengklasifikasi
-  penyakit pada dataset klinis skala kecil-menengah, khususnya dalam
-  konteks layanan kesehatan di Indonesia. Oleh karena itu, diperlukan
-  evaluasi sistematis terhadap metode ML berdasarkan metrik akurasi,
-  sensitivitas, spesifisitas, dan AUC agar rekomendasi penggunaan teknologi
-  ini dapat didasarkan pada bukti yang valid dan dapat direplikasi.
+  Perkembangan Machine Learning memberikan potensi besar untuk otomatisasi pengambilan keputusan di berbagai sektor di Indonesia, mulai dari analisis sentimen masyarakat, seleksi penerima beasiswa pendidikan, deteksi intrusi jaringan siber, hingga diagnosis medis penyakit jantung. Namun, masing-masing domain tersebut memiliki karakteristik dataset yang sangat bervariasi, termasuk tantangan berupa ketidakseimbangan data (data imbalance) dan tipe fitur (teks vs numerik). Masalah riset yang muncul adalah belum adanya panduan komparatif lintas domain mengenai seberapa efektif algoritma-algoritma ML tertentu (seperti Naive Bayes, Random Forest, XGBoost, KNN, dan Neural Network) ketika dihadapkan pada karakteristik data spesifik tersebut. Oleh karena itu, diperlukan penelitian yang mengevaluasi secara komprehensif performa dari berbagai algoritma ini berdasarkan metrik Akurasi dan F1-Score, sehingga implementasi ML ke depannya tidak lagi sekadar *trial and error*, melainkan berbasis bukti (evidence-based) yang selaras dengan profil datanya.
 ```
 
 ---
@@ -137,18 +102,18 @@ Problem Statement :
 
 Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Problem Formation Model.
 
-**Topik awal:** ________________________________________
+**Topik awal:** *Evaluasi Performa Berbagai Algoritma Machine Learning pada 5 Domain Studi Kasus Berbeda.*
 
 | Tahap | Hasil |
 |-------|-------|
-| Reality | *Rumah sakit membutuhkan diagnosis yang cepat dan akurat, tetapi banyak proses diagnosis masih bergantung pada pengalaman subjektif tenaga medis.* |
-| Observed Issue (Symptom) | *Waktu diagnosis manual lama, akurasi bervariasi antar dokter, dan deteksi penyakit kronis seperti jantung, TB, dan demensia sering terlambat.* |
-| Diagnosed Problem (Root Cause) |*Dataset klinis yang tersedia masih kecil dan tidak terstandarisasi; belum ada evaluasi komparatif metode ML yang komprehensif untuk konteks layanan kesehatan Indonesia.* |
-| Researchable Problem |*ProblemBelum diketahui algoritma ML mana (KNN, CNN, Neural Network) yang paling efektif untuk klasifikasi penyakit tertentu pada dataset klinis skala kecil-menengah di rumah sakit Indonesia.* |
-| Measurable Variable |*Akurasi (%), sensitivitas, spesifisitas, AUC model, ukuran dan jenis dataset, jenis algoritma, waktu komputasi, dan jenis penyakit yang diklasifikasi.* |
+| Reality | *Banyak sektor di Indonesia (kesehatan, pendidikan, jaringan, opini publik) sudah mulai mengumpulkan data untuk mendukung pengambilan keputusan.* |
+| Observed Issue (Symptom) | *Banyak penelitian menerapkan Machine Learning secara sporadis, menggunakan 1 metode algoritma tanpa membandingkannya, dan model gagal memprediksi kelas minoritas karena data yang cacat.* |
+| Diagnosed Problem (Root Cause) |*Tidak ada standar pemetaan algoritma terhadap jenis data. Dataset NLP, dataset jaringan skala besar, dan dataset klinis memiliki perlakuan pra-pemrosesan (TF-IDF, SMOTE, Chi-square) yang spesifik.* |
+| Researchable Problem |*Bagaimana tingkat perbandingan efektivitas 5 algoritma Machine Learning (Naive Bayes, RF, XGBoost, KNN, Neural Network) dalam menyelesaikan masalah klasifikasi pada 5 dataset yang berbeda karakteristiknya?* |
+| Measurable Variable |*Akurasi (%), Precision, Recall, F1-Score, jenis algoritma, jenis dataset, dan hasil perlakuan pra-pemrosesan (handling imbalance).* |
 
-**Apakah terjebak solution-first thinking?** [ YA] Ya / [ ] Tidak
-> "Belum diketahui algoritma ML mana yang paling efektif untuk klasifikasi penyakit pada dataset klinis skala kecil-menengah di Indonesia"
+**Apakah terjebak solution-first thinking?** [ ] Ya / [x] Tidak
+> Rumusan masalah tidak memaksakan satu algoritma tertentu sebagai solusi mutlak, melainkan bersifat interogatif/komparatif terhadap semua algoritma yang diuji pada masing-masing domain.
 
 ---
 
@@ -158,14 +123,14 @@ Gambarkan konteks sistem dari masalah riset di Latihan 1.
 
 | Komponen | Deskripsi |
 |----------|----------|
-| Input | *Data rekam medis (hasil lab, citra X-ray/USG/B-mode), dataset pasien terdiagnosis (jantung, TB, MS, demensia, hati kronis), dan literatur klinis sebagai referensi pelatihan model.* |
-| Process |*Preprocessing dan normalisasi data medis, pemilihan dan pelatihan algoritma ML, validasi silang model, evaluasi performa (akurasi, AUC), dan perbandingan antar metode.* |
-| Output |*Preprocessing dan normalisasi data medis, pemilihan dan pelatihan algoritma ML, validasi silang model, evaluasi performa (akurasi, AUC), dan perbandingan antar metode.* |
-| Outcome |*Hasil klasifikasi/prediksi penyakit, nilai akurasi dan metrik evaluasi per metode, serta rekomendasi algoritma terbaik per jenis penyakit.* |
-| Constraints | |
-| Stakeholders |*Waktu diagnosis lebih singkat, konsistensi hasil meningkat, tenaga medis terbantu dalam pengambilan keputusan klinis, dan potensi deteksi dini penyakit kronis.* |
+| Input | *5 jenis dataset mentah dari domain berbeda: teks opini sosial media, data pelamar beasiswa KIP, log intrusi keamanan jaringan (NIDS), rekam medis jantung (Cleveland), dan kriteria SPK.* |
+| Process |*Prapemrosesan spesifik domain (TF-IDF, SMOTE, seleksi fitur Chi-Square), pemodelan 5 algoritma ML yang berbeda, evaluasi cross-validation, dan ekstraksi interpretasi model (SHAP).* |
+| Output |*Hasil klasifikasi dari setiap domain: Prediksi kelas sentimen, kelulusan beasiswa, deteksi intrusi, diagnosa sakit jantung, dan nilai SPK.* |
+| Outcome |*Pengambilan keputusan di institusi menjadi objektif, transparan (mengurangi misdiagnosis/salah seleksi), dan mempercepat proses screening data skala besar.* |
+| Constraints |*Distribusi data sangat tidak seimbang (minority class di kasus beasiswa dan penyakit), dan noise tinggi pada data jaringan/teks yang menuntut pra-pemrosesan memakan waktu lama.* |
+| Stakeholders |*Masyarakat/opini publik, pendaftar beasiswa, dokter/manajemen rumah sakit, dan praktisi IT (data engineer, network administrator).* |
 
-**Komponen mana yang paling relevan dengan masalah riset?** Process dan Constraints
+**Komponen mana yang paling relevan dengan masalah riset?** Process dan Input (Karakteristik Data)
 
 ---
 
@@ -175,16 +140,16 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Clarity | *5* |*Problem statement menyebut domain, gap komparatif antar metode ML, dan konteks spesifik (dataset skala kecil-menengah, Indonesia).* |
-| Measurability |*5* |*Variabel terukur jelas: akurasi, sensitivitas, spesifisitas, AUC, ukuran dataset, jenis algoritma.* |
-| Relevance |*5* |*Kebutuhan diagnosis cepat dan akurat sangat relevan bagi layanan kesehatan Indonesia yang terus berkembang.* |
-| Testability |*4* |*Hipotesis dapat diuji secara empiris; namun bergantung pada ketersediaan dataset klinis yang memadai dan representatif.* |
-| Impact |*5* | *Hasil riset dapat langsung menjadi panduan pemilihan algoritma ML untuk implementasi di rumah sakit.*|
+| Clarity | *5* |*Rumusan masalah jelas mengarah pada perbandingan 5 algoritma terhadap 5 jenis studi kasus dataset berbeda.* |
+| Measurability |*5* |*Variabel terukur sangat rinci, mencakup tingkat Akurasi (%) dan F1-Score untuk mengukur kelas yang tidak seimbang.* |
+| Relevance |*5* |*Adopsi Machine Learning di Indonesia di beragam sektor publik dan swasta saat ini sedang tumbuh pesat, menuntut pemilihan model yang cermat.* |
+| Testability |*5* |*Hipotesis dapat langsung dieksekusi dengan *training* model pada dataset dan melihat *confusion matrix*-nya.* |
+| Impact |*5* | *Hasilnya menciptakan sebuah taksonomi/panduan pemetaan (*best-practices*) antara algoritma ML spesifik dengan karakteristik datanya.*|
 
-**Skor total:** 24 / 25
+**Skor total:** 25 / 25
 
 **Problem statement versi final (1 paragraf):**
-> Penerapan machine learning di bidang kesehatan terbukti mampu meningkatkan kecepatan dan konsistensi diagnosis, namun berbagai penelitian menunjukkan bahwa performa algoritma seperti KNN, CNN, dan Neural Network sangat bergantung pada jenis penyakit, ukuran dataset, dan kualitas data yang digunakan. Masalah riset yang diajukan adalah belum adanya kajian komparatif yang terukur dan sistematis mengenai efektivitas berbagai algoritma ML dalam mengklasifikasi penyakit pada dataset klinis skala kecil-menengah di konteks layanan kesehatan Indonesia. Oleh karena itu, penelitian perlu mengevaluasi dan membandingkan metode ML secara simultan berdasarkan metrik akurasi, sensitivitas, spesifisitas, dan AUC agar teknologi ini dapat diadopsi secara tepat sasaran dan berbasis bukti.
+> Perkembangan Machine Learning memberikan potensi besar untuk otomatisasi pengambilan keputusan di berbagai sektor di Indonesia, mulai dari analisis sentimen masyarakat, seleksi penerima beasiswa pendidikan, deteksi intrusi jaringan siber, hingga diagnosis medis penyakit jantung. Namun, masing-masing domain tersebut memiliki karakteristik dataset yang sangat bervariasi, termasuk tantangan berupa ketidakseimbangan data (data imbalance) dan tipe fitur (teks vs numerik). Masalah riset yang muncul adalah belum adanya panduan komparatif lintas domain mengenai seberapa efektif algoritma-algoritma ML tertentu (seperti Naive Bayes, Random Forest, XGBoost, KNN, dan Neural Network) ketika dihadapkan pada karakteristik data spesifik tersebut. Oleh karena itu, diperlukan penelitian yang mengevaluasi secara komprehensif performa dari berbagai algoritma ini berdasarkan metrik Akurasi dan F1-Score, sehingga implementasi ML ke depannya tidak lagi sekadar *trial and error*, melainkan berbasis bukti (evidence-based) yang selaras dengan profil datanya.
 
 
 ---
