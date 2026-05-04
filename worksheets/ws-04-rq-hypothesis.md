@@ -67,34 +67,34 @@ Jika rantai ini tidak lengkap, RQ belum mature. Bi-directional: RQ yang tidak bi
 ```
 RQ-CONTRIBUTION-HYPOTHESIS
 
-Gap Statement  : ____________________
+Gap Statement  : Ketiadaan standar komparatif algoritma ML yang dioptimasi untuk dataset klinis skala kecil-menengah di Indonesia.
 
 Research Question:
-  Tipe         : [ ] Comparison  [ ] Improvement  [ ] Exploratory
-  Formulasi    : ____________________
-  Variabel IV  : ____________________
-  Variabel DV  : ____________________
-  Metrik       : ____________________
-  Dataset      : ____________________
-  Baseline     : ____________________
+  Tipe         : [x] Comparison  [ ] Improvement  [ ] Exploratory
+  Formulasi    : Apakah CNN menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan KNN ketika diterapkan pada dataset rekam medis klinis dengan sampel < 500 baris?
+  Variabel IV  : Jenis Algoritma Machine Learning (CNN dan KNN)
+  Variabel DV  : Kinerja Prediksi Klasifikasi
+  Metrik       : F1-Score dan Akurasi (%)
+  Dataset      : Dataset rekam medis publik/lokal berukuran kecil (< 500 sampel)
+  Baseline     : K-Nearest Neighbor (KNN)
 
 Quality Check RQ:
-  [ ] Variabel spesifik
-  [ ] Metrik jelas
-  [ ] Baseline ada
-  [ ] Konteks disebutkan
-  [ ] Memerlukan eksperimen (bukan hanya survei literatur)
+  [x] Variabel spesifik
+  [x] Metrik jelas
+  [x] Baseline ada
+  [x] Konteks disebutkan
+  [x] Memerlukan eksperimen (bukan hanya survei literatur)
 
 Contribution Statement:
-  Apa yang baru diketahui : ____________________
-  Jenis kontribusi        : [ ] Improvement  [ ] Comparison  [ ] Novel approach
-  Gap yang diisi          : ____________________
+  Apa yang baru diketahui : Adanya standar bukti komparatif antara metode canggih (CNN) dan metode konvensional (KNN) pada skala data klinis kecil.
+  Jenis kontribusi        : [ ] Improvement  [x] Comparison  [ ] Novel approach
+  Gap yang diisi          : Gap Kinerja dan Konteks (Performance & Context Gap) untuk faskes menengah ke bawah.
 
 Hypothesis Pair:
-  H₀ : ____________________
-  H₁ : ____________________
-  Threshold              : ____________________
-  Justifikasi threshold  : ____________________
+  H₀ : Tidak ada perbedaan signifikan pada metrik F1-Score dan Akurasi antara algoritma CNN dan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).
+  H₁ : Algoritma CNN menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).
+  Threshold              : Perbedaan metrik > 5% dan p-value < 0.05 dari uji T-Test.
+  Justifikasi threshold  : Peningkatan 5% berdampak signifikan secara klinis untuk mengurangi salah diagnosis (False Positives/Negatives) di rumah sakit daerah.
 ```
 
 ---
@@ -103,24 +103,24 @@ Hypothesis Pair:
 
 Gunakan gap yang ditemukan di WS-03. Transformasikan menjadi Research Question.
 
-**Gap dari WS-03:** ____________________________________
+**Gap dari WS-03:** *Ketiadaan standar komparatif algoritma ML yang dioptimasi untuk dataset klinis skala kecil-menengah di Indonesia.*
 
 **RQ versi pertama (tulis bebas):**
-> ___________________________________________________
+> *Apakah algoritma CNN lebih baik daripada KNN untuk mengklasifikasi penyakit pada dataset medis kecil di rumah sakit daerah?*
 
 **Evaluasi RQ:**
 
 | Komponen | Ada? | Isi |
 |----------|------|-----|
-| Metode spesifik | *Contoh: Ya — CNN vs RF* | |
-| Metrik terukur | | |
-| Baseline | | |
-| Dataset/konteks | | |
+| Metode spesifik | *Ya* | *CNN vs KNN* |
+| Metrik terukur | *Tidak* | *Masih sekadar "lebih baik", belum spesifik* |
+| Baseline | *Ya* | *KNN* |
+| Dataset/konteks | *Ya* | *Dataset medis kecil di rumah sakit daerah* |
 
-**Tipe RQ:** [ ] Comparison / [ ] Improvement / [ ] Exploratory
+**Tipe RQ:** [x] Comparison / [ ] Improvement / [ ] Exploratory
 
 **RQ versi revisi (setelah evaluasi):**
-> ___________________________________________________
+> *Apakah Convolutional Neural Network (CNN) menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan K-Nearest Neighbor (KNN) ketika diterapkan pada dataset rekam medis klinis dengan sampel kurang dari 500 baris?*
 
 ---
 
@@ -130,14 +130,14 @@ Rumuskan pasangan hipotesis dari RQ di Latihan 1.
 
 | Komponen | Isi |
 |----------|-----|
-| H₀ | *Contoh: Tidak ada perbedaan signifikan F1-Score antara CNN dan RF pada dataset CIC-MalMem-2022* |
-| H₁ | |
-| Metrik | |
-| Threshold | |
-| Justifikasi threshold | |
+| H₀ | *Tidak ada perbedaan signifikan pada metrik F1-Score dan Akurasi antara algoritma CNN dan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).* |
+| H₁ | *Algoritma CNN menghasilkan F1-Score dan Akurasi yang secara signifikan lebih tinggi dibandingkan KNN dalam klasifikasi penyakit pada dataset medis berukuran kecil (< 500 sampel).* |
+| Metrik | *F1-Score dan Akurasi (%).* |
+| Threshold | *Perbedaan metrik > 5% dan p-value < 0.05 dari uji T-Test.* |
+| Justifikasi threshold | *Peningkatan 5% berdampak signifikan secara klinis untuk mengurangi False Positives/Negatives. P-value < 0.05 membuktikan hasil bukan karena kebetulan acak.* |
 
-**Apakah hipotesis ini falsifiable?** [ ] Ya / [ ] Tidak
-> Bagaimana cara membuktikannya salah? ___________________
+**Apakah hipotesis ini falsifiable?** [x] Ya / [ ] Tidak
+> Bagaimana cara membuktikannya salah? *Dengan menjalankan eksperimen komparasi. Jika nilai F1-Score CNN sama dengan atau lebih rendah dari KNN, atau peningkatannya tidak mencapai 5% dengan p-value >= 0.05, maka H₀ gagal ditolak.*
 
 ---
 
@@ -147,15 +147,15 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 | Tahap | Isi |
 |-------|-----|
-| RQ | *Contoh: Apakah CNN menghasilkan F1-Score lebih tinggi dari RF...* |
-| Variable (IV) | *Contoh: Jenis algoritma (CNN vs RF)* |
-| Variable (DV) | |
-| Metric | |
-| Data source | |
-| Analysis method | |
+| RQ | *Apakah CNN menghasilkan F1-Score dan Akurasi yang lebih tinggi dari KNN pada dataset rekam medis < 500 baris?* |
+| Variable (IV) | *Jenis Algoritma Machine Learning (CNN dan KNN).* |
+| Variable (DV) | *Kinerja Prediksi Klasifikasi.* |
+| Metric | *F1-Score, Akurasi (%).* |
+| Data source | *Dataset rekam medis publik/lokal berukuran kecil (contoh: dataset diabetes/jantung < 500 sampel).* |
+| Analysis method | *Eksperimen Cross-Validation (K-Fold) & Statistical T-Test untuk perbandingan metrik.* |
 
-**Apakah rantai lengkap?** [ ] Ya / [ ] Tidak
-> Jika tidak, tahap mana yang perlu direvisi? ______________
+**Apakah rantai lengkap?** [x] Ya / [ ] Tidak
+> Jika tidak, tahap mana yang perlu direvisi? *Sudah lengkap dan saling terhubung dari RQ hingga metodologi analisis.*
 
 ---
 
@@ -163,6 +163,6 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 > Ambil satu judul skripsi/paper yang pernah dibaca. Coba ekstrak RQ-nya. Apakah RQ tersebut memenuhi semua komponen (metode, metrik, baseline, konteks)? Jika tidak, apa yang hilang?
 
-**Judul:** _____________________________________________
-**RQ yang diekstrak:** __________________________________
-**Komponen yang hilang:** _______________________________
+**Judul:** *Klasifikasi Penyakit Diabetes Mellitus Menggunakan Algoritma Support Vector Machine (SVM)*
+**RQ yang diekstrak:** *Bagaimana tingkat akurasi algoritma Support Vector Machine (SVM) dalam mengklasifikasikan penyakit Diabetes Mellitus?*
+**Komponen yang hilang:** *Baseline (tidak ada algoritma pembanding) dan Metrik spesifik (hanya menyebut akurasi tanpa target threshold) serta Konteks Dataset.*
