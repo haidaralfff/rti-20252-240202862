@@ -63,17 +63,19 @@ Metrik harus ditentukan **sebelum** eksperimen. Memilih metrik setelah melihat d
 
 ## Template A.5 — Definisi Variabel, Metrik & Justifikasi
 
-```
+```text
 VARIABLE & METRIC DEFINITION
 
-Research Question: Bagaimana perbandingan efektivitas 5 algoritma Machine Learning (Naive Bayes, Random Forest, XGBoost, KNN, Neural Network) ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?
+Research Question: Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js, Laravel FrankenPHP, Flask, Spring Boot, Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
 
 | Variabel | Tipe | Konsep | Metrik | Skala | Satuan | Cara Mengukur | Justifikasi |
 |----------|------|--------|--------|-------|--------|---------------|-------------|
-| Algoritma ML | IV | Pendekatan/Model Pemrograman | Categorical (NB, RF, XGB, KNN, NN) | Nominal | — | Eksekusi model di Library Scikit-Learn | Subjek utama komparasi |
-| Jenis Dataset | IV | Karakteristik sumber data | Categorical (Teks, Klinis, Imbalance) | Nominal | — | Dataset dari 5 domain/kasus | Untuk melihat pengaruh tipe data |
-| Kinerja Klasifikasi | DV | Keberhasilan model menebak | Akurasi, F1-Score | Ratio | Persen (%) | Ekstraksi dari Confusion Matrix | Metrik paling representatif |
-| Waktu Komputasi | DV | Efisiensi algoritma | Training Time | Ratio | Detik (s) | Modul `time()` saat runtime Python | Penting untuk aplikasi real-time |
+| Jenis Framework | IV | Teknologi Backend / Engine | Kategori (Spring, Gin, Laravel, Express, Flask) | Nominal | — | Dinyalakan/dimatikan sesuai jadwal pengujian | Subjek utama komparasi |
+| Skala Data | IV | Beban Request Sistem | Kategori Jumlah Data (100, 1k, 10k, 100k, 1jt) | Ratio | Entri (baris) | Setting pada script parameter K6 | Untuk melihat degradasi performa |
+| Kecepatan | DV | Responsivitas Server | Response Time | Ratio | Milidetik (ms) | Log output K6 Dashboard | Metrik utama interaksi end-user |
+| Kestabilan Beban | DV | Kapasitas Server / Volume | Throughput | Ratio | Req/s | Jumlah total req dibagi waktu (K6) | Metrik utama skalabilitas |
+| Konsumsi CPU | DV | Beban Komputasi Prosesor | Persentase Pemakaian CPU | Ratio | Persen (%) | Dashboard Prometheus/Grafana | Indikasi efisiensi komputasi framework |
+| Konsumsi Memori | DV | Alokasi RAM Server | Pemakaian Memori | Ratio | MB | Dashboard Prometheus/Grafana | Indikasi potensi *memory leak* |
 
 Alignment Check:
   RQ → Concept → Variable → Metric → Data → Result
@@ -88,18 +90,18 @@ Alignment Check:
 
 Gunakan RQ dari WS-04. Definisikan variabel dan metriknya.
 
-**RQ:** *Bagaimana perbandingan efektivitas 5 algoritma Machine Learning ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?*
+**RQ:** *Apakah kerangka kerja (framework) Spring Boot dan Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js dan Laravel ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
 
 | Variabel | Tipe | Konsep Abstrak | Metrik Konkret | Skala (NOIR) | Satuan |
 |----------|------|---------------|----------------|-------------|--------|
-| *Jenis Algoritma ML* | *IV* | *Pendekatan pemodelan algoritma* | *Kategori: Naive Bayes, RF, XGBoost, KNN, NN* | *Nominal* | *—* |
-| *Karakteristik Data* | *IV* | *Konteks dan jenis sumber data* | *Kategori: Sentimen, NIDS, Medis, Beasiswa* | *Nominal* | *—* |
-| *Kinerja Klasifikasi* | *DV* | *Tingkat keandalan prediksi AI* | *Akurasi, F1-Score, Precision, Recall* | *Ratio* | *% (Persentase)* |
-| *Waktu Komputasi* | *DV* | *Efisiensi waktu eksekusi* | *Waktu proses algoritma saat training* | *Ratio* | *Detik (s)* |
-| *Prapemrosesan (Prep)* | *CV* | *Treatment data yang setara* | *Penggunaan TF-IDF / Normalisasi yang tetap* | *Nominal* | *—* |
+| *Jenis Framework* | *IV* | *Teknologi pemrosesan server backend* | *Kategori: Spring Boot, Gin, Express.js, Laravel, Flask* | *Nominal* | *—* |
+| *Beban Load* | *IV* | *Intensitas trafik dari pengguna aplikasi* | *Jumlah hit query data ke server* | *Ratio* | *Angka Data (100 - 1 Juta)* |
+| *Kapasitas Volume* | *DV* | *Kemampuan menangani banyak antrean* | *Throughput (req/s)* | *Ratio* | *Req/s* |
+| *Responsivitas* | *DV* | *Waktu tunggu user* | *Response Time Rata-rata* | *Ratio* | *ms* |
+| *Lingkungan OS* | *CV* | *Kapasitas hardware dan sistem operasi* | *Penggunaan versi Kernel Linux dan Spesifikasi CPU/RAM yang konstan* | *Nominal* | *—* |
 
 **Apakah ada lompatan logis dalam rantai?** [ ] Ya / [x] Tidak
-> Jika ya, di mana? *Tidak ada. Semua konsep teoritis seperti "efektivitas" telah sukses diturunkan menjadi metrik angka pasti (F1-score dan waktu).*
+> Jika ya, di mana? *Tidak ada. Semua konsep seperti "Kapasitas Volume" telah diturunkan menjadi angka pasti yaitu Throughput yang sangat objektif.*
 
 ---
 
@@ -109,15 +111,15 @@ Evaluasi metrik DV yang dipilih di Latihan 1 menggunakan 3 kriteria.
 
 | Kriteria | Skor (1-5) | Justifikasi |
 |----------|-----------|-------------|
-| Representative | *5* | *F1-Score sangat mewakili keseimbangan prediksi kelas mayoritas dan minoritas, krusial untuk kasus imbalanced data (NIDS, Medis).* |
-| Sensitive | *5* | *Akurasi dan F1-Score dalam rentang 0-100% sangat sensitif untuk mendeteksi perubahan sekecil apapun pasca hyperparameter tuning.* |
-| Feasible | *5* | *Dapat langsung diekstrak secara instan dengan menggunakan library `classification_report` dari modul Scikit-Learn.* |
+| Representative | *5* | *Throughput dan Response Time merupakan ukuran standar emas (gold standard) di industri TI untuk menakar kualitas API server.* |
+| Sensitive | *5* | *Dalam rentang milidetik, bahkan perbedaan efisiensi algoritma router pada framework akan terlihat sangat jelas.* |
+| Feasible | *5* | *Sangat mudah diambil karena program seperti K6/JMeter dan Grafana secara *out-of-the-box* menyediakan export data ini tanpa coding manual.* |
 
 **Apakah perlu secondary metric?** [x] Ya / [ ] Tidak
-> Jika ya, apa dan mengapa? *Ya, Waktu Komputasi (Detik). Walaupun model Neural Network mungkin akurasinya paling bagus, tapi jika waktu pelatihannya berjam-jam, maka algoritma ringan (seperti Naive Bayes) mungkin jauh lebih ideal untuk diimplementasikan di sistem real-time instansi.*
+> Jika ya, apa dan mengapa? *Ya, CPU Usage dan Memory Usage. Jika kita hanya melihat Throughput tinggi, kita tidak akan tahu apakah itu dibayar dengan menguras memori server secara rakus (inefisien).*
 
 **Contoh kasus ceiling effect untuk metrik ini:**
-> *Jika terjadi "data leakage" (dataset uji bercampur dengan dataset latih), maka metrik akurasi akan langsung meloncat menyentuh angka 99,9%. Ini tumpul karena kita tidak bisa lagi mengukur algoritma mana yang benar-benar cerdas dalam mendeteksi data baru.*
+> *Jika server yang digunakan sangat kuat (misal server fisik 64-core dengan RAM 256GB), maka saat diuji dengan data hanya 1.000 record, SEMUA framework akan mencatatkan Response Time ~1 ms. Pengujian kehilangan sensitivitasnya karena semua teknologi menabrak "ceiling" kecepatan I/O mesin, sehingga tidak ada bedanya.*
 
 ---
 
@@ -127,10 +129,10 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 
 | Dimensi | Pertanyaan | Jawaban | Strategi Mitigasi |
 |---------|-----------|---------|------------------|
-| Completeness | *Apakah semua data point terkumpul?* | *Kemungkinan besar ada nilai kosong (Missing Values) pada data rekam medis atau beasiswa.* | *Menerapkan teknik imputasi statistik (Mean/Median) atau mendrop baris cacat.* |
-| Consistency | *Apakah ada kontradiksi internal?* | *Pada dataset NLP/Sentimen, komentar bernada sarkasme sering berlabel keliru.* | *Gunakan Cross-Validation dan terapkan "inter-rater reliability" pada pelabelan.* |
-| Validity | *Apakah benar-benar mengukur yang dimaksud?* | *Akurasi akan sangat menipu jika kelasnya imbalanced (contoh: serangan NIDS sangat langka).* | *Jadikan F1-Score atau metrik AUC-ROC sebagai penentu utama (primary metric).* |
-| Representativeness | *Apakah sampel mewakili populasi target?* | *Dataset beasiswa KIP di satu kampus mungkin tidak merepresentasikan kampus seluruh provinsi.* | *Mengambil data uji dari sumber eksternal, atau deklarasikan ini sebagai limitasi riset.* |
+| Completeness | *Apakah semua data point terkumpul?* | *Mungkin terjadi data telemetri Prometheus hilang saat server Crash.* | *Pastikan metrik error_rate K6 dicatat sehingga kita tahu persis di detik ke berapa server crash.* |
+| Consistency | *Apakah ada kontradiksi internal?* | *Terjadi lonjakan CPU tinggi padahal request sedikit (disebabkan oleh cronjob OS lokal).* | *Matikan *semua* aplikasi background dan Windows Update sebelum eksperimen dijalankan.* |
+| Validity | *Apakah benar-benar mengukur yang dimaksud?* | *Response Time bisa jadi bias karena lamanya waktu query di Postgres, bukan karena eksekusi kode framework.* | *Pisahkan dan catat waktu eksekusi query PostgreSQL vs waktu eksekusi kode backend murni.* |
+| Representativeness | *Apakah sampel mewakili populasi target?* | *Data uji yang hanya berisi HTTP GET tidak mewakili interaksi sistem kompleks (misal hashing password).* | *Tambahkan pengujian dengan *method* POST, PUT, DELETE untuk mendapatkan gambaran paripurna.* |
 
 ---
 
@@ -139,4 +141,4 @@ Bayangkan data yang akan dikumpulkan dari eksperimen. Evaluasi 4 dimensi kualita
 > Mengapa memilih metrik setelah melihat data dianggap p-hacking? Apa bedanya dengan eksplorasi data yang sah?
 
 **Jawaban:**
-> *Memilih metrik setelah melihat data (p-hacking) ibarat memanah ke tembok kosong lalu baru menggambar targetnya di tempat panah menancap; ini adalah cherry-picking agar riset selalu terlihat "berhasil". Eksplorasi data yang sah (Exploratory Data Analysis / EDA) dilakukan sepenuhnya SEBELUM proses training model AI, murni untuk memahami distribusi pola data, tanpa merekayasa/menyeleksi jenis metrik laporan akhir secara tidak jujur.*
+> *Misalnya kita menguji framework X. Awalnya kita ingin membuktikan Throughput-nya tinggi. Setelah diuji, ternyata Throughput-nya jeblok, tapi konsumsi RAM-nya kebetulan paling kecil. Lalu kita "mengubah target" dengan membuat paper yang menyatakan: "Framework X paling hebat dalam hal efisiensi RAM". Ini adalah p-hacking. Eksplorasi yang sah (EDA) berarti kita mendaftarkan sejak awal semua metrik (Throughput & RAM), lalu jika hasilnya jelek di satu sisi, kita laporkan apa adanya secara objektif tanpa memutarbalikkan narasi.*

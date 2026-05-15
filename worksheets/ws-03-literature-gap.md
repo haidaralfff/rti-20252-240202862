@@ -58,47 +58,47 @@ Membandingkan deep learning 2024 dengan decision tree sederhana tanpa justifikas
 
 ## Template A.3 — Literature Mapping & Gap Identification
 
-```
+```text
 LITERATURE MAPPING
 
-Topik      : Integrasi Sistem Informasi Bisnis dengan Machine Learning
+Topik      : Perbandingan Kinerja RESTful API pada Berbagai Framework Backend
 Database   : Google Scholar, IEEE Xplore
-Query      : "machine learning business information system integration" OR "ML for business decision system"
-Tahun      : 2020–2024
+Query      : "performance comparison" AND "backend framework" AND "REST API" OR ("Laravel" AND "Express.js")
+Tahun      : 2020–2025
 Hasil awal : 25 paper → Screening → 5 paper final
 
 ### Literature Matrix (Concept-Centric)
 
-| Study                | Tahun | Method                                      | Data                          | Result                                              | Limitation                                      |
-|----------------------|-------|---------------------------------------------|-------------------------------|-----------------------------------------------------|-------------------------------------------------|
-| Panjaitan et al.     | 2024  | Machine Learning (regresi, klasifikasi, clustering) | Data historis bisnis          | Meningkatkan efisiensi & prediksi bisnis            | Tidak ada evaluasi performa (akurasi, dll)       |
-| Emor et al.          | 2024  | Machine Learning + IoT                      | Data stok UMKM                | Monitoring stok otomatis                            | Skala kecil (tidak generalisasi)                 |
-| Viryawan et al.      | 2021  | Machine Learning                            | Data maintenance industri     | Prediksi kerusakan/maintenance                      | Hanya pada domain industri tertentu              |
-| Safira               | 2020  | Data Analytics + Machine Learning           | Data transaksi digital        | Optimasi sistem pembayaran                          | Fokus pada sektor keuangan                       |
-| Nugroho et al.       | 2020  | Enterprise Architecture Planning            | Data organisasi               | Perencanaan sistem informasi                        | Tidak menggunakan ML secara langsung             |
+| Study                   | Tahun | Method                                      | Dataset/Beban                | Result                                              | Limitation                                      |
+|-------------------------|-------|---------------------------------------------|------------------------------|-----------------------------------------------------|-------------------------------------------------|
+| Siahaan & Wijaya        | 2024  | JMeter (Laravel vs ExpressJs)               | Data mahasiswa (100-1000 user)| Laravel unggul waktu respon rata-rata 1745.7 ms.    | Tidak menguji pada beban yang sangat besar.     |
+| Purwanto                | 2023  | Postman (Flask vs Laravel vs Express)       | 9000 baris data (3-6 vUser)  | Express.js lebih unggul dalam response time.        | Virtual user sangat kecil (hanya 3 s.d 6).      |
+| Supria et al.           | 2024  | Apache Benchmark (Laravel/Flask/PHP Native) | Data AIS (10-10k entri)      | PHP Native unggul data kecil, Flask stabil data besar.| Tidak menguji framework Node.js atau Java.      |
+| Hadinata & Stianingsih  | 2024  | JMeter (Express.js vs Laravel)              | 1500 baris (100-1500 user)   | Express.js unggul response time (48 ms) dan memory. | Hanya menguji 2 framework.                      |
+| Azzahidi et al.         | 2025  | K6 (Spring Boot/Flask/Express/Laravel/Gin)  | KRS Unsoed (hingga 1jt data) | Spring Boot unggul throughput, Gin sangat stabil.   | Lingkungan server lokal berisiko bias performa. |
 
 Pola yang ditemukan:
-  Metode dominan     : Machine Learning (regresi, klasifikasi, clustering)
-  Dataset umum       : Data historis bisnis (transaksi, pelanggan, inventaris)
-  Limitasi berulang  : Tidak ada evaluasi performa, dataset terbatas, domain spesifik
+  Metode dominan     : Load testing menggunakan alat standar (JMeter, K6, Apache Benchmark).
+  Dataset umum       : Data dummy dari instansi (data mahasiswa, data AIS, dll).
+  Limitasi berulang  : Hasil performa bisa saling berkebalikan (misal Laravel vs Express) tergantung spesifikasi server dan jumlah request.
 
 GAP IDENTIFICATION
 
 Gap 1: [Jenis: Performance Gap]
-  Deskripsi    : Banyak penelitian tidak mengevaluasi performa model secara kuantitatif
-  Bukti        : Studi Panjaitan (2024) hanya menyebut peningkatan tanpa metrik akurasi
-  Signifikansi : Sulit membandingkan metode dan memastikan keakuratan sistem
+  Deskripsi    : Hasil riset mengenai framework tercepat masih belum konsisten dan saling kontradiktif.
+  Bukti        : Siahaan & Wijaya (2024) menyimpulkan Laravel lebih cepat dari Express.js, sedangkan Hadinata & Stianingsih (2024) dan Purwanto (2023) menyimpulkan sebaliknya.
+  Signifikansi : Tidak ada konsensus kuat mengenai framework mana yang benar-benar unggul secara objektif.
 Gap 2: [Jenis: Data + Context Gap]
-  Deskripsi    : Dataset terbatas dan hanya digunakan pada domain tertentu
-  Bukti        : Studi UMKM dan industri spesifik tidak bisa digeneralisasi
-  Signifikansi : Model tidak bisa diterapkan secara luas di berbagai sektor bisnis
+  Deskripsi    : Sebagian besar penelitian (kecuali Azzahidi et al., 2025) hanya menggunakan beban data yang kecil hingga menengah (di bawah 10.000 data).
+  Bukti        : Purwanto hanya menggunakan 6 virtual user, dan Siahaan hanya 1.000 user.
+  Signifikansi : Performa framework saat beban ekstrem (seperti serangan jutaan request) belum banyak dieksplorasi secara bersamaan untuk 5 framework modern.
 
 ### Baseline Selection
 
 | Baseline                          | Relevansi                                              | Representatif                                      | Source                |
-|----------------------------------|--------------------------------------------------------|---------------------------------------------------|-----------------------|
-| Rule-Based Business System       | Sama-sama digunakan untuk pengambilan keputusan bisnis | Pendekatan tradisional sebelum ML banyak digunakan | Nugroho et al., 2020  |
-| Basic Machine Learning (Regression Model) | Digunakan untuk prediksi dalam sistem bisnis          | Metode umum dan paling sering digunakan dalam studi | Panjaitan et al., 2024 |
+|-----------------------------------|--------------------------------------------------------|----------------------------------------------------|-----------------------|
+| Express.js                        | Sama-sama diuji sebagai framework backend              | Framework Node.js paling dominan dan populer       | Hadinata (2024)       |
+| Laravel                           | Diuji kinerjanya pada sistem berbasis data relasional  | Standar de-facto untuk pengembangan web PHP        | Siahaan (2024)        |
 ```
 
 ---
@@ -107,25 +107,25 @@ Gap 2: [Jenis: Data + Context Gap]
 
 Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google Scholar atau database lain.
 
-**Topik riset:** *Analisis Komparatif Algoritma Machine Learning dan Seleksi Fitur untuk Klasifikasi Penyakit Jantung pada Dataset Medis.*
+**Topik riset:** *Evaluasi Komprehensif Performa REST API pada Lima Framework Backend Modern (Express.js, Laravel, Flask, Spring Boot, Gin) dalam Menangani Skala Data Besar.*
 
-**Query pencarian:** *"machine learning" AND "heart disease classification" AND ("chi-square" OR "feature selection")* 
+**Query pencarian:** *"REST API performance" AND ("Express.js" OR "Laravel") AND "throughput"* 
 
-**Database:** *Google Scholar, IEEE Xplore, Kaggle/UCI Repo, dan Jurnal Nasional (Sinta).* 
+**Database:** *Google Scholar, IEEE Xplore, Jurnal Nasional (Sinta).* 
 
 ### Literature Matrix (Concept-Centric)
 
 | Study                     | Tahun | Method                          | Dataset                                      | Result                                      | Limitation                                              |
-|--------------------------|-------|----------------------------------|---------------------------------------------|---------------------------------------------|---------------------------------------------------------|
-| Hirmayanti & Utami       | 2025  | KNN, NB, LR, SVM, RF + Chi-square| Heart Disease Cleveland (UCI)                | KNN akurasi 93.51% (dengan 8 fitur utama)   | Hanya dievaluasi pada algoritma dasar, belum ensemble kompleks |
-| Yulianto et al.          | 2024  | Random Forest + SMOTE            | Dataset Penyakit Jantung                     | SMOTE berhasil mengatasi data tidak seimbang| Fokus hanya pada Random Forest (tidak komparatif luas)  |
-| Jusia et al.             | 2024  | KNN & C4.5 + Particle Swarm (PSO)| Dataset Penyakit Jantung                     | PSO signifikan meningkatkan performa KNN    | Komputasi sangat lambat akibat proses PSO (metaheuristik)|
-| Sarra et al.             | 2022  | SVM + Chi-square                 | Cleveland & Statlog                          | SVM akurasi 89.40% (dengan 6 fitur)         | Performa menurun pada dataset dengan noise tinggi        |
-| Reddy et al.             | 2021  | SMO, NB, LR, KNN + CFS/Relief    | Heart Disease Cleveland                      | SMO unggul dengan akurasi 86.46%            | Akurasi keseluruhan masih di bawah 90% pada semua model  |
+|---------------------------|-------|---------------------------------|----------------------------------------------|---------------------------------------------|---------------------------------------------------------|
+| Siahaan & Wijaya          | 2024  | JMeter (Laravel vs ExpressJs)   | Data mahasiswa (hingga 1.000 user)           | Laravel menang di waktu respon (1745ms).    | Hasil anomali (biasanya Express lebih cepat), rentan bias.|
+| Purwanto                  | 2023  | Postman (Flask/Laravel/Express) | 9000 data, 3-6 virtual user                  | Express.js tercepat (53ms), bebas error.    | Beban virtual user yang diuji sangat ringan.            |
+| Supria et al.             | 2024  | Apache Bench (Laravel/Flask/PHP)| Data AIS Polbeng (10k entri)                 | Flask terbukti lebih stabil di beban besar. | Hanya mencakup ekosistem PHP dan Python.                |
+| Hadinata & Stianingsih    | 2024  | JMeter (Express vs Laravel)     | Data Karyawan (1500 baris, 1500 user)        | Express.js lebih unggul dalam CPU & Memori. | Skala pengujian masih tergolong menengah.               |
+| Azzahidi et al.           | 2025  | K6 (Spring/Flask/Express/Gin)   | Data KRS Unsoed (hingga 1.000.000 data)      | Spring Boot & Gin menang di beban berat.    | Pengujian berjalan di OS virtual (WSL2), bukan native.  |
 
-**Pola yang terlihat — Metode dominan:** *Penerapan Machine Learning tradisional (terutama KNN, Random Forest, dan SVM) mendominasi riset klasifikasi penyakit jantung. Hampir seluruh studi mengandalkan tahap preprocessing ekstra seperti Feature Selection (Chi-square, PSO, CFS) atau Data Balancing (SMOTE) untuk mendongkrak akurasi model pada dataset berukuran kecil hingga menengah.* 
+**Pola yang terlihat — Metode dominan:** *Penerapan metode Load Testing kuantitatif mendominasi riset performa API (menggunakan JMeter atau K6). Hampir seluruh studi memfokuskan pengukuran pada Response Time dan penggunaan Resource (CPU/Memory).*
 
-**Limitasi yang berulang:** *Banyak studi mencapai akurasi baik, namun terbatas pada satu atau dua algoritma (kurang komprehensif), atau masih terjebak di akurasi 80-89% tanpa optimasi hyperparameter (GridSearchCV) secara maksimal.* 
+**Limitasi yang berulang:** *Banyak studi (kecuali paper no. 5) yang hanya memberikan beban (load) dalam jumlah sangat kecil (ratusan hingga ribuan), sehingga tidak mensimulasikan kondisi aplikasi web modern saat menerima jutaan hit trafik secara bersamaan.*
 
 ---
 
@@ -135,14 +135,14 @@ Berdasarkan tabel di Latihan 1, identifikasi gap.
 
 | Jenis Gap | Ditemukan? | Gap Statement |
 |-----------|-----------|---------------|
-| Performance Gap | [x] Ya / [ ] Tidak | *Mayoritas penelitian sebelumnya seperti Reddy (2021) dan Sarra (2022) masih menghasilkan akurasi di bawah 90% karena pemilihan parameter algoritma yang kurang optimal.* |
-| Method Gap | [x] Ya / [ ] Tidak | *Belum banyak penelitian yang menggabungkan perbandingan 5 algoritma sekaligus (KNN, NB, LR, SVM, RF) yang dikombinasikan dengan Chi-square Feature Selection DAN optimasi hyperparameter (GridSearchCV).* |
-| Data Gap | [ ] Ya / [x] Tidak | *Tidak ada data gap signifikan, rata-rata riset menggunakan dataset Cleveland yang tervalidasi secara medis.* |
-| Context Gap | [x] Ya / [ ] Tidak | *Model yang dioptimasi masih jarang diimplementasikan sebagai landasan sistem deteksi mandiri yang efisien (hanya berhenti pada eksperimen metrik evaluasi).* |
+| Performance Gap | [x] Ya / [ ] Tidak | *Terdapat ketidaksesuaian/kontradiksi hasil antar paper mengenai framework mana yang paling unggul (Laravel menang di Paper 1, namun kalah telak dari Express.js di Paper 4).* |
+| Method Gap | [ ] Ya / [x] Tidak | *Tidak ada method gap, semua menggunakan tool standar (JMeter/K6).* |
+| Data Gap | [x] Ya / [ ] Tidak | *Mayoritas penelitian masih membatasi ukuran dataset pengujian di bawah 10.000 record, sehingga belum menguji batas _bottleneck_ framework secara penuh.* |
+| Context Gap | [x] Ya / [ ] Tidak | *Framework terbaru atau versi _compiled_ dari bahasa (seperti Gin untuk Golang atau FrankenPHP untuk Laravel) masih jarang diteliti performa ekstremnya secara komparatif.* |
 
-**Gap utama yang dipilih:** (Kekosongan komparasi algoritma Machine Learning yang ekstensif menggunakan kombinasi seleksi fitur Chi-square dan hyperparameter tuning GridSearchCV untuk mendapatkan akurasi di atas 93% pada dataset medis yang tidak seimbang).
+**Gap utama yang dipilih:** (Kekosongan konsensus mengenai performa ekstrem komparatif dari kelima framework backend (Express, Laravel, Flask, Spring, Gin) saat dihadapkan pada pengujian dengan beban skala masif hingga jutaan request, untuk melihat _breaking point_ CPU dan Memory secara nyata).
 **Mengapa gap ini penting (bukan sekadar "belum ada yang meneliti")?**
-> Gap ini sangat esensial karena dalam deteksi kardiovaskular/penyakit jantung, setiap peningkatan 1% akurasi dapat menyelamatkan nyawa pasien (mengurangi tingkat *false negative*). Jika kita hanya menggunakan algoritma bawaan tanpa seleksi fitur dan optimasi, banyak fitur yang redundan/tidak relevan justru merusak prediksi model. Mengisi gap ini berarti membangun model diagnosis medis yang jauh lebih ringkas (fitur lebih sedikit), komputasinya ringan, namun sangat akurat secara klinis.
+> Gap ini esensial karena di level produksi perusahaan (Enterprise), kegagalan sistem terjadi saat beban trafik ekstrem (traffic spikes), bukan saat beban rendah. Menguji framework di skala 1.000 user mungkin memperlihatkan framework A menang, namun di skala 1.000.000 user, framework A bisa mengalami _memory leak_ dan framework B yang lebih stabil justru bertahan. Membuktikan ini akan menyelamatkan _cost_ infrastruktur server perusahaan.
 
 ---
 
@@ -152,10 +152,11 @@ Pilih 2 baseline dari literatur yang sudah dibaca.
 
 | # | Baseline                           | Mengapa Relevan                                                                           | Mengapa Representatif                                                                  | Apakah SOTA?                                                             | Sumber                    |
 |---|------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------|---------------------------|
-| 1 | SVM + Chi-square                   | Merupakan salah satu metode paling stabil untuk klasifikasi penyakit jantung berdimensi kecil | Banyak digunakan di studi medis karena sifat hyperplane-nya yang kokoh                 | Bukan, namun metrik 89% adalah baseline standar yang sangat baik          | Sarra et al. (2022)       |
-| 2 | Model Dasar (Tanpa Seleksi Fitur)  | Menggunakan model yang di-train dengan seluruh dataset awal (14 atribut)                  | Praktik konvensional sebelum masuk ke tahap optimasi dan seleksi                       | Bukan, digunakan sebagai pembanding untuk membuktikan peran seleksi fitur | Reddy et al. (2021)       |
+| 1 | Express.js                         | Digunakan secara masif sebagai framework ringan untuk microservices                       | Node.js merupakan _runtime_ backend non-blocking I/O yang sangat populer               | Ya, sering dijadikan tolak ukur kecepatan I/O                             | Hadinata dkk. (2024)      |
+| 2 | Laravel                            | Sering digunakan untuk aplikasi web skala menengah dan besar yang bergantung pada basis data | Merupakan framework MVC PHP paling populer di seluruh dunia saat ini                   | Bukan yang paling mutakhir secara performa, tapi *de-facto* di industri   | Siahaan & Wijaya (2024)   |
+
 **Apakah pemilihan baseline ini bisa dianggap straw man?** [ ] Ya / [x] Tidak
-> Justifikasi: Baseline ini sangat adil. Dengan membandingkan model kita terhadap model SVM beroptimasi fitur (Sarra 2022) dan model dasar konvensional (Reddy 2021), riset kita dapat membuktikan apakah metode baru (misalnya KNN + Chi-Square + GridSearchCV) memberikan peningkatan nyata (significant improvement) secara *state-of-the-art*, atau hanya kebetulan semata. Ini menjauhkan riset dari *straw man comparison*.
+> Justifikasi: Baseline ini sangat adil. Express.js terkenal dengan kecepatannya, dan Laravel terkenal dengan kepopulerannya. Jika kita membandingkan Spring Boot atau Gin melawan kedua framework raksasa ini, itu adalah perbandingan *apples-to-apples* dari framework yang benar-benar digunakan secara meluas di industri perangkat lunak dunia.
 
 ---
 
@@ -164,5 +165,5 @@ Pilih 2 baseline dari literatur yang sudah dibaca.
 > Apa perbedaan antara "belum ada yang meneliti ini" (klaim tanpa bukti) dengan research gap yang valid? Bagaimana cara membuktikan bahwa sebuah gap benar-benar ada?
 
 **Jawaban:**
-> Perbedaan mendasar terletak pada basis pembuktiannya. Pernyataan "belum ada yang meneliti ini" sering kali merupakan klaim subjektif (asumsi) karena keterbatasan pencarian literatur, sementara research gap yang valid adalah kesenjangan pengetahuan yang ditemukan setelah melakukan tinjauan sistematis terhadap literatur yang ada. Gap yang valid tidak hanya menyatakan "apa yang tidak ada", tetapi juga menjelaskan mengapa "apa yang sudah ada" belum cukup atau gagal menyelesaikan masalah dalam kondisi tertentu.
+> Perbedaan mendasar terletak pada basis pembuktiannya. Pernyataan "belum ada yang meneliti ini" sering kali merupakan klaim subjektif (asumsi) karena peneliti malas membaca. Sementara research gap yang valid adalah kesenjangan pengetahuan yang ditemukan setelah melakukan tinjauan sistematis. Misalnya, saya membuktikan "Gap Data" dengan membuat tabel literatur, yang secara eksplisit menunjukkan bahwa Paper 1, 2, 3, dan 4 secara konsisten hanya menggunakan data di bawah 10.000 record. Bukti tabel ini mensahkan klaim bahwa riset performa beban jutaan record belum tuntas dijawab.
 > ___________________________________________________

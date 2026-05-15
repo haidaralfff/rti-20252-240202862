@@ -64,18 +64,19 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 
 ## Template A.6 — Mapping RQ ke Arsitektur Sistem
 
-```
+```text
 SYSTEM-EXPERIMENT MAPPING
 
-Research Question: Bagaimana perbandingan efektivitas 5 algoritma Machine Learning ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?
+Research Question: Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js, Laravel FrankenPHP, Flask, Spring Boot, Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
 |----------|------|-----------------|---------------------------|
-| Jenis Algoritma | IV | Modul Model ML (Scikit-Learn/TensorFlow) | Mengganti argumen `model_type` di file YAML |
-| Jenis Dataset | IV | Modul Data Ingestion/Loader | Mengganti path input direktori dataset |
-| F1-Score & Akurasi | DV | Modul Metrics Evaluator | Output JSON file berisi `classification_report` |
-| Skema Preprocessing | CV | Modul Preprocessor (SMOTE/TF-IDF) | Dikunci konfigurasinya per jenis dataset |
+| Jenis Framework | IV | Backend App (5 proyek beda framework) | _Start_ & _Stop_ _service_ pada port yang sama bergantian |
+| Skala Data | IV | Load Tester (K6) | Variasikan setting `data_load` di file config script.js |
+| Throughput & Resp. Time | DV | Modul Metrics K6 | Output JSON / K6 Dashboard berisi `req_duration` dll. |
+| CPU & Memory | DV | Node_exporter & Prometheus | Pengambilan (scraping) interval hardware stat di server |
+| PostgreSQL DB | CV | Database Server (DBMS) | Menahan 1 struktur tabel dan 1 volume data tetap |
 
 4 Prinsip Desain:
   [x] Traceability — Setiap komponen bisa ditelusuri ke variabel
@@ -84,9 +85,9 @@ Variable → Component Mapping:
   [x] Reproducibility — Setup bisa direkonstruksi
 
 Experimental Setup:
-  Input data     : 5 format CSV/Log dari berbagai domain (Sentimen, Beasiswa, NIDS, dsb).
-  Parameter      : Konfigurasi model ML (contoh: k-value pada KNN, depth pada XGB).
-  Output format  : File `.json` atau `.csv` berisi metrik performa & confusion matrix.
+  Input data     : Database PostgreSQL dengan struktur tabel KRS (hingga 1.000.000 baris).
+  Parameter      : 20 Virtual Users selama 10 menit eksekusi script K6.
+  Output format  : File `.csv`/`.json` dari K6 dan log metrik dari Grafana.
 ```
 
 ---
@@ -95,15 +96,15 @@ Experimental Setup:
 
 Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 
-**RQ:** *Bagaimana perbandingan efektivitas 5 algoritma Machine Learning ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?*
+**RQ:** *Apakah kerangka kerja (framework) Spring Boot dan Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js dan Laravel ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
 |----------|------|-----------------|---------------------------|
-| *Algoritma ML* | *IV* | *Modul Classifier Pipeline* | *Swap nilai dari parameter `algorithm` di config* |
-| *Dataset* | *IV* | *Modul Data Loader* | *Ganti path `dataset_url` pada konfigurasi* |
-| *Kinerja Klasifikasi* | *DV* | *Modul Metrics Logger* | *Otomatis menghitung Akurasi & F1-Score dari Confusion Matrix* |
-| *Waktu Komputasi* | *DV* | *Modul Profiler* | *Menghitung `time.time()` sebelum dan sesudah `model.fit()`* |
-| *Data Prapemrosesan* | *CV* | *Modul Preprocessor* | *Memastikan fungsi spesifik jalan (misal TF-IDF wajib untuk teks)* |
+| *Jenis Framework* | *IV* | *Aplikasi Backend (5 repositori kode)* | *Menjalankan server aplikasi per port (misal `npm start` untuk Express.js)* |
+| *Beban Load* | *IV* | *Skrip Uji K6* | *Mengubah variabel `stages` (duration & target VUs) pada K6.* |
+| *Throughput / Resp. Time* | *DV* | *K6 Dashboard* | *Otomatis dihitung melalui metrik standar `http_req_duration` dan `http_reqs`* |
+| *Resource CPU/Memori* | *DV* | *Grafana & Prometheus* | *Metrik di-scrape setiap 1 detik dari *node_exporter* OS.* |
+| *Database PostgreSQL* | *CV* | *DBMS Postgres Container* | *Gunakan Docker Image/Volume yang sama persis untuk tiap sesi uji.* |
 
 **Apakah semua variabel bisa di-map?** [x] Ya / [ ] Tidak
 > Jika tidak, komponen apa yang perlu ditambahkan? *Sudah ter-map seluruhnya.*
@@ -116,14 +117,14 @@ Evaluasi desain sistem terhadap 4 prinsip.
 
 | Prinsip | Status | Bukti / Penjelasan |
 |---------|--------|-------------------|
-| Traceability | *✅* | *Setiap variabel (seperti Algoritma dan Dataset) direpresentasikan oleh *Class*/*Fungsi* terpisah di dalam *script* Python eksperimen.* |
-| Modularity | *✅* | *Bisa menukar dataset teks ke dataset numerik tanpa mengganggu baris kode evaluasi akurasinya.* |
-| Controllability | *✅* | *Hyperparameter spesifik untuk kelima model dieksternalisasi menggunakan satu file `config.yaml` terpusat.* |
-| Measurability | *✅* | *F1-score dan *training time* otomatis di-ekstrak dan disimpan di folder *results/* setelah program selesai.* |
+| Traceability | *✅* | *Setiap variabel riset (framework, beban) direpresentasikan dengan jelas sebagai layanan/server independen dalam eksekusi uji.* |
+| Modularity | *✅* | *Sistem tester (K6) dan sistem backend terpisah secara arsitektur, sehingga skrip tester tidak membebani komputasi backend.* |
+| Controllability | *✅* | *Kondisi pengujian seperti waktu 10 menit dan 20 VU dieksternalisasikan di dalam config skrip k6 (misal `.env` atau parameter CLI).* |
+| Measurability | *✅* | *Perekaman CPU/Memory tidak lagi dilakukan dengan menatap Task Manager (manual), melainkan menggunakan sistem otomatis Prometheus/Grafana yang konsisten (terukur otomatis).* |
 
-**Prinsip mana yang paling sulit dipenuhi?** *Controllability*.
+**Prinsip mana yang paling sulit dipenuhi?** *Controllability (Pengendalian Variabel Kontrol).*
 **Strategi untuk mengatasinya:**
-> *Mengelola hyperparameter 5 algoritma untuk 5 dataset yang berbeda di dalam satu file raksasa sangat sulit dan rawan salah. Strategi mengatasinya adalah menggunakan arsitektur "Modular Configuration" (membuat 1 file YAML khusus per domain/dataset).*
+> *Mengontrol agar setiap framework menggunakan query ORM yang persis sama kualitasnya sangat sulit (misal Prisma di Node.js vs Eloquent di Laravel). Strateginya adalah dengan menulis RAW SQL Query standar di semua framework jika memungkinkan, atau memastikan tingkat efisiensi ORM dikonfigurasi sama (contoh menonaktifkan "lazy loading").*
 
 ---
 
@@ -133,14 +134,14 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 | Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
 |---------|-----------|-----------|-----------|----------------------|
-| Full | *✅ XGBoost* | *✅ SMOTE (Oversampling)* | *✅ Seleksi Fitur* | *Performa baseline penuh maksimal (Akurasi Tinggi, F1 Tinggi).* |
-| – A | ❌ (Ganti Naive Bayes) | ✅ | ✅ | *Waktu eksekusi jauh lebih cepat, namun F1-score turun karena algoritma kurang kompleks (kurang robust terhadap noise).* |
-| – B | ✅ | ❌ (Tanpa SMOTE) | ✅ | *Akurasi global tetap tinggi, tetapi Precision dan Recall untuk minoritas (kelas rentan) akan anjlok drastis (hampir 0).* |
-| – C | ✅ | ✅ | ❌ (Tanpa Seleksi) | *Performa mungkin stagnan, tapi *Training Time* akan membengkak, dan risiko *overfitting* semakin tinggi.* |
+| Full | *✅ Framework (Misal Laravel)* | *✅ ORM Aktif* | *✅ Server FrankenPHP* | *Performa baseline penuh yang dicatat di metrik riset utama.* |
+| – A | ❌ (Ganti PHP Native) | ✅ | ✅ | *Waktu eksekusi jauh lebih cepat, overhead routing berkurang, membuktikan bahwa layer middleware Laravel adalah yang memperlambat performa.* |
+| – B | ✅ | ❌ (Ganti Raw Query SQL) | ✅ | *Akurasi performa akan meningkat tajam, throughput tinggi, membuktikan object hydration dari ORM adalah sumber bottleneck.* |
+| – C | ✅ | ✅ | ❌ (Ganti PHP-FPM klasik) | *Memory footprint akan turun, tetapi kemampuan menangani antrean (concurrency) akan jeblok parah.* |
 
-**Komponen mana yang diprediksi paling berkontribusi?** *Komponen B (SMOTE)*.
+**Komponen mana yang diprediksi paling berkontribusi?** *Komponen C (Server Environment - FrankenPHP vs PHP-FPM klasik) atau Komponen B.*
 **Mengapa?**
-> *Dalam mayoritas paper kasus medis, NIDS, dan beasiswa, masalah utamanya adalah "Imbalanced Data" ekstrem (misalnya sampel fraud/serangan sangat sedikit dibanding data normal). Tanpa SMOTE (Komponen B), secerdas apapun algoritma utamanya (XGBoost), model pasti akan bias menebak kelas mayoritas.*
+> *Karena dalam penelitian Azzahidi et al. (2025) untuk kasus Laravel, arsitektur dasar PHP yang setiap request-nya membuat *process* baru (di PHP-FPM klasik) sangat lambat. Penggunaan FrankenPHP/Octane yang menggunakan event-loop (merubah perilaku PHP mirip Node.js) memberikan lonjakan signifikan yang lebih mendasar ketimbang perbedaan penulisan syntax ORM.*
 
 ---
 
@@ -149,4 +150,4 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 > Apa risiko jika sistem dibangun seperti produk (monolitik, fitur lengkap) lalu baru dilakukan eksperimen? Mengapa arsitektur modular penting untuk riset?
 
 **Jawaban:**
-> *Risiko utamanya adalah "Confounding Variables" tidak bisa dilacak. Jika sistem dibangun monolitik (hardcoded), ketika akurasi naik, kita tidak tahu secara pasti apakah itu karena kehebatan algoritma (IV) atau karena "kebocoran data" saat pra-pemrosesan (CV) yang tergabung di satu fungsi raksasa. Arsitektur modular sangat krusial agar kita bisa melakukan "Variable Isolation" dan membuktikan relasi sebab-akibat (causality) dalam penelitian secara ilmiah.*
+> *Jika API testing dibebani dengan authentication token (JWT), caching layer, dan 3rd-party loggers (Sentry), maka saat Throughput rendah, kita tidak akan tahu siapa tersangkanya. Apakah framework utamanya yang lambat, ataukah algoritma pembacaan token JWT-nya yang memakan CPU? Inilah mengapa dalam pengujian kinerja komparatif riset, arsitektur harus "telanjang" dan modular. Tujuannya bukan menguji aplikasi production, melainkan mengevaluasi murni kinerja "engine" dari framework tersebut tanpa intervensi confounding variables.*

@@ -52,26 +52,26 @@ Mata kuliah ini menggunakan pendekatan **Positivist** (fenomena TI bisa diukur o
 
 ## Template A.1 — Research Mindset Self-Assessment
 
-```
+```text
 Nama Peneliti    : Haidar Habibi Al Farisi
-Tanggal          : 14 April 2026
+Tanggal          : 15 Mei 2026
 
-1. Ketika membaca klaim "metode X 95% akurat":
-   - Pertanyaan pertama saya: Dataset apa yang digunakan? Apakah ada bias pelabelan atau overfitting?
-   - Data yang dibutuhkan untuk verifikasi: Metrik evaluasi lengkap (Precision, Recall), metode pembagian dataset, dan justifikasi proses pra-pemrosesan.
+1. Ketika membaca klaim "Express.js 10x lebih cepat dari Laravel":
+   - Pertanyaan pertama saya: Bagaimana kondisi eksperimennya? Berapa spesifikasi server dan jumlah data yang digunakan?
+   - Data yang dibutuhkan untuk verifikasi: Metrik evaluasi lengkap (Response Time, Throughput, CPU Usage, Memory Usage), jenis query database, dan konfigurasi server.
 
 2. Posisi paradigma:
-   - Pendekatan: [☑] Positivis  [] Interpretivis  [ ] Design Science  [ ] Mixed
-   - Alasan: Karena penelitian ini berfokus pada hasil pengukuran kuantitatif (akurasi algoritma) secara objektif.
+   - Pendekatan: [☑] Positivis  [ ] Interpretivis  [ ] Design Science  [ ] Mixed
+   - Alasan: Karena penelitian ini berfokus pada hasil pengukuran kuantitatif (waktu respon dan beban server) secara objektif pada kondisi eksperimen yang terkontrol.
 
 3. Identifikasi distorsi:
-   - Asumsi tersembunyi: Asumsi independensi atribut (kata) pada Naive Bayes selalu berlaku.
-   - Sumber bias potensial: Pelabelan (labeling) data sentimen secara manual.
-   - Langkah mitigasi: Evaluasi dengan *inter-rater reliability* saat melabeli data, atau komparasi dengan algoritma lain.
+   - Asumsi tersembunyi: Asumsi bahwa beban kerja API hanya berupa query SELECT sederhana, padahal di dunia nyata ada komputasi yang berat.
+   - Sumber bias potensial: Konfigurasi default framework yang tidak disamaratakan (misal satu menggunakan caching, yang lain tidak).
+   - Langkah mitigasi: Memastikan semua framework dikonfigurasi dalam mode production dengan optimasi yang seimbang, dan menonaktifkan mekanisme caching internal saat pengujian mentah.
 
 4. Komitmen etika:
-   - Data yang tidak akan dimanipulasi: Hasil pengukuran Precision dan Recall yang rendah pada kelas tertentu.
-   - Batasan yang diakui sejak awal: Data hanya berjumlah 873 komentar dan diambil dari satu proses crawling manual.
+   - Data yang tidak akan dimanipulasi: Angka response time yang lambat atau error rate yang tinggi pada framework tertentu saat menangani beban maksimal.
+   - Batasan yang diakui sejak awal: Pengujian dibatasi pada operasi CRUD dasar dan tidak mencerminkan kompleksitas logika bisnis yang rumit.
 ```
 
 ---
@@ -81,22 +81,22 @@ Tanggal          : 14 April 2026
 Pilih satu paper riset di bidang TI yang mengklaim "metode X meningkatkan performa." Telusuri setiap tahap Research Trust Model.
 
 **Paper yang dipilih:**
-> Judul: Algoritma Machine Learning Naive Bayes pada Analisis Sentimen Kesepakatan Polri dan GNPF-MUI pada Aksi Bela Islam III '212'
-> Penulis (Tahun): Hananto et al. (2023)
+> Judul: Performance Evaluation of Backend Frameworks for REST API: A Comparative Study of Spring Boot, Flask, Express.js, Laravel FrankenPHP, and Gin
+> Penulis (Tahun): Azzahidi et al. (2025)
 
 | Tahap | Apa yang Dilakukan | Potensi Distorsi |
 |-------|-------------------|-----------------|
-| Reality → Data | *Melakukan crawling 873 komentar dan melabelinya menjadi sentimen positif/negatif secara manual.* | *Selection bias & Human Bias: 873 sampel terlalu kecil untuk isu nasional, dan pelabelan manual rentan subjektivitas.* |
-| Data → Processing | *Pre-processing teks (cleaning) dan pembobotan menggunakan TF-IDF.* | *Information loss: Penghapusan kata (stopword removal) mungkin menghilangkan konteks sarkasme atau emosi asli.* |
-| Processing → Analysis | *Melatih model Naive Bayes menggunakan RapidMiner pada dataset yang ada.* | *Algorithmic Bias: Asumsi independensi Naive Bayes sering meleset pada kalimat bahasa manusia yang saling terkait.* |
-| Analysis → Inference | *Menyimpulkan model "baik" dengan Akurasi 89,70% dan Recall kelas negatif 100%.* | *Mengabaikan fakta bahwa Precision kelas negatif hanya 70,19% (artinya banyak salah prediksi).* |
-| Inference → Knowledge | *Mengklaim efektivitas metode Naive Bayes untuk analisis sentimen opini masyarakat.* | *Overgeneralization: Menyimpulkan keandalan metode tanpa membandingkannya (baseline) dengan algoritma lain (misal SVM).* |
+| Reality → Data | *Membangun API CRUD dengan 5 framework dan menggunakan database hingga 1.000.000 data.* | *Construct Validity: Data tabel yang digunakan (KRS) mungkin memiliki struktur yang terlalu sederhana dibandingkan data real-world.* |
+| Data → Processing | *Menjalankan load testing menggunakan K6 dengan 20 virtual users selama 10 menit.* | *Internal Validity: Fluktuasi resource di Windows Subsystem for Linux (WSL) bisa menjadi confounding variable yang tidak disadari.* |
+| Processing → Analysis | *Mengekstraksi hasil metrics dari K6, Node_exporter, dan Prometheus.* | *Measurement Bias: Keterlambatan interval polling metrik oleh Prometheus bisa gagal menangkap lonjakan CPU/RAM sekilas (spikes).* |
+| Analysis → Inference | *Menyimpulkan Spring Boot unggul di throughput tinggi, dan Gin sangat stabil.* | *Overgeneralization: Menyimpulkan kehebatan framework secara mutlak hanya dari 1 jenis skenario database (PostgreSQL tunggal).* |
+| Inference → Knowledge | *Mengklaim efektivitas masing-masing framework untuk berbagai skala data API.* | *Context Bias: Mengabaikan arsitektur scaling horizontal (Load Balancing) yang biasa dilakukan di tingkat produksi nyata.* |
 
-**Distorsi paling besar di tahap:** *Reality → Data (Pelabelan sentimen secara manual pada isu sensitif sangat rentan terhadap bias personal penilai, serta jumlah data 873 komentar sangat tidak representatif untuk opini skala nasional).*
+**Distorsi paling besar di tahap:** *Reality → Data dan Processing → Analysis (karena eksekusi di environment lokal/WSL berisiko adanya intervensi background process OS yang mendistorsi kemurnian metrik CPU/Memory).*
 
 **Dua distorsi spesifik yang teridentifikasi:**
-1. *Measurement Bias / Human Bias* (terjadi saat proses pelabelan opini secara manual).
-2. *Overgeneralization* (kesimpulan efektivitas model yang ditarik hanya dari satu kasus tanpa uji algoritma komparatif).
+1. *Confounding Variable* (Faktor WSL dan background process OS lokal yang mempengaruhi kestabilan resource server).
+2. *Overgeneralization* (Kesimpulan performa ditarik dari skenario sistem monolitik sederhana, bukan microservices terdistribusi).
 
 ---
 
@@ -106,27 +106,27 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 
 | Perspektif | Analisis |
 |------------|---------|
-| Kejujuran ilmiah | *Laporkan kedua hasil (dengan dan tanpa outlier) agar pembaca mengetahui efek data anomali.* |
-| Transparansi | *Jelaskan metodologi dan justifikasi logis secara transparan di balik penghapusan outlier tersebut.* |
-| Peer review | *Menyediakan dataset dan kode simulasi agar reviewer dapat mengecek kebenaran klaim.* |
+| Kejujuran ilmiah | *Laporkan kedua hasil (dengan dan tanpa outlier) agar pembaca mengetahui efek data anomali atau "cold start" pada server.* |
+| Transparansi | *Jelaskan metodologi dan justifikasi logis secara transparan di balik penghapusan outlier tersebut (misal karena request pertama kali selalu memakan waktu inisialisasi yang lama).* |
+| Peer review | *Menyediakan raw log dari JMeter atau K6 agar reviewer dapat mengecek sendiri kapan outlier tersebut terjadi.* |
 
 **Keputusan akhir dan justifikasi:**
-> *Saya akan melaporkan hasil riset baik yang menggunakan seluruh data maupun yang membuang outlier, lalu memberikan pembahasan khusus mengapa 3 data tersebut diabaikan. Menyembunyikan outlier hanya agar temuan tampak signifikan adalah praktik HARKing/p-hacking yang tidak etis. Dengan pelaporan ganda, validitas riset tetap terjaga dan dapat direproduksi.*
+> *Saya akan melaporkan hasil pengujian secara utuh termasuk saat terjadi lonjakan response time (outlier), lalu memberikan analisis terpisah mengapa outlier tersebut terjadi (misalnya karena proses _garbage collection_ di Java atau inisialisasi awal database connection pool). Membuang outlier demi metrik rata-rata yang bagus adalah HARKing dan tidak etis, karena di skenario dunia nyata, lonjakan waktu respon tersebut benar-benar akan dialami oleh end-user.*
 
 ---
 
 ## Latihan 3 — Posisi Paradigma
 
-**Topik riset:** *Analisis Sentimen Kesepakatan Polri dan GNPF-MUI pada Aksi Bela Islam III '212' menggunakan Algoritma Machine Learning Naive Bayes.*
+**Topik riset:** *Analisis Perbandingan Performa RESTful API antara berbagai Framework Backend Modern (Express.js, Laravel, Flask, Spring Boot, Gin).*
 
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|
-| Kesesuaian dengan topik (1–5) | *5* | *2* | *3* |
-| Jenis data yang dikumpulkan | *Kuantitatif (Nilai probabilitas TF-IDF, metrik performa: Akurasi, Precision, Recall)* | *Kualitatif (Pemahaman makna dan nuansa bahasa saat melabeli sentimen opini teks secara manual)* | *Pembuatan artefak (Model klasifikasi Naive Bayes di RapidMiner)* |
-| Limitasi paradigma | *Gagal menangkap makna sarkasme mendalam atau konteks emosi kompleks di balik teks komentar.* | *Labeling yang sangat subjektif membuat hasil sulit direproduksi dengan presisi sama oleh orang lain.* | *Sistem yang berjalan di RapidMiner belum tentu efisien jika diimplementasikan secara real-time pada skala besar.* |
+| Kesesuaian dengan topik (1–5) | *5* | *1* | *3* |
+| Jenis data yang dikumpulkan | *Kuantitatif (Response Time dalam ms, Throughput dalam req/s, persentase penggunaan CPU dan Memori)* | *Kualitatif (Pendapat developer tentang seberapa mudah menggunakan framework tersebut)* | *Pembuatan artefak (Sistem REST API untuk pengujian)* |
+| Limitasi paradigma | *Hanya mengukur performa mentah secara matematis, mengabaikan aspek "Developer Experience" (DX), waktu development, dan kemudahan _maintenance_ kode.* | *Subjektif dan tidak dapat dijadikan landasan pengambilan keputusan teknis infrastruktur server.* | *Fokus ke pembuatan API, padahal tujuannya adalah membandingkan yang sudah ada.* |
 
 **Paradigma yang dipilih:** *Positivis.*
-**Alasan:** *Walaupun data awalnya berupa teks opini masyarakat yang sangat subjektif (kualitatif), tujuan utama penelitian ini adalah mengukur secara empiris dan matematis (kuantitatif) seberapa akurat algoritma Naive Bayes dalam mengklasifikasikan teks tersebut. Karena kesimpulan ditarik sepenuhnya berdasarkan statistik metrik evaluasi model (seperti Akurasi 89.70%), maka pendekatan yang mendominasi adalah Positivis.*
+**Alasan:** *Tujuan utama penelitian ini adalah menguji dan membandingkan performa sistem perangkat lunak secara kuantitatif melalui eksperimen yang sangat terkontrol. Metrik yang dihasilkan bersifat pasti dan terukur (Response Time, Resource Usage), sehingga interpretasi ditarik dari fakta empiris angka statistik, sesuai dengan prinsip paradigma Positivis.*
 
 ---
 
@@ -135,10 +135,9 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 > Sebelum membaca materi ini, apakah pernah mempertanyakan klaim "95% akurat"? Setelah memahami rantai distorsi, pertanyaan apa yang sekarang akan diajukan saat membaca paper?
 
 **Jawaban:**
->Setelah memahami materi ini, saya akan bertanya:
-Datasetnya bagaimana?
-Apakah ada bias?
-Bagaimana metode evaluasinya?
-Apakah bisa digeneralisasi?
-Apakah ada data yang dihilangkan?
-
+> Setelah memahami materi ini, saya akan bertanya saat membaca paper perbandingan framework:
+1. Environment-nya apa? (Apakah server dedicated atau shared local VM?)
+2. Skala datanya berapa besar?
+3. Apakah konfigurasi framework-nya setara (misalnya semua di set ke mode 'production')?
+4. Tool apa yang dipakai untuk load testing dan apakah alat test berada di mesin yang sama dengan server (yang bisa memicu perebutan resource)?
+5. Apakah metrik yang dilaporkan hanya rata-rata, atau menyertakan persentil (p95, p99) untuk melihat stabilitas nyata?

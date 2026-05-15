@@ -64,19 +64,19 @@ Jika rantai ini tidak lengkap, RQ belum mature. Bi-directional: RQ yang tidak bi
 
 ## Template A.4 — RQ-Contribution-Hypothesis
 
-```
+```text
 RQ-CONTRIBUTION-HYPOTHESIS
 
-Gap Statement  : Kekosongan komparasi algoritma Machine Learning yang ekstensif menggunakan kombinasi seleksi fitur Chi-square dan hyperparameter tuning GridSearchCV untuk mendapatkan akurasi di atas 93% pada dataset medis yang tidak seimbang.
+Gap Statement  : Kekosongan konsensus mengenai performa ekstrem komparatif dari kelima framework backend (Express, Laravel, Flask, Spring, Gin) saat dihadapkan pada pengujian dengan beban skala masif hingga jutaan request, untuk melihat breaking point CPU dan Memory secara nyata.
 
 Research Question:
   Tipe         : [x] Comparison  [ ] Improvement  [ ] Exploratory
-  Formulasi    : Apakah kombinasi KNN dengan Chi-Square dan GridSearchCV menghasilkan Akurasi dan F1-Score yang secara signifikan lebih tinggi dibandingkan algoritma baseline (SVM/Base Model) pada dataset penyakit jantung?
-  Variabel IV  : Penggunaan seleksi fitur Chi-Square dan GridSearchCV pada algoritma (KNN vs SVM dll)
-  Variabel DV  : Kinerja Prediksi Klasifikasi
-  Metrik       : Akurasi (%) dan F1-Score
-  Dataset      : Dataset penyakit jantung (Cleveland/UCI) dengan kelas tidak seimbang
-  Baseline     : SVM + Chi-square dan Model Dasar tanpa optimasi
+  Formulasi    : Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js, Laravel FrankenPHP, Flask, Spring Boot, Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
+  Variabel IV  : Jenis Framework Backend (Express.js, Laravel, Flask, Spring Boot, Gin) dan Skala Beban Data (Load).
+  Variabel DV  : Kinerja Server/API.
+  Metrik       : Response Time (ms), Throughput (req/s), CPU Usage (%), dan Memory Usage (MB/%).
+  Dataset      : Data tabel KRS berjumlah hingga 1.000.000 record dari PostgreSQL.
+  Baseline     : Laravel dan Express.js (Sebagai representasi dari PHP dan Node.js).
 
 Quality Check RQ:
   [x] Variabel spesifik
@@ -86,15 +86,15 @@ Quality Check RQ:
   [x] Memerlukan eksperimen (bukan hanya survei literatur)
 
 Contribution Statement:
-  Apa yang baru diketahui : Adanya standar bukti komparatif algoritma ML konvensional yang paling efisien (KNN) jika dipadukan dengan seleksi fitur dan tuning parameter untuk dataset penyakit jantung tidak seimbang.
+  Apa yang baru diketahui : Bukti empiris perbandingan ketahanan dan batas skalabilitas resource kelima framework modern tersebut ketika digempur oleh beban request ekstrem di lingkungan produksi.
   Jenis kontribusi        : [ ] Improvement  [x] Comparison  [ ] Novel approach
-  Gap yang diisi          : Gap Kinerja dan Metode (Performance & Method Gap) untuk menembus ambang batas akurasi 90-93%.
+  Gap yang diisi          : Performance & Data Gap — menyajikan benchmark dengan skala dataset yang jauh lebih masif (hingga 1 juta baris data) daripada literatur sebelumnya.
 
 Hypothesis Pair:
-  H₀ : Tidak ada perbedaan signifikan pada metrik Akurasi dan F1-Score antara KNN (Chi-square + GridSearchCV) dengan model baseline (SVM/Base Model) pada dataset penyakit jantung.
-  H₁ : KNN (Chi-square + GridSearchCV) menghasilkan Akurasi dan F1-Score yang secara signifikan lebih tinggi dibandingkan model baseline pada dataset penyakit jantung.
-  Threshold              : Peningkatan akurasi melewati angka 93% dan p-value < 0.05 dari uji T-Test/ANOVA.
-  Justifikasi threshold  : Peningkatan melewati 93% menembus state-of-the-art sebelumnya (Sarra 2022 di angka 89%), sangat berdampak klinis dalam mengurangi misdiagnosis penyakit jantung.
+  H₀ : Tidak ada perbedaan signifikan pada metrik Response Time, Throughput, maupun Resource Usage di antara kelima framework backend dalam memproses permintaan API pada semua skala beban data.
+  H₁ : Terdapat framework tertentu (seperti Spring Boot atau Gin) yang menghasilkan Throughput secara signifikan lebih tinggi dan stabilitas Resource Usage yang lebih baik dibandingkan framework lainnya saat beban trafik mencapai 1.000.000 data.
+  Threshold              : Terdapat perbedaan Throughput > 20% dan p-value < 0.05 (signifikansi statistik).
+  Justifikasi threshold  : Perbedaan throughput sebesar 20% memiliki arti yang sangat besar bagi penghematan cost server secara vertikal (hardware scaling) pada sebuah perusahaan.
 ```
 
 ---
@@ -103,24 +103,24 @@ Hypothesis Pair:
 
 Gunakan gap yang ditemukan di WS-03. Transformasikan menjadi Research Question.
 
-**Gap dari WS-03:** *Kekosongan komparasi algoritma Machine Learning yang ekstensif menggunakan kombinasi seleksi fitur Chi-square dan hyperparameter tuning GridSearchCV untuk mendapatkan akurasi di atas 93% pada dataset medis yang tidak seimbang.*
+**Gap dari WS-03:** *Kekosongan konsensus mengenai performa ekstrem komparatif dari kelima framework backend (Express, Laravel, Flask, Spring, Gin) saat dihadapkan pada pengujian dengan beban skala masif hingga jutaan request, untuk melihat breaking point CPU dan Memory secara nyata.*
 
 **RQ versi pertama (tulis bebas):**
-> *Apakah optimasi fitur Chi-square dan algoritma membuat model lebih baik untuk mengklasifikasi penyakit jantung?*
+> *Framework backend apa yang paling cepat dan bagus saat diakses oleh banyak user sekaligus?*
 
 **Evaluasi RQ:**
 
 | Komponen | Ada? | Isi |
 |----------|------|-----|
-| Metode spesifik | *Ya* | *Optimasi fitur Chi-square* |
-| Metrik terukur | *Tidak* | *Masih sekadar "lebih baik", belum ada metrik Akurasi/F1-Score* |
-| Baseline | *Tidak* | *Belum ada algoritma pembanding eksplisit* |
-| Dataset/konteks | *Ya* | *Dataset klasifikasi penyakit jantung* |
+| Metode spesifik | *Tidak* | *Masih terlalu umum, tidak menyebut framework apa saja.* |
+| Metrik terukur | *Tidak* | *"Cepat dan bagus" itu tidak terukur.* |
+| Baseline | *Tidak* | *Tidak ada metode standar pembanding.* |
+| Dataset/konteks | *Tidak* | *Hanya menyebut "banyak user".* |
 
 **Tipe RQ:** [x] Comparison / [ ] Improvement / [ ] Exploratory
 
 **RQ versi revisi (setelah evaluasi):**
-> *Apakah algoritma K-Nearest Neighbor (KNN) yang dioptimasi menggunakan seleksi fitur Chi-Square dan GridSearchCV menghasilkan metrik Akurasi dan F1-Score yang secara signifikan lebih tinggi dibandingkan model baseline (SVM) ketika diterapkan pada dataset penyakit jantung yang tidak seimbang?*
+> *Apakah kerangka kerja (framework) Spring Boot dan Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js dan Laravel ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
 
 ---
 
@@ -130,14 +130,14 @@ Rumuskan pasangan hipotesis dari RQ di Latihan 1.
 
 | Komponen | Isi |
 |----------|-----|
-| H₀ | *Tidak ada perbedaan signifikan pada metrik Akurasi dan F1-Score antara KNN (Chi-Square + GridSearchCV) dibandingkan model baseline (SVM) dalam klasifikasi dataset penyakit jantung.* |
-| H₁ | *Algoritma KNN (Chi-Square + GridSearchCV) menghasilkan metrik Akurasi dan F1-Score yang secara signifikan lebih tinggi (menembus >93%) dibandingkan model baseline (SVM) dalam klasifikasi dataset penyakit jantung.* |
-| Metrik | *Akurasi (%) dan F1-Score.* |
-| Threshold | *Akurasi > 93% dan p-value < 0.05 (Statistical Test).* |
-| Justifikasi threshold | *Meningkatkan akurasi di atas baseline 89% sangat berdampak signifikan secara klinis untuk mengurangi misdiagnosis. P-value < 0.05 membuktikan peningkatannya signifikan secara statistik.* |
+| H₀ | *Tidak ada perbedaan yang signifikan pada metrik Throughput (req/s) dan Response Time (ms) antara framework Spring Boot, Gin, Express.js, dan Laravel saat menangani beban API dengan dataset mencapai 1.000.000 record.* |
+| H₁ | *Framework _compiled_ seperti Spring Boot dan Gin menghasilkan metrik Throughput (req/s) yang secara signifikan lebih tinggi dan Response Time yang lebih rendah dibandingkan framework _interpreted_ (Express.js dan Laravel) pada beban dataset 1.000.000 record.* |
+| Metrik | *Throughput (req/s) dan Response Time (ms).* |
+| Threshold | *Selisih rata-rata throughput > 10% dan didukung oleh p-value < 0.05 melalui Uji Statistik T-Test / ANOVA.* |
+| Justifikasi threshold | *Di dunia rekayasa perangkat lunak, margin kinerja sebesar 10% pada beban jutaan request bisa berarti menghindari ribuan status HTTP 500/Timeout yang berimbas pada kerugian bisnis.* |
 
 **Apakah hipotesis ini falsifiable?** [x] Ya / [ ] Tidak
-> Bagaimana cara membuktikannya salah? *Dengan menjalankan eksperimen komparasi. Jika nilai Akurasi KNN (Chi-Square + GridSearchCV) sama dengan atau lebih rendah dari baseline, atau tidak menembus threshold 93%, maka H₀ gagal ditolak.*
+> Bagaimana cara membuktikannya salah? *Dengan melakukan load testing K6. Jika pada log eksperimen ternyata Express.js menghasilkan Throughput yang lebih tinggi atau sama dengan Spring Boot, maka H₀ gagal ditolak dan H₁ dianggap salah/falsified.*
 
 ---
 
@@ -147,15 +147,15 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 | Tahap | Isi |
 |-------|-----|
-| RQ | *Apakah KNN yang dioptimasi (Chi-Square + GridSearchCV) lebih akurat dibandingkan baseline SVM pada dataset penyakit jantung?* |
-| Variable (IV) | *Penerapan metode seleksi fitur (Chi-Square) dan hyperparameter tuning (GridSearchCV) pada algoritma.* |
-| Variable (DV) | *Kinerja Prediksi Klasifikasi Penyakit Jantung.* |
-| Metric | *Akurasi (%), F1-Score.* |
-| Data source | *Dataset penyakit jantung medis (misal: Cleveland/UCI Repository) yang berdimensi kecil.* |
-| Analysis method | *Eksperimen K-Fold Cross-Validation, dievaluasi dengan Confusion Matrix dan Statistical Test.* |
+| RQ | *Apakah Spring Boot/Gin menghasilkan Throughput yang lebih baik dari Laravel/Express pada beban besar?* |
+| Variable (IV) | *Jenis Framework Backend (Spring, Gin, Laravel, Express) dan Beban Request.* |
+| Variable (DV) | *Performa Web Server (Kinerja Eksekusi).* |
+| Metric | *Throughput (req/s), Response Time (ms), CPU Usage (%).* |
+| Data source | *File hasil log dari K6 Load Testing dan telemetri Node_exporter/Prometheus (di-export dari Grafana).* |
+| Analysis method | *Analisis deskriptif berupa komparasi nilai rata-rata tiap metrik, divisualisasikan dengan Line Chart / Bar Chart, serta dievaluasi melalui uji ANOVA.* |
 
 **Apakah rantai lengkap?** [x] Ya / [ ] Tidak
-> Jika tidak, tahap mana yang perlu direvisi? *Sudah lengkap dan operasional dari pertanyaan, variabel, sumber data, hingga metode analisis.*
+> Jika tidak, tahap mana yang perlu direvisi? *Sudah lengkap dan operasional.*
 
 ---
 
@@ -163,6 +163,6 @@ Lengkapi rantai dari RQ hingga metode analisis.
 
 > Ambil satu judul skripsi/paper yang pernah dibaca. Coba ekstrak RQ-nya. Apakah RQ tersebut memenuhi semua komponen (metode, metrik, baseline, konteks)? Jika tidak, apa yang hilang?
 
-**Judul:** *Klasifikasi Penyakit Jantung Menggunakan Algoritma K-Nearest Neighbor (KNN)*
-**RQ yang diekstrak:** *Bagaimana tingkat akurasi algoritma K-Nearest Neighbor (KNN) dalam mengklasifikasikan penyakit Jantung?*
-**Komponen yang hilang:** *Baseline (tidak ada algoritma pembanding) dan Metrik spesifik (hanya menyebut akurasi tanpa target threshold) serta Konteks Dataset (tidak menyebutkan dari rumah sakit mana atau dataset publik apa).*
+**Judul:** *Analisa Perbandingan Kinerja Rest Api Dengan Framework Flask, Laravel, Dan Express Js*
+**RQ yang diekstrak:** *Bagaimana perbandingan response time antara Flask, Laravel, dan Express.js?*
+**Komponen yang hilang:** *Tidak mencantumkan Konteks Dataset (berapa besaran data yang diuji), dan Metrik hanya dibatasi pada Response Time saja tanpa menyertakan Throughput atau konsumsi Resource RAM/CPU secara eksplisit dalam pertanyaannya.*

@@ -65,18 +65,18 @@ Ancaman validitas harus diidentifikasi **sebelum** eksperimen dan mitigasinya di
 
 ## Template A.7 — Desain Eksperimen Lengkap
 
-```
+```text
 EXPERIMENT DESIGN
 
-Research Question : Bagaimana perbandingan efektivitas 5 algoritma ML ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?
-Hypothesis        : Setiap algoritma akan memiliki tingkat efektivitas (F1-score) yang dominan hanya pada tipe dataset dengan karakteristik spesifik (misal: Naive Bayes unggul di data Teks Sentimen, XGBoost di data tabular Imbalance NIDS/Beasiswa).
+Research Question : Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js, Laravel FrankenPHP, Flask, Spring Boot, Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
+Hypothesis        : Framework backend yang di-_compile_ (seperti Spring Boot dan Gin) akan menghasilkan Throughput (req/s) yang secara signifikan lebih tinggi dan penggunaan Memory yang lebih efisien dibandingkan framework _interpreted_ (seperti Laravel dan Express.js) pada beban request skala besar (1 juta data).
 Tipe Eksperimen   : [x] Comparison  [ ] Ablation  [ ] Parameter
 
 Kondisi Eksperimen:
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | Algoritma Baseline Klasik pada tiap dataset | Naive Bayes / KNN | Dataset, Preprocessing, Seed = 42 |
-| Treatment | Algoritma Ensemble/Lanjutan pada tiap dataset | Random Forest, XGBoost, NN | Dataset, Preprocessing, Seed = 42 |
+| Control | Eksekusi framework yang paling standar di industri PHP dan Node.js | Laravel & Express.js | Load uji 1juta data, 20 vUser, PostgreSQL sama, VM sama |
+| Treatment | Eksekusi framework _compiled_ / high-performance backend | Spring Boot, Gin | Load uji 1juta data, 20 vUser, PostgreSQL sama, VM sama |
 
 Fairness Checklist:
   [x] Dataset identik untuk semua kondisi
@@ -88,14 +88,14 @@ Fairness Checklist:
 Threat Analysis:
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal    | Data leakage saat proses SMOTE/CV | Terapkan SMOTE hanya pada data latih (training set), bukan di keseluruhan data. |
-| External    | Dataset 5 domain tidak mewakili masalah riil global | Gunakan dataset standar publik (misal dataset Jantung Cleveland UCI, NIDS CIC). |
-| Construct   | Akurasi menipu pada data yang *imbalance* | Gunakan F1-Score sebagai metrik primer (Primary Metric). |
-| Conclusion  | Perbedaan akurasi antar algoritma hanya karena kebetulan (random noise) | Lakukan uji statistik T-Test berpasangan (Paired T-Test) atau ANOVA lintas K-Fold CV. |
+| Internal    | Perebutan resource CPU saat _tools_ load tester (K6) berjalan di mesin yang sama dengan aplikasi. | K6 dijalankan di *virtual machine* terpisah atau diisolasi menggunakan *Docker limits* (Control Group). |
+| External    | Beban data KRS 1 juta hanya mewakili operasi GET/POST sederhana tanpa *computation logic* yang berat. | Batasi klaim hanya untuk aplikasi jenis "Data-Intensive API" (seperti katalog), bukan "Compute-Intensive API" (seperti AI Inference). |
+| Construct   | Throughput tinggi terjadi hanya karena banyak request yang menghasilkan error/timeout (HTTP 500). | Tolak (abort) eksekusi dan laporkan error rate; hanya request sukses (HTTP 200) yang dihitung sebagai Throughput. |
+| Conclusion  | Selisih 10 req/s dianggap menang, padahal itu sekadar fluktuasi normal jaringan. | Lakukan pengujian diulangi sebanyak n-kali (contoh: 5 run per beban), lalu uji ANOVA untuk menentukan signifikansi perbedaan rata-rata. |
 
 Statistical Plan:
-  Uji statistik   : ANOVA berulang (Repeated Measures ANOVA) atau Paired T-Test
-  Justifikasi     : Membandingkan performa >2 algoritma pada sampel/dataset yang persis sama.
+  Uji statistik   : Repeated Measures ANOVA atau One-Way ANOVA
+  Justifikasi     : Membandingkan >2 kelompok framework secara independen di atas parameter skala beban data (100 hingga 1 juta request).
   Alpha           : 0.05
   Effect size min : Cohen's d > 0.5 (Medium Effect)
 ```
@@ -106,13 +106,13 @@ Statistical Plan:
 
 Susun desain eksperimen berdasarkan RQ, variabel, dan sistem dari WS-04 sampai WS-06.
 
-**RQ:** *Bagaimana perbandingan efektivitas 5 algoritma Machine Learning ketika diimplementasikan pada 5 studi kasus dataset yang berbeda karakteristiknya?*
+**RQ:** *Apakah kerangka kerja (framework) Spring Boot dan Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js dan Laravel ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
 **Tipe eksperimen:** [x] Comparison / [ ] Ablation / [ ] Parameter
 
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | *Algoritma konvensional sebagai Baseline (misal di kasus beasiswa/jantung)* | *KNN & Naive Bayes* | *Dataset yang sama, 80:20 split, seed 42, SMOTE/TF-IDF konstan* |
-| Treatment | *Algoritma kompleks (Ensemble/Deep Learning)* | *RF, XGBoost, NN* | *Dataset yang sama, 80:20 split, seed 42, SMOTE/TF-IDF konstan* |
+| Control | *Framework _interpreted_ konvensional yang menjadi standar defacto industri (baseline)* | *Laravel & Express.js* | *OS Ubuntu 24.04 WSL, 20 Virtual Users, 10 Menit, PostgreSQL Database 1jt Baris KRS* |
+| Treatment | *Framework _compiled_ & modern web server untuk komputasi _high throughput_* | *Spring Boot, Gin, Flask* | *OS Ubuntu 24.04 WSL, 20 Virtual Users, 10 Menit, PostgreSQL Database 1jt Baris KRS* |
 
 ---
 
@@ -122,14 +122,14 @@ Evaluasi apakah desain eksperimen di Latihan 1 sudah fair.
 
 | Kriteria | Status | Detail |
 |----------|--------|--------|
-| Dataset identik | *✅* | *Semua 5 algoritma dilatih dan diuji pada file dataset (CSV) yang persis sama per domain kasus.* |
-| Preprocessing setara | *✅* | *Fitur SMOTE/TF-IDF diumpankan ke semua 5 algoritma tanpa terkecuali melalui arsitektur pipeline.* |
-| Tuning effort setara | *✅* | *Semua model dikenakan GridSearchCV dengan batasan iterasi pencarian parameter yang seragam.* |
-| Environment identik | *✅* | *Dieksekusi di OS dan runtime yang sama (misal Python 3.10, RAM sama, versi Scikit-Learn sama).* |
-| Metrik evaluasi sama | *✅* | *Kesemuanya diukur murni dengan library fungsi `classification_report` yang sama (Akurasi, F1-Score).* |
+| Dataset identik | *✅* | *Semua 5 framework di-koneksikan ke skema database PostgreSQL lokal yang sama persis (tabel KRS).* |
+| Preprocessing setara | *✅* | *Semua framework tidak menggunakan validasi tambahan yang tidak perlu; murni membaca JSON body dan routing ke database.* |
+| Tuning effort setara | *✅* | *Setiap framework diaktifkan pada mode *Production* terbaik bawaannya tanpa ada optimasi rahasia (seperti caching eksternal).* |
+| Environment identik | *✅* | *Dieksekusi satu per satu pada mesin dengan spesifikasi sama (8GB RAM, 20 Core CPU virtual WSL).* |
+| Metrik evaluasi sama | *✅* | *Semuanya dicatat oleh satu tool penguji independen yaitu K6.* |
 
 **Ada yang tidak fair?** [ ] Ya / [x] Tidak
-> Jika ya, bagaimana cara memperbaikinya? *Desain ini sudah sangat adil. Membandingkan algoritma klasik (NB) dengan modern (NN) adalah perbandingan yang sah (*apples-to-apples*) selama dataset dan pra-pemrosesan yang diberikan kepada mereka benar-benar identik.*
+> Jika ya, bagaimana cara memperbaikinya? *Desain ini sudah cukup adil secara makro. Membandingkan bahasa yang secara bawaan cepat (Go) dengan yang relatif lebih lambat (PHP/Python) adalah inti dari penelitian komparatif ini untuk menakar batas kemampuannya secara nyata.*
 
 ---
 
@@ -139,14 +139,14 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
-| Internal | *Data leakage (kebocoran) saat menangani imbalance data (SMOTE).* | *Eksekusi SMOTE secara ketat hanya pada fase/data *training*, biarkan dataset *testing* murni tak tersentuh.* |
-| External | *Dataset spesifik seperti opini aksi 212 atau beasiswa di satu universitas lokal sulit digeneralisasi global.* | *Berikan batasan (scoping) yang sangat jelas di judul paper bahwa kesimpulan bersifat eksklusif untuk demografi/studi kasus tersebut.* |
-| Construct | *F1-score menjadi tumpul jika peneliti salah menentukan kelas target (positive class) pada kasus medis.* | *Wajib menggunakan parameter evaluasi `average='macro'` atau `weighted`.* |
-| Conclusion | *Klaim 1 algoritma "menang mutlak" hanya karena fluktuasi akurasi 0,5%.* | *Klaim kemenangan baru sah jika didukung oleh nilai p-value < 0.05 dari K-Fold Cross Validation t-test.* |
+| Internal | *Data leakage / Connection Pool exhaustion: framework dengan pengelolaan pool buruk bisa mematikan database postgres sehingga sisa tes gagal beruntun.* | *Restart service PostgreSQL dan berikan jeda waktu (cooling-down) selama 2 menit antara setiap eksekusi framework.* |
+| External | *Pengujian pada WSL (Windows Subsystem for Linux) memiliki overhead disk I/O yang berbeda dengan OS Linux Native bare-metal.* | *Beri *disclaimer* batasan validitas eksternal di dalam paper bahwa hasil bisa sedikit bervariasi jika di-deploy di cloud Kubernetes/Bare metal.* |
+| Construct | *Satu framework mungkin mencatat Throughput luar biasa besar padahal ia membuang data (menjawab *error* secara cepat/gagal baca database).* | *Atur skrip K6 agar memantau "status === 200". Jika HTTP 500 melonjak, throughput tinggi tersebut dinyatakan tidak sah.* |
+| Conclusion | *Mengambil kesimpulan dari hasil 1 kali running saja sangat rentan distorsi spike OS.* | *Catat hasil K6 dalam persentil p90 dan p95 ketimbang sekadar *average*, dan ulangi eksperimen minimal 3x run.* |
 
-**Ancaman mana yang paling sulit dimitigasi?** *External Validity (Generalisasi).*
+**Ancaman mana yang paling sulit dimitigasi?** *Internal Validity (Pengelolaan Resource di Mesin yang Sama / WSL).*
 **Mengapa?**
-> *Karena dataset yang dipakai di mayoritas paper ini (kecuali NIDS publik dan dataset Medis Cleveland) bersifat sangat sempit secara geografi/waktu (misal sentimen aksi 212 di tahun tertentu). Karakteristik kalimat dan pola teks ini akan cepat usang, sehingga tidak ada algoritma manapun yang performanya abadi jika dihadapkan pada tren masa depan.*
+> *Karena OS lokal seperti Windows dengan WSL2 memiliki mekanisme *memory management* (vmmem) yang dinamis. Jika framework Spring Boot mengalokasikan RAM yang sangat besar dan tidak membebaskannya secara cepat, saat pengujian Express.js di menit berikutnya OS mungkin masih melakukan *swapping* RAM. Ini menyebabkan Express.js lambat bukan karena performanya, tapi karena "dikorbankan" oleh sampah memori dari eksperimen sebelumnya. Mitigasi total hanya bisa dicapai di infrastruktur cloud fisik yang dibersihkan/re-provision tiap kali uji.*
 
 ---
 
@@ -155,6 +155,6 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 > Sebuah paper melaporkan "metode kami mengalahkan semua baseline." Apa 3 pertanyaan pertama yang harus diajukan untuk mengevaluasi klaim ini?
 
 **Jawaban:**
-1. *Apakah dataset, pra-pemrosesan (seperti imputasi nilai kosong/balancing), dan seed random yang diberikan ke metode/paper baru tersebut PERSIS sama dengan metode baseline pembandingnya?*
-2. *Apakah effort tuning parameter pada metode baru lebih dianakemaskan/dioptimalkan, sementara metode baseline sengaja dibiarkan pada parameter default/kualitas buruk (*straw man baseline*)?*
-3. *Apakah margin kemenangan akurasi tersebut diuji secara statistik untuk membuktikan kebolehjadian, atau hanya sekadar kebetulan angka acak yang lebih besar sedikit?*
+1. *Apakah beban eksperimennya (jumlah virtual user, jumlah data row) benar-benar sama dan cukup besar untuk membuktikan kestabilan secara riil, atau hanya data kecil sintetis?*
+2. *Apakah ada "perlakuan khusus" di metode baru (misalnya optimasi *caching* tingkat server, penulisan *raw query*) sementara framework *baseline* dibiarkan dengan ORM berat (tidak *apples-to-apples*)?*
+3. *Apakah kemenangan throughput/response time tersebut diiringi konsumsi RAM/CPU yang wajar, dan apakah peningkatan tersebut signifikan secara statistik, bukan sekadar margin error jaringan?*
