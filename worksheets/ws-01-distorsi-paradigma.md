@@ -135,7 +135,7 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 > Sebelum membaca materi ini, apakah pernah mempertanyakan klaim "95% akurat"? Setelah memahami rantai distorsi, pertanyaan apa yang sekarang akan diajukan saat membaca paper?
 
 **Jawaban:**
-> Setelah memahami materi ini, saya akan bertanya saat membaca paper perbandingan framework:
+> Setelah memahami materi ini, saya akan bertanya saat membaca artikel ilmiah perbandingan framework:
 1. Environment-nya apa? (Apakah server dedicated atau shared local VM?)
 2. Skala datanya berapa besar?
 3. Apakah konfigurasi framework-nya setara (misalnya semua di set ke mode 'production')?

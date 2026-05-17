@@ -140,7 +140,7 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 | Threat Type | Ancaman Spesifik | Mitigasi |
 |-------------|-----------------|----------|
 | Internal | *Data leakage / Connection Pool exhaustion: framework dengan pengelolaan pool buruk bisa mematikan database postgres sehingga sisa tes gagal beruntun.* | *Restart service PostgreSQL dan berikan jeda waktu (cooling-down) selama 2 menit antara setiap eksekusi framework.* |
-| External | *Pengujian pada WSL (Windows Subsystem for Linux) memiliki overhead disk I/O yang berbeda dengan OS Linux Native bare-metal.* | *Beri *disclaimer* batasan validitas eksternal di dalam paper bahwa hasil bisa sedikit bervariasi jika di-deploy di cloud Kubernetes/Bare metal.* |
+| External | *Pengujian pada WSL (Windows Subsystem for Linux) memiliki overhead disk I/O yang berbeda dengan OS Linux Native bare-metal.* | *Beri *disclaimer* batasan validitas eksternal di dalam artikel ilmiah bahwa hasil bisa sedikit bervariasi jika di-deploy di cloud Kubernetes/Bare metal.* |
 | Construct | *Satu framework mungkin mencatat Throughput luar biasa besar padahal ia membuang data (menjawab *error* secara cepat/gagal baca database).* | *Atur skrip K6 agar memantau "status === 200". Jika HTTP 500 melonjak, throughput tinggi tersebut dinyatakan tidak sah.* |
 | Conclusion | *Mengambil kesimpulan dari hasil 1 kali running saja sangat rentan distorsi spike OS.* | *Catat hasil K6 dalam persentil p90 dan p95 ketimbang sekadar *average*, dan ulangi eksperimen minimal 3x run.* |
 
