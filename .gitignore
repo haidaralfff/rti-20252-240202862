@@ -3,6 +3,7 @@ book/
 assets/
 templates/
 docs/
+paper/
 BLUEPRINT.md
 BOOK-SPEC.md
 MASTER-ANCHOR.md
