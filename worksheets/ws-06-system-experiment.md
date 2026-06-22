@@ -67,12 +67,12 @@ Jika variabel tidak bisa di-map ke komponen apapun → arsitektur perlu didesain
 ```text
 SYSTEM-EXPERIMENT MAPPING
 
-Research Question: Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js, Laravel FrankenPHP, Flask, Spring Boot, Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
+Research Question: Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js dan Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
 
 Variable → Component Mapping:
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi/Pengukuran |
 |----------|------|-----------------|---------------------------|
-| Jenis Framework | IV | Backend App (5 proyek beda framework) | _Start_ & _Stop_ _service_ pada port yang sama bergantian |
+| Jenis Framework | IV | Backend App (2 proyek beda framework) | _Start_ & _Stop_ _service_ pada port yang sama bergantian |
 | Skala Data | IV | Load Tester (K6) | Variasikan setting `data_load` di file config script.js |
 | Throughput & Resp. Time | DV | Modul Metrics K6 | Output JSON / K6 Dashboard berisi `req_duration` dll. |
 | CPU & Memory | DV | Node_exporter & Prometheus | Pengambilan (scraping) interval hardware stat di server |
@@ -96,11 +96,11 @@ Experimental Setup:
 
 Gunakan RQ dan variabel dari WS-05. Petakan ke komponen sistem.
 
-**RQ:** *Apakah kerangka kerja (framework) Spring Boot dan Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js dan Laravel ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
+**RQ:** *Apakah kerangka kerja (framework) Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
 
 | Variabel | Tipe | Komponen Sistem | Cara Manipulasi / Pengukuran |
 |----------|------|-----------------|---------------------------|
-| *Jenis Framework* | *IV* | *Aplikasi Backend (5 repositori kode)* | *Menjalankan server aplikasi per port (misal `npm start` untuk Express.js)* |
+| *Jenis Framework* | *IV* | *Aplikasi Backend (2 repositori kode)* | *Menjalankan server aplikasi per port (misal `npm start` untuk Express.js)* |
 | *Beban Load* | *IV* | *Skrip Uji K6* | *Mengubah variabel `stages` (duration & target VUs) pada K6.* |
 | *Throughput / Resp. Time* | *DV* | *K6 Dashboard* | *Otomatis dihitung melalui metrik standar `http_req_duration` dan `http_reqs`* |
 | *Resource CPU/Memori* | *DV* | *Grafana & Prometheus* | *Metrik di-scrape setiap 1 detik dari *node_exporter* OS.* |
@@ -124,7 +124,7 @@ Evaluasi desain sistem terhadap 4 prinsip.
 
 **Prinsip mana yang paling sulit dipenuhi?** *Controllability (Pengendalian Variabel Kontrol).*
 **Strategi untuk mengatasinya:**
-> *Mengontrol agar setiap framework menggunakan query ORM yang persis sama kualitasnya sangat sulit (misal Prisma di Node.js vs Eloquent di Laravel). Strateginya adalah dengan menulis RAW SQL Query standar di semua framework jika memungkinkan, atau memastikan tingkat efisiensi ORM dikonfigurasi sama (contoh menonaktifkan "lazy loading").*
+> *Mengontrol agar setiap framework menggunakan query ORM yang persis sama kualitasnya sangat sulit (misal Prisma di Node.js vs GORM di Go). Strateginya adalah dengan menulis RAW SQL Query standar di semua framework jika memungkinkan, atau memastikan tingkat efisiensi ORM dikonfigurasi sama (contoh menonaktifkan "lazy loading").*
 
 ---
 
@@ -134,14 +134,14 @@ Jika sistem memiliki 3 komponen utama, rencanakan ablation study.
 
 | Kondisi | Komponen A | Komponen B | Komponen C | Hasil yang Diharapkan |
 |---------|-----------|-----------|-----------|----------------------|
-| Full | *✅ Framework (Misal Laravel)* | *✅ ORM Aktif* | *✅ Server FrankenPHP* | *Performa baseline penuh yang dicatat di metrik riset utama.* |
-| – A | ❌ (Ganti PHP Native) | ✅ | ✅ | *Waktu eksekusi jauh lebih cepat, overhead routing berkurang, membuktikan bahwa layer middleware Laravel adalah yang memperlambat performa.* |
+| Full | *✅ Framework (Misal Express.js)* | *✅ ORM Aktif (Prisma)* | *✅ Process Manager (PM2)* | *Performa baseline penuh yang dicatat di metrik riset utama.* |
+| – A | ❌ (Ganti Node.js Native) | ✅ | ✅ | *Waktu eksekusi jauh lebih cepat, overhead routing berkurang, membuktikan bahwa layer middleware Express.js adalah yang memperlambat performa.* |
 | – B | ✅ | ❌ (Ganti Raw Query SQL) | ✅ | *Akurasi performa akan meningkat tajam, throughput tinggi, membuktikan object hydration dari ORM adalah sumber bottleneck.* |
-| – C | ✅ | ✅ | ❌ (Ganti PHP-FPM klasik) | *Memory footprint akan turun, tetapi kemampuan menangani antrean (concurrency) akan jeblok parah.* |
+| – C | ✅ | ✅ | ❌ (Ganti single process) | *Memory footprint akan turun, tetapi kemampuan menangani antrean (concurrency) akan jeblok parah.* |
 
-**Komponen mana yang diprediksi paling berkontribusi?** *Komponen C (Server Environment - FrankenPHP vs PHP-FPM klasik) atau Komponen B.*
+**Komponen mana yang diprediksi paling berkontribusi?** *Komponen C (Server Environment - PM2 cluster mode vs single process) atau Komponen B.*
 **Mengapa?**
-> *Karena dalam penelitian Azzahidi et al. (2025) untuk kasus Laravel, arsitektur dasar PHP yang setiap request-nya membuat *process* baru (di PHP-FPM klasik) sangat lambat. Penggunaan FrankenPHP/Octane yang menggunakan event-loop (merubah perilaku PHP mirip Node.js) memberikan lonjakan signifikan yang lebih mendasar ketimbang perbedaan penulisan syntax ORM.*
+> *Karena dalam penelitian Azzahidi et al. (2025), Express.js yang berjalan di atas Node.js menggunakan event-loop non-blocking I/O, namun PM2 cluster mode memungkinkan multi-process untuk memaksimalkan CPU. Jika PM2 dilepas (single process), kemampuan Express.js menangani concurrency akan turun drastis karena Node.js hanya berjalan pada satu thread utama (single-threaded event loop). Perubahan arsitektur process manager memberikan lonjakan signifikan yang lebih mendasar ketimbang perbedaan penulisan syntax ORM.*
 
 ---
 

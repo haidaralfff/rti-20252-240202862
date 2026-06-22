@@ -56,7 +56,7 @@ Mata kuliah ini menggunakan pendekatan **Positivist** (fenomena TI bisa diukur o
 Nama Peneliti    : Haidar Habibi Al Farisi
 Tanggal          : 15 Mei 2026
 
-1. Ketika membaca klaim "Express.js 10x lebih cepat dari Laravel":
+1. Ketika membaca klaim "Gin 10x lebih cepat dari Express.js":
    - Pertanyaan pertama saya: Bagaimana kondisi eksperimennya? Berapa spesifikasi server dan jumlah data yang digunakan?
    - Data yang dibutuhkan untuk verifikasi: Metrik evaluasi lengkap (Response Time, Throughput, CPU Usage, Memory Usage), jenis query database, dan konfigurasi server.
 
@@ -111,13 +111,13 @@ Skenario: Seorang peneliti menemukan bahwa jika 3 data point outlier dihapus, ha
 | Peer review | *Menyediakan raw log dari JMeter atau K6 agar reviewer dapat mengecek sendiri kapan outlier tersebut terjadi.* |
 
 **Keputusan akhir dan justifikasi:**
-> *Saya akan melaporkan hasil pengujian secara utuh termasuk saat terjadi lonjakan response time (outlier), lalu memberikan analisis terpisah mengapa outlier tersebut terjadi (misalnya karena proses _garbage collection_ di Java atau inisialisasi awal database connection pool). Membuang outlier demi metrik rata-rata yang bagus adalah HARKing dan tidak etis, karena di skenario dunia nyata, lonjakan waktu respon tersebut benar-benar akan dialami oleh end-user.*
+> *Saya akan melaporkan hasil pengujian secara utuh termasuk saat terjadi lonjakan response time (outlier), lalu memberikan analisis terpisah mengapa outlier tersebut terjadi (misalnya karena proses _garbage collection_ di runtime target atau inisialisasi awal database connection pool). Membuang outlier demi metrik rata-rata yang bagus adalah HARKing dan tidak etis, karena di skenario dunia nyata, lonjakan waktu respon tersebut benar-benar akan dialami oleh end-user.*
 
 ---
 
 ## Latihan 3 — Posisi Paradigma
 
-**Topik riset:** *Analisis Perbandingan Performa RESTful API antara berbagai Framework Backend Modern (Express.js, Laravel, Flask, Spring Boot, Gin).*
+**Topik riset:** *Analisis Perbandingan Performa RESTful API antara Framework Backend Modern (Express.js dan Gin).*
 
 | Kriteria | Positivis | Interpretivis | Design Science |
 |----------|-----------|---------------|----------------|

@@ -68,7 +68,7 @@ PROBLEM STATEMENT BUILDER
 
 Domain & Konteks
   Domain   : Web Development / Software Engineering
-  Konteks  : Evaluasi kinerja framework backend (Laravel, Express.js, Flask, Spring Boot, Gin) dalam menangani RESTful API.
+  Konteks  : Evaluasi kinerja framework backend (Express.js, Gin) dalam menangani RESTful API.
 
 System Context
   Input       : HTTP Request dengan variasi metode (GET, POST, dll) dan variasi beban (100 - 1 juta request).
@@ -93,7 +93,7 @@ Problem Quality Check
   [x] Impact       — Apakah ada kontribusi jika terjawab?
 
 Problem Statement :
-  Perkembangan aplikasi web modern sangat bergantung pada performa dan stabilitas RESTful API. Saat ini, banyak web developer yang memilih backend framework (seperti Express.js, Laravel, Flask, Spring Boot, atau Gin) hanya berdasarkan tren bahasa pemrograman atau kemudahan penulisan kode, tanpa mempertimbangkan batas performanya secara empiris. Masalah riset yang muncul adalah belum adanya panduan komparatif empiris tentang bagaimana perilaku performa setiap framework tersebut ketika menangani lonjakan beban trafik nyata dari skala kecil hingga sangat besar (hingga 1 juta request). Oleh karena itu, diperlukan penelitian yang mengevaluasi secara komprehensif performa framework tersebut berdasarkan metrik Response Time, Throughput, serta penggunaan CPU dan Memory. Penelitian ini penting agar developer dan software architect dapat mengambil keputusan infrastruktur backend secara tepat (evidence-based) untuk mencegah bottleneck dan crash pada aplikasi skala besar.
+  Perkembangan aplikasi web modern sangat bergantung pada performa dan stabilitas RESTful API. Saat ini, banyak web developer yang memilih backend framework (seperti Express.js atau Gin) hanya berdasarkan tren bahasa pemrograman atau kemudahan penulisan kode, tanpa mempertimbangkan batas performanya secara empiris. Masalah riset yang muncul adalah belum adanya panduan komparatif empiris tentang bagaimana perilaku performa kedua framework tersebut ketika menangani lonjakan beban trafik nyata dari skala kecil hingga sangat besar (hingga 1 juta request). Oleh karena itu, diperlukan penelitian yang mengevaluasi secara komprehensif performa framework tersebut berdasarkan metrik Response Time, Throughput, serta penggunaan CPU dan Memory. Penelitian ini penting agar developer dan software architect dapat mengambil keputusan infrastruktur backend secara tepat (evidence-based) untuk mencegah bottleneck dan crash pada aplikasi skala besar.
 ```
 
 ---
@@ -109,11 +109,11 @@ Pilih satu topik di bidang TI yang diminati. Transformasikan melalui 5 tahap Pro
 | Reality | *Saat ini banyak perusahaan mulai beralih dari arsitektur monolith ke microservices menggunakan REST API dengan berbagai bahasa pemrograman.* |
 | Observed Issue (Symptom) | *Banyak aplikasi mengalami kelambatan respon atau bahkan error saat menghadapi lonjakan pengunjung, meskipun kode logic-nya tidak bermasalah.* |
 | Diagnosed Problem (Root Cause) | *Pemilihan framework backend tidak didasari oleh analisis kecocokan antara karakteristik beban (load) aplikasi dan arsitektur pemrosesan framework.* |
-| Researchable Problem | *Bagaimana perbandingan efisiensi metrik performa (Response Time, Throughput, dan Resource Usage) pada 5 framework backend berbeda saat menangani rentang beban mulai dari ratusan hingga jutaan request?* |
-| Measurable Variable | *Jenis framework (Express, Laravel, Flask, Spring Boot, Gin), Jumlah Data/Request, Response Time (ms), CPU Usage (%), Memory Usage (%).* |
+| Researchable Problem | *Bagaimana perbandingan efisiensi metrik performa (Response Time, Throughput, dan Resource Usage) pada 2 framework backend berbeda saat menangani rentang beban mulai dari ratusan hingga jutaan request?* |
+| Measurable Variable | *Jenis framework (Express.js, Gin), Jumlah Data/Request, Response Time (ms), CPU Usage (%), Memory Usage (%).* |
 
 **Apakah terjebak solution-first thinking?** [ ] Ya / [x] Tidak
-> Rumusan masalah tidak memaksakan satu framework tertentu (misal: "Mengapa Spring Boot terbaik"), melainkan menanyakan perbandingan untuk mengetahui kondisi ideal masing-masing framework.
+> Rumusan masalah tidak memaksakan satu framework tertentu (misal: "Mengapa Gin terbaik"), melainkan menanyakan perbandingan untuk mengetahui kondisi ideal masing-masing framework.
 
 ---
 
@@ -149,7 +149,7 @@ Evaluasi problem statement yang sudah dibuat menggunakan 5 kriteria.
 **Skor total:** 25 / 25
 
 **Problem statement versi final (1 paragraf):**
-> Perkembangan aplikasi web modern sangat bergantung pada performa dan stabilitas RESTful API. Saat ini, banyak web developer yang memilih backend framework (seperti Express.js, Laravel, Flask, Spring Boot, atau Gin) hanya berdasarkan tren bahasa pemrograman atau kemudahan penulisan kode, tanpa mempertimbangkan batas performanya secara empiris. Masalah riset yang muncul adalah belum adanya panduan komparatif empiris tentang bagaimana perilaku performa setiap framework tersebut ketika menangani lonjakan beban trafik nyata dari skala kecil hingga sangat besar (hingga 1 juta request). Oleh karena itu, diperlukan penelitian yang mengevaluasi secara komprehensif performa framework tersebut berdasarkan metrik Response Time, Throughput, serta penggunaan CPU dan Memory. Penelitian ini penting agar developer dan software architect dapat mengambil keputusan infrastruktur backend secara tepat (evidence-based) untuk mencegah bottleneck dan crash pada aplikasi skala besar.
+> Perkembangan aplikasi web modern sangat bergantung pada performa dan stabilitas RESTful API. Saat ini, banyak web developer yang memilih backend framework (seperti Express.js atau Gin) hanya berdasarkan tren bahasa pemrograman atau kemudahan penulisan kode, tanpa mempertimbangkan batas performanya secara empiris. Masalah riset yang muncul adalah belum adanya panduan komparatif empiris tentang bagaimana perilaku performa kedua framework tersebut ketika menangani lonjakan beban trafik nyata dari skala kecil hingga sangat besar (hingga 1 juta request). Oleh karena itu, diperlukan penelitian yang mengevaluasi secara komprehensif performa framework tersebut berdasarkan metrik Response Time, Throughput, serta penggunaan CPU dan Memory. Penelitian ini penting agar developer dan software architect dapat mengambil keputusan infrastruktur backend secara tepat (evidence-based) untuk mencegah bottleneck dan crash pada aplikasi skala besar.
 
 ---
 

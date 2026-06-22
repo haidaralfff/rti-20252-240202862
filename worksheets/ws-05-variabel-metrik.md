@@ -66,11 +66,11 @@ Metrik harus ditentukan **sebelum** eksperimen. Memilih metrik setelah melihat d
 ```text
 VARIABLE & METRIC DEFINITION
 
-Research Question: Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js, Laravel FrankenPHP, Flask, Spring Boot, Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
+Research Question: Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js dan Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
 
 | Variabel | Tipe | Konsep | Metrik | Skala | Satuan | Cara Mengukur | Justifikasi |
 |----------|------|--------|--------|-------|--------|---------------|-------------|
-| Jenis Framework | IV | Teknologi Backend / Engine | Kategori (Spring, Gin, Laravel, Express, Flask) | Nominal | — | Dinyalakan/dimatikan sesuai jadwal pengujian | Subjek utama komparasi |
+| Jenis Framework | IV | Teknologi Backend / Engine | Kategori (Express.js, Gin) | Nominal | — | Dinyalakan/dimatikan sesuai jadwal pengujian | Subjek utama komparasi |
 | Skala Data | IV | Beban Request Sistem | Kategori Jumlah Data (100, 1k, 10k, 100k, 1jt) | Ratio | Entri (baris) | Setting pada script parameter K6 | Untuk melihat degradasi performa |
 | Kecepatan | DV | Responsivitas Server | Response Time | Ratio | Milidetik (ms) | Log output K6 Dashboard | Metrik utama interaksi end-user |
 | Kestabilan Beban | DV | Kapasitas Server / Volume | Throughput | Ratio | Req/s | Jumlah total req dibagi waktu (K6) | Metrik utama skalabilitas |
@@ -90,11 +90,11 @@ Alignment Check:
 
 Gunakan RQ dari WS-04. Definisikan variabel dan metriknya.
 
-**RQ:** *Apakah kerangka kerja (framework) Spring Boot dan Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js dan Laravel ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
+**RQ:** *Apakah kerangka kerja (framework) Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
 
 | Variabel | Tipe | Konsep Abstrak | Metrik Konkret | Skala (NOIR) | Satuan |
 |----------|------|---------------|----------------|-------------|--------|
-| *Jenis Framework* | *IV* | *Teknologi pemrosesan server backend* | *Kategori: Spring Boot, Gin, Express.js, Laravel, Flask* | *Nominal* | *—* |
+| *Jenis Framework* | *IV* | *Teknologi pemrosesan server backend* | *Kategori: Express.js, Gin* | *Nominal* | *—* |
 | *Beban Load* | *IV* | *Intensitas trafik dari pengguna aplikasi* | *Jumlah hit query data ke server* | *Ratio* | *Angka Data (100 - 1 Juta)* |
 | *Kapasitas Volume* | *DV* | *Kemampuan menangani banyak antrean* | *Throughput (req/s)* | *Ratio* | *Req/s* |
 | *Responsivitas* | *DV* | *Waktu tunggu user* | *Response Time Rata-rata* | *Ratio* | *ms* |

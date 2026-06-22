@@ -68,15 +68,15 @@ Ancaman validitas harus diidentifikasi **sebelum** eksperimen dan mitigasinya di
 ```text
 EXPERIMENT DESIGN
 
-Research Question : Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js, Laravel FrankenPHP, Flask, Spring Boot, Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
-Hypothesis        : Framework backend yang di-_compile_ (seperti Spring Boot dan Gin) akan menghasilkan Throughput (req/s) yang secara signifikan lebih tinggi dan penggunaan Memory yang lebih efisien dibandingkan framework _interpreted_ (seperti Laravel dan Express.js) pada beban request skala besar (1 juta data).
+Research Question : Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js dan Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?
+Hypothesis        : Gin (framework _compiled_) akan menghasilkan Throughput (req/s) yang secara signifikan lebih tinggi dan stabilitas Resource Usage yang lebih baik dibandingkan Express.js (framework _interpreted_) pada beban request skala besar (1 juta data).
 Tipe Eksperimen   : [x] Comparison  [ ] Ablation  [ ] Parameter
 
 Kondisi Eksperimen:
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | Eksekusi framework yang paling standar di industri PHP dan Node.js | Laravel & Express.js | Load uji 1juta data, 20 vUser, PostgreSQL sama, VM sama |
-| Treatment | Eksekusi framework _compiled_ / high-performance backend | Spring Boot, Gin | Load uji 1juta data, 20 vUser, PostgreSQL sama, VM sama |
+| Control | Eksekusi framework _interpreted_ yang menjadi standar industri Node.js | Express.js | Load uji 1juta data, 20 vUser, PostgreSQL sama, VM sama |
+| Treatment | Eksekusi framework _compiled_ / high-performance backend | Gin | Load uji 1juta data, 20 vUser, PostgreSQL sama, VM sama |
 
 Fairness Checklist:
   [x] Dataset identik untuk semua kondisi
@@ -91,11 +91,11 @@ Threat Analysis:
 | Internal    | Perebutan resource CPU saat _tools_ load tester (K6) berjalan di mesin yang sama dengan aplikasi. | K6 dijalankan di *virtual machine* terpisah atau diisolasi menggunakan *Docker limits* (Control Group). |
 | External    | Beban data KRS 1 juta hanya mewakili operasi GET/POST sederhana tanpa *computation logic* yang berat. | Batasi klaim hanya untuk aplikasi jenis "Data-Intensive API" (seperti katalog), bukan "Compute-Intensive API" (seperti AI Inference). |
 | Construct   | Throughput tinggi terjadi hanya karena banyak request yang menghasilkan error/timeout (HTTP 500). | Tolak (abort) eksekusi dan laporkan error rate; hanya request sukses (HTTP 200) yang dihitung sebagai Throughput. |
-| Conclusion  | Selisih 10 req/s dianggap menang, padahal itu sekadar fluktuasi normal jaringan. | Lakukan pengujian diulangi sebanyak n-kali (contoh: 5 run per beban), lalu uji ANOVA untuk menentukan signifikansi perbedaan rata-rata. |
+| Conclusion  | Selisih 10 req/s dianggap menang, padahal itu sekadar fluktuasi normal jaringan. | Lakukan pengujian diulangi sebanyak n-kali (contoh: 5 run per beban), lalu uji Two-Way ANOVA untuk menentukan signifikansi perbedaan rata-rata. |
 
 Statistical Plan:
-  Uji statistik   : Repeated Measures ANOVA atau One-Way ANOVA
-  Justifikasi     : Membandingkan >2 kelompok framework secara independen di atas parameter skala beban data (100 hingga 1 juta request).
+  Uji statistik   : Two-Way ANOVA (2 Framework × 5 Skala Data) dengan post-hoc Paired t-test
+  Justifikasi     : Mengukur efek utama jenis framework (Express.js vs Gin) dan skala beban data (100 hingga 1 juta request) serta interaksinya terhadap metrik DV.
   Alpha           : 0.05
   Effect size min : Cohen's d > 0.5 (Medium Effect)
 ```
@@ -106,13 +106,13 @@ Statistical Plan:
 
 Susun desain eksperimen berdasarkan RQ, variabel, dan sistem dari WS-04 sampai WS-06.
 
-**RQ:** *Apakah kerangka kerja (framework) Spring Boot dan Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js dan Laravel ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
+**RQ:** *Apakah kerangka kerja (framework) Gin menghasilkan Throughput (req/s) dan stabilitas Response Time (ms) yang secara signifikan lebih tinggi dibandingkan dengan Express.js ketika menangani beban REST API dengan dataset KRS mencapai 1.000.000 record?*
 **Tipe eksperimen:** [x] Comparison / [ ] Ablation / [ ] Parameter
 
 | Kondisi | Deskripsi | IV Value | CV Settings |
 |---------|-----------|----------|-------------|
-| Control | *Framework _interpreted_ konvensional yang menjadi standar defacto industri (baseline)* | *Laravel & Express.js* | *OS Ubuntu 24.04 WSL, 20 Virtual Users, 10 Menit, PostgreSQL Database 1jt Baris KRS* |
-| Treatment | *Framework _compiled_ & modern web server untuk komputasi _high throughput_* | *Spring Boot, Gin, Flask* | *OS Ubuntu 24.04 WSL, 20 Virtual Users, 10 Menit, PostgreSQL Database 1jt Baris KRS* |
+| Control | *Framework _interpreted_ konvensional yang menjadi standar defacto industri (baseline)* | *Express.js* | *OS Ubuntu 24.04 WSL, 20 Virtual Users, 10 Menit, PostgreSQL Database 1jt Baris KRS* |
+| Treatment | *Framework _compiled_ & modern web server untuk komputasi _high throughput_* | *Gin* | *OS Ubuntu 24.04 WSL, 20 Virtual Users, 10 Menit, PostgreSQL Database 1jt Baris KRS* |
 
 ---
 
@@ -122,14 +122,14 @@ Evaluasi apakah desain eksperimen di Latihan 1 sudah fair.
 
 | Kriteria | Status | Detail |
 |----------|--------|--------|
-| Dataset identik | *✅* | *Semua 5 framework di-koneksikan ke skema database PostgreSQL lokal yang sama persis (tabel KRS).* |
-| Preprocessing setara | *✅* | *Semua framework tidak menggunakan validasi tambahan yang tidak perlu; murni membaca JSON body dan routing ke database.* |
+| Dataset identik | *✅* | *Kedua framework di-koneksikan ke skema database PostgreSQL lokal yang sama persis (tabel KRS).* |
+| Preprocessing setara | *✅* | *Kedua framework tidak menggunakan validasi tambahan yang tidak perlu; murni membaca JSON body dan routing ke database.* |
 | Tuning effort setara | *✅* | *Setiap framework diaktifkan pada mode *Production* terbaik bawaannya tanpa ada optimasi rahasia (seperti caching eksternal).* |
 | Environment identik | *✅* | *Dieksekusi satu per satu pada mesin dengan spesifikasi sama (8GB RAM, 20 Core CPU virtual WSL).* |
 | Metrik evaluasi sama | *✅* | *Semuanya dicatat oleh satu tool penguji independen yaitu K6.* |
 
 **Ada yang tidak fair?** [ ] Ya / [x] Tidak
-> Jika ya, bagaimana cara memperbaikinya? *Desain ini sudah cukup adil secara makro. Membandingkan bahasa yang secara bawaan cepat (Go) dengan yang relatif lebih lambat (PHP/Python) adalah inti dari penelitian komparatif ini untuk menakar batas kemampuannya secara nyata.*
+> Jika ya, bagaimana cara memperbaikinya? *Desain ini sudah cukup adil secara makro. Membandingkan bahasa yang secara bawaan cepat (Go) dengan yang relatif lebih lambat (JavaScript) adalah inti dari penelitian komparatif ini untuk menakar batas kemampuannya secara nyata.*
 
 ---
 
@@ -146,7 +146,7 @@ Identifikasi ancaman validitas untuk desain eksperimen ini.
 
 **Ancaman mana yang paling sulit dimitigasi?** *Internal Validity (Pengelolaan Resource di Mesin yang Sama / WSL).*
 **Mengapa?**
-> *Karena OS lokal seperti Windows dengan WSL2 memiliki mekanisme *memory management* (vmmem) yang dinamis. Jika framework Spring Boot mengalokasikan RAM yang sangat besar dan tidak membebaskannya secara cepat, saat pengujian Express.js di menit berikutnya OS mungkin masih melakukan *swapping* RAM. Ini menyebabkan Express.js lambat bukan karena performanya, tapi karena "dikorbankan" oleh sampah memori dari eksperimen sebelumnya. Mitigasi total hanya bisa dicapai di infrastruktur cloud fisik yang dibersihkan/re-provision tiap kali uji.*
+> *Karena OS lokal seperti Windows dengan WSL2 memiliki mekanisme *memory management* (vmmem) yang dinamis. Jika framework Gin mengalokasikan RAM yang sangat besar dan tidak membebaskannya secara cepat, saat pengujian Express.js di menit berikutnya OS mungkin masih melakukan *swapping* RAM. Ini menyebabkan Express.js lambat bukan karena performanya, tapi karena "dikorbankan" oleh sampah memori dari eksperimen sebelumnya. Mitigasi total hanya bisa dicapai di infrastruktur cloud fisik yang dibersihkan/re-provision tiap kali uji.*
 
 ---
 

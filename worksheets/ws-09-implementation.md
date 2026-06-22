@@ -63,32 +63,38 @@ Capai **repeatability** dulu, baru **reproducibility**.
 EXPERIMENT SETUP DOCUMENTATION
 
 Hardware:
-  CPU     : ____________________
-  RAM     : ____________________
-  GPU     : ____________________
-  Storage : ____________________
+  CPU     : *20 Core Virtual CPU (WSL2)*
+  RAM     : *8 GB*
+  GPU     : *CPU-only (tidak digunakan)*
+  Storage : *SSD/NVMe dengan minimum 50 GB ruang kosong*
 
 Software:
-  OS        : ____________________
-  Runtime   : ____________________
-  Framework : ____________________
+  OS        : *Ubuntu 24.04 LTS (WSL2 on Windows 11)*
+  Runtime   : *Node.js v20.x LTS (Express.js) dan Go v1.22.x (Gin)*
+  Framework : *Express.js v4.x dan Gin v1.x*
 
 Dependencies:
 | Library | Version | Sumber | Hash/Checksum |
 |---------|---------|--------|---------------|
-|         |         |        |               |
-|         |         |        |               |
+| Node.js | v20.x LTS | nodejs.org | - |
+| Go | v1.22.x | go.dev | - |
+| PostgreSQL | v16.x | postgresql.org | - |
+| K6 | v0.52.x | grafana.com/k6 | - |
+| Prometheus | v2.51.x | prometheus.io | - |
+| Grafana | v10.x | grafana.com | - |
+| node_exporter | v1.7.x | prometheus.io | - |
+| Docker | v26.x | docker.com | - |
 
 Konfigurasi:
-  Config file     : ____________________
-  Random seed     : ____________________
-  Hyperparameters : ____________________
+  Config file     : *k6/script.js, .env, docker-compose.yml*
+  Random seed     : *N/A (load testing deterministik berdasarkan VU dan durasi)*
+  Hyperparameters : *20 Virtual Users, 10 menit durasi, 5 skala data (100, 1k, 10k, 100k, 1jt), 3 repetisi per run*
 
 Reproducibility Check:
-  [ ] Dependency terdokumentasi (requirements.txt / lock file)
-  [ ] Seed ditetapkan di semua level (Python, NumPy, framework)
-  [ ] Config di version control
-  [ ] README instruksi reproduksi lengkap
+  [x] Dependency terdokumentasi (requirements.txt / lock file)
+  [x] Konfigurasi dan urutan eksekusi ditetapkan secara konsisten (Node.js/Go, framework, database)
+  [x] Config di version control
+  [x] README instruksi reproduksi lengkap
 ```
 
 ---
@@ -99,23 +105,23 @@ Dokumentasikan environment untuk eksperimen Anda (boleh environment saat ini ata
 
 | Komponen | Spesifikasi |
 |----------|------------|
-| CPU | *Contoh: Intel Core i7-12700H, 14 Core* |
-| RAM | *Contoh: 32 GB DDR5* |
-| GPU | *Contoh: NVIDIA RTX 3060 6GB / CPU-only jika tidak ada GPU* |
-| OS | *Contoh: Ubuntu 22.04 LTS / Windows 11* |
-| Runtime | |
-| Framework | |
-| Random Seed | |
+| CPU | *20 Core Virtual CPU (WSL2)* |
+| RAM | *8 GB* |
+| GPU | *CPU-only (tidak digunakan)* |
+| OS | *Ubuntu 24.04 LTS (WSL2 on Windows 11)* |
+| Runtime | *Node.js v20.x LTS (Express.js) dan Go v1.22.x (Gin)* |
+| Framework | *Express.js v4.x dan Gin v1.x* |
+| Random Seed | *N/A (load testing deterministik berdasarkan konfigurasi VU dan durasi)* |
 
 **Dependencies (minimal 5):**
 
 | Library | Version | Alasan Dibutuhkan |
 |---------|---------|-------------------|
-| *Contoh: scikit-learn* | *1.3.2* | *Klasifikasi + evaluasi metrik* |
-| | | |
-| | | |
-| | | |
-| | | |
+| Node.js | v20.x LTS | *Runtime untuk menjalankan backend Express.js* |
+| Go | v1.22.x | *Runtime untuk menjalankan backend Gin* |
+| PostgreSQL | v16.x | *Database untuk menyimpan data KRS hingga 1 juta record* |
+| K6 | v0.52.x | *Load testing tool untuk menghasilkan beban HTTP* |
+| Prometheus | v2.51.x | *Scraping metrik resource dari node_exporter* |
 
 ---
 
@@ -125,18 +131,18 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 
 | Run | Seed | Metrik Utama | Hasil Sama? |
 |-----|------|-------------|-------------|
-| 1 | *Contoh: 42* | *Contoh: Accuracy* | — |
-| 2 | | | [ ] Ya / [ ] Tidak |
-| 3 | | | [ ] Ya / [ ] Tidak |
+| 1 | *N/A* | *Throughput (req/s) dan Response Time (ms)* | — |
+| 2 | *N/A* | *Throughput (req/s) dan Response Time (ms)* | [x] Ya / [ ] Tidak |
+| 3 | *N/A* | *Throughput (req/s) dan Response Time (ms)* | [x] Ya / [ ] Tidak |
 
 **Jika hasil berbeda, kemungkinan penyebab:**
-> ___________________________________________________
+> *Background process OS, kondisi memory WSL (vmmem), cache PostgreSQL yang belum dibersihkan, atau scheduling jitter dari K6 virtual users.*
 
 **Checklist kontrol yang sudah diterapkan:**
-- [ ] Random seed di-set di semua level
-- [ ] Tidak ada background process yang mengganggu
-- [ ] Cache dibersihkan antar-run
-- [ ] Config file yang sama untuk semua run
+- [x] Konfigurasi dan urutan eksekusi ditetapkan secara konsisten di semua level
+- [x] Tidak ada background process yang mengganggu
+- [x] Cache dibersihkan antar-run
+- [x] Config file yang sama untuk semua run
 
 ---
 
@@ -145,25 +151,40 @@ Rancang tes repeatability sederhana: jalankan kode yang sama 3× di environment 
 Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 ```
-# Judul Eksperimen: ____________________
+# Judul Eksperimen: Performance Evaluation of Backend Frameworks for REST API: Focused Comparison of Express.js and Gin
 
 ## 1. Environment
-> (Salin spesifikasi dari Latihan 1)
+> WSL2 on Windows 11, Ubuntu 24.04 LTS, 20 Core Virtual CPU, 8 GB RAM, SSD. Runtime: Node.js v20.x LTS (Express.js) dan Go v1.22.x (Gin).
 
 ## 2. Installation
-> (Langkah instalasi, misal: "pip install -r requirements.txt")
+> 1. Install WSL2 dan Ubuntu 24.04.
+> 2. Install Node.js v20.x LTS dan Go v1.22.x.
+> 3. Install Docker dan Docker Compose.
+> 4. Jalankan `docker-compose up -d` untuk PostgreSQL, Prometheus, Grafana, dan node_exporter.
+> 5. Install K6 sesuai dokumentasi official Grafana.
+> 6. Jalankan `npm install` di folder Express.js dan `go mod tidy` di folder Gin.
 
 ## 3. Data
-> (Deskripsi data: sumber, format, ukuran)
+> Data tabel KRS (Kartu Rencana Studi) dalam PostgreSQL dengan skema identik, diisi hingga 1.000.000 record. Data diakses melalui endpoint REST API (GET/POST/PUT/DELETE).
 
 ## 4. Execution
-> (Command untuk menjalankan eksperimen)
+> 1. Jalankan backend Express.js (`npm start` atau `node server.js`) pada port tertentu.
+> 2. Jalankan backend Gin (`go run main.go`) pada port yang sama setelah Express.js dihentikan.
+> 3. Jalankan skrip K6: `k6 run script.js` untuk setiap skala data (100, 1k, 10k, 100k, 1jt).
+> 4. Ulangi setiap kombinasi framework × skala data minimal 3×.
+> 5. Ambil metrik resource dari Grafana dashboard.
 
 ## 5. Configuration
-> (File config yang digunakan + parameter kunci)
+> File config utama:
+> - `docker-compose.yml` — versi dan port PostgreSQL, Prometheus, Grafana, node_exporter.
+> - `.env` — koneksi database dan port backend.
+> - `k6/script.js` — jumlah VU (20), durasi (10 menit), target endpoint, dan skala data.
+> Parameter kunci: 20 VU, 10 menit, 5 skala data, 3 repetisi.
 
 ## 6. Expected Output
-> (Contoh output yang diharapkan + format)
+> - File CSV/JSON dari K6 berisi `http_req_duration`, `http_reqs`, `http_req_failed`.
+> - Dashboard Grafana berisi time-series CPU Usage (%) dan Memory Usage (MB) per framework.
+> - Summary metrik rata-rata, p90, p95 untuk Response Time dan Throughput per skala data.
 ```
 
 ---
@@ -172,6 +193,6 @@ Tulis README minimum untuk eksperimen Anda (6 komponen wajib).
 
 > Apakah eksperimen Anda saat ini bisa direproduksi oleh orang lain tanpa bantuan Anda? Komponen apa yang masih hilang?
 
-**Level saat ini:** [ ] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
+**Level saat ini:** [x] Repeatability / [ ] Reproducibility / [ ] Belum keduanya
 **Komponen yang belum terdokumentasi:**
-> ___________________________________________________
+> *Untuk mencapai Reproducibility penuh, perlu menyediakan Virtual Machine image atau Docker Compose lengkap yang dapat dijalankan di environment lain tanpa konfigurasi manual.*

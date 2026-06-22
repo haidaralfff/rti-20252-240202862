@@ -90,13 +90,13 @@ Kumpulkan hasil dari WS-02 sampai WS-07 menjadi satu ringkasan proposal.
 
 | Komponen | Sumber | Isi (1-2 kalimat) |
 |----------|--------|-------------------|
-| Problem Statement | WS-02 | *Contoh: Sistem rekomendasi memiliki akurasi tinggi (RMSE 0.87) tetapi satisfaction score rendah (45/100). Gap antara metrik teknis dan kepuasan pengguna belum diteliti.* |
-| Gap | WS-03 | *Contoh: Tidak ada studi yang mengintegrasikan collaborative filtering dengan user-context signals untuk meningkatkan satisfaction.* |
-| RQ | WS-04 | *Contoh: Apakah penambahan context-aware signals pada collaborative filtering meningkatkan satisfaction score tanpa menurunkan RMSE?* |
-| Hipotesis | WS-04 | *Contoh: H₁: Sistem CF+context menghasilkan satisfaction ≥ 70/100 dengan RMSE ≤ 0.90 dibanding baseline CF murni.* |
-| Variabel & Metrik | WS-05 | *Contoh: IV = jenis sistem (CF vs CF+context); DV = satisfaction score (skala 0-100) + RMSE (regresi).* |
-| Sistem | WS-06 | |
-| Desain Eksperimen | WS-07 | |
+| Problem Statement | WS-02 | *Perkembangan aplikasi web modern bergantung pada performa RESTful API, namun pemilihan backend framework (Express.js atau Gin) sering dilakukan tanpa bukti empiris. Belum ada panduan komparatif tentang perilaku performa kedua framework saat menangani lonjakan beban dari skala kecil hingga 1 juta request.* |
+| Gap | WS-03 | *Kekosongan konsensus mengenai performa ekstrem komparatif antara framework backend Express.js dan Gin saat dihadapkan pada pengujian beban skala masif hingga jutaan request, untuk melihat breaking point CPU dan Memory secara nyata.* |
+| RQ | WS-04 | *Apakah terdapat perbedaan yang signifikan pada metrik Response Time, Throughput, CPU Usage, dan Memory Usage antara framework backend modern (Express.js dan Gin) ketika menangani beban RESTful API dari skala ratusan hingga satu juta data?* |
+| Hipotesis | WS-04 | *H₀: Tidak ada perbedaan signifikan pada metrik Response Time, Throughput, maupun Resource Usage antara Express.js dan Gin dalam memproses permintaan API pada semua skala beban data. H₁: Gin (framework compiled) menghasilkan Throughput secara signifikan lebih tinggi dan stabilitas Resource Usage yang lebih baik dibandingkan Express.js (framework interpreted) saat beban trafik mencapai 1.000.000 data.* |
+| Variabel & Metrik | WS-05 | *IV = Jenis Framework Backend (Express.js, Gin) dan Skala Beban Data (100, 1k, 10k, 100k, 1 juta); DV = Response Time (ms), Throughput (req/s), CPU Usage (%), Memory Usage (MB).* |
+| Sistem | WS-06 | *Backend App (2 proyek: Express.js dan Gin), Load Tester K6, Node_exporter & Prometheus untuk resource metrics, PostgreSQL DB dengan tabel KRS hingga 1.000.000 baris.* |
+| Desain Eksperimen | WS-07 | *Comparison Study: Control = Express.js (interpreted/Node.js), Treatment = Gin (compiled/Go). Pengujian K6 dengan 20 Virtual Users selama 10 menit per skala data. Analisis menggunakan Two-Way ANOVA (2 Framework × 5 Skala Data) dengan post-hoc Paired t-test (alpha 0.05, Cohen's d > 0.5).* |
 
 ---
 
@@ -106,19 +106,19 @@ Verifikasi 6 koneksi kritis. Isi dengan merujuk tabel di Latihan 1.
 
 | Koneksi | Status | Bukti |
 |---------|--------|-------|
-| Problem → Gap | *Contoh: ✅ — gap muncul dari 15 paper Bab 3 yang tidak ada yang mengkombinasikan CF + context untuk satisfaction* | |
-| Gap → RQ | *Contoh: ✅ — RQ langsung menanyakan apakah CF+context meningkatkan satisfaction* | |
-| RQ → Hypothesis | *Contoh: ✅ — H₁ memprediksi satisfaction ≥ 70 dengan threshold RMSE ≤ 0.90* | |
-| Hypothesis → Metric | | |
-| Metric → System | | |
-| System → Experiment | | |
+| Problem → Gap | *✅ — Gap muncul dari analisis literatur (Siahaan, Purwanto, Supria, Hadinata, Azzahidi) yang menunjukkan hasil kontradiktif dan terbatas pada skala data kecil (di bawah 10.000 record).* | |
+| Gap → RQ | *✅ — RQ langsung menanyakan perbedaan performa ekstrem Express.js vs Gin pada skala ratusan hingga 1 juta data.* | |
+| RQ → Hypothesis | *✅ — H₁ memprediksi Gin unggul dalam Throughput dan stabilitas Resource Usage dibandingkan Express.js saat beban 1.000.000 data.* | |
+| Hypothesis → Metric | *✅ — Metrik Response Time, Throughput, CPU Usage, dan Memory Usage secara langsung mengukur variabel dalam hipotesis.* | |
+| Metric → System | *✅ — K6 mengukur Response Time dan Throughput; Prometheus/Grafana dengan node_exporter mengukur CPU Usage dan Memory Usage.* | |
+| System → Experiment | *✅ — Desain eksperimen menggunakan backend Express.js/Gin, K6, PostgreSQL, dan Prometheus/Grafana sebagai instrumen pengujian.* | |
 
-**Koneksi mana yang paling lemah?** _______________________
+**Koneksi mana yang paling lemah?** *Metric → System*
 **Bagaimana cara memperkuatnya?**
-> ___________________________________________________
+> *Memastikan kedua framework menggunakan query ORM/raw SQL yang setara dan dikonfigurasi dengan mode production yang sama, serta mematikan caching internal agar perbedaan metrik murni berasal dari framework.*
 
-**Konsistensi horizontal — apakah istilah dan scope konsisten?** [ ] Ya / [ ] Tidak
-> Jika tidak, di bagian mana terjadi inkonsistensi? _________
+**Konsistensi horizontal — apakah istilah dan scope konsisten?** [x] Ya / [ ] Tidak
+> Jika tidak, di bagian mana terjadi inkonsistensi? *Tidak ada inkonsistensi; istilah Express.js, Gin, Response Time, Throughput, CPU Usage, dan Memory Usage konsisten dari WS-02 sampai WS-07.*
 
 ---
 
@@ -128,15 +128,15 @@ Evaluasi proposal mini menggunakan rubrik.
 
 | Kriteria | Skor (1-3) | Justifikasi |
 |----------|-----------|-------------|
-| Koherensi | *Contoh: 2 — koneksi gap→RQ masih lemah karena gap belum cukup narrow* | |
-| Specificity | *Contoh: 3 — metrik (satisfaction 0-100, RMSE) sudah terdefinisi numerik* | |
-| Feasibility | | |
-| Rigor | | |
+| Koherensi | *3 — Alur problem → gap → RQ → hipotesis → metrik → sistem → eksperimen terhubung jelas dan saling mendukung.* | |
+| Specificity | *3 — Variabel (Express.js/Gin, skala data) dan metrik (Response Time, Throughput, CPU Usage, Memory Usage) sudah terdefinisi numerik dan operational.* | |
+| Feasibility | *3 — Tools (K6, Prometheus, Grafana, PostgreSQL, Docker) tersedia dan environment WSL dapat direproduksi dengan dokumentasi lengkap.* | |
+| Rigor | *3 — Pengujian diulang minimal 3× per skala, menggunakan Two-Way ANOVA dengan alpha 0.05 dan effect size Cohen's d > 0.5.* | |
 
-**Skor total:** _____ / 12
+**Skor total:** *12 / 12*
 
-**Apakah proposal siap untuk fase eksekusi?** [ ] Ya / [ ] Belum
-> Jika belum, apa yang perlu diperbaiki? __________________
+**Apakah proposal siap untuk fase eksekusi?** [x] Ya / [ ] Belum
+> Jika belum, apa yang perlu diperbaiki? *Proposal sudah siap untuk fase eksekusi.*
 
 ---
 

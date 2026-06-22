@@ -70,22 +70,24 @@ EXECUTION PLAN
 
 | Run # | Skenario | Seed | Parameter | Status | Waktu | Output File |
 |-------|----------|------|-----------|--------|-------|-------------|
-| 1     |          |      |           |        |       |             |
-| 2     |          |      |           |        |       |             |
-| 3     |          |      |           |        |       |             |
-| ...   |          |      |           |        |       |             |
+| 1 | Express.js_100 | N/A | framework=Express.js, scale=100, VU=20, durasi=10m | Planned | | results/express_100_run1.json |
+| 2 | Express.js_100 | N/A | framework=Express.js, scale=100, VU=20, durasi=10m | Planned | | results/express_100_run2.json |
+| 3 | Express.js_100 | N/A | framework=Express.js, scale=100, VU=20, durasi=10m | Planned | | results/express_100_run3.json |
+| 4 | Express.js_1k | N/A | framework=Express.js, scale=1k, VU=20, durasi=10m | Planned | | results/express_1k_run1.json |
+| ... | (10 skenario × 3 run) | N/A | framework={Express.js|Gin}, scale={100|1k|10k|100k|1jt}, VU=20, durasi=10m | Planned | | results/{framework}_{scale}_run{N}.json |
+| 30 | Gin_1jt | N/A | framework=Gin, scale=1jt, VU=20, durasi=10m | Planned | | results/gin_1jt_run3.json |
 
-Jumlah runs per skenario : ____
-Total runs               : ____
+Jumlah runs per skenario : *3*
+Total runs               : *30*
 
 DATA LOG (per run):
-  Run ID    : ____________________
-  Timestamp : ____________________
-  Skenario  : ____________________
-  Input     : ____________________
-  Output    : ____________________
-  Anomali   : ____________________
-  Catatan   : ____________________
+  Run ID    : *run-{framework}-{scale}-run{N}*
+  Timestamp : *ISO-8601, contoh: 2026-06-22T10:00:00Z*
+  Skenario  : *{Express.js|Gin}_{100|1k|10k|100k|1jt}*
+  Input     : *framework, data scale, K6 VU, K6 duration, PostgreSQL state, code commit hash*
+  Output    : *K6 JSON/CSV, Grafana/Prometheus metrics export*
+  Anomali   : *catatan jika terjadi error, crash, atau outlier*
+  Catatan   : *background process, WSL memory state, urutan eksekusi*
 ```
 
 ---
@@ -96,15 +98,17 @@ Susun execution plan untuk eksperimen Anda. Tentukan skenario, jumlah run, dan s
 
 | Run # | Skenario | Seed | Parameter Kunci | Status |
 |-------|----------|------|----------------|--------|
-| *1* | *Contoh: BERT-base, DS-1* | *42* | *lr=2e-5, epoch=10* | *Planned* |
-| *2* | *BERT-base, DS-1* | *123* | *lr=2e-5, epoch=10* | *Planned* |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
+| *1* | *Express.js_100* | *N/A* | *framework=Express.js, scale=100, VU=20, durasi=10m* | *Planned* |
+| *2* | *Express.js_100* | *N/A* | *framework=Express.js, scale=100, VU=20, durasi=10m* | *Planned* |
+| *3* | *Express.js_1k* | *N/A* | *framework=Express.js, scale=1k, VU=20, durasi=10m* | *Planned* |
+| *4* | *Gin_100* | *N/A* | *framework=Gin, scale=100, VU=20, durasi=10m* | *Planned* |
+| *5* | *Gin_1jt* | *N/A* | *framework=Gin, scale=1jt, VU=20, durasi=10m* | *Planned* |
 
-**Total skenario:** ____
-**Run per skenario:** ____
-**Total run keseluruhan:** ____
+**Total skenario:** *10 (5 skala data × 2 framework)*
+**Run per skenario:** *3*
+**Total run keseluruhan:** *30*
+
+> *Catatan: Load testing dengan K6 bersifat deterministik berdasarkan konfigurasi VU dan durasi, sehingga kolom Seed diberi nilai N/A. Urutan eksekusi framework di-randomisasi untuk menghindari efek memori WSL yang menumpuk.*
 
 ---
 
@@ -115,25 +119,31 @@ Desain format data log untuk eksperimen Anda. Tentukan field apa saja yang akan 
 **Identitas:**
 | Field | Contoh |
 |-------|--------|
-| Run ID | *run-001* |
-| Timestamp | *2025-03-15T10:30:00* |
-| | |
+| Run ID | *run-express-100-run1* |
+| Timestamp | *2026-06-22T10:00:00Z* |
+| Framework | *Express.js* |
+| Data Scale | *100* |
+| Run Number | *1* |
 
 **Konfigurasi:**
 | Field | Contoh |
 |-------|--------|
-| Seed | *42* |
+| Seed / Run Order | *N/A / urutan #5* |
 | Code version | *commit abc1234* |
-| | |
+| K6 VU | *20* |
+| K6 Duration | *10m* |
+| PostgreSQL Version | *v16.x* |
 
 **Hasil:**
 | Metrik | Tipe Data | Range Valid |
 |--------|----------|-------------|
-| *Contoh: Accuracy* | *float* | *0.0 – 1.0* |
-| | | |
-| | | |
+| Response Time (ms) | float | ≥ 0 |
+| Throughput (req/s) | float | ≥ 0 |
+| CPU Usage (%) | float | 0 – 100 |
+| Memory Usage (MB) | float | ≥ 0 |
+| Error Rate (%) | float | 0 – 100 |
 
-**Format output:** [ ] CSV / [ ] JSON / [ ] Database / [ ] Lainnya: ____
+**Format output:** [ ] CSV / [x] JSON / [ ] Database / [ ] Lainnya: *JSON utama; CSV sebagai export sekunder untuk visualisasi*
 
 ---
 
@@ -143,10 +153,10 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 
 | Jenis Anomali | Contoh | Tindakan |
 |---------------|--------|----------|
-| Run gagal (crash) | *Contoh: OOM pada batch_size=64* | *Contoh: Dokumentasi, re-run batch_size=32, catat perubahan* |
-| Hasil ekstrem | | |
-| Waktu eksekusi anomali | | |
-| Inkonsistensi dengan run lain | | |
+| Run gagal (crash) | *PostgreSQL connection pool habis atau framework crash saat skala 1jt.* | *Dokumentasi error; restart PostgreSQL + cooling-down 2 menit; re-run dengan konfigurasi identik; catat apakah anomali terulang.* |
+| Hasil ekstrem | *Throughput Gin tiba-tiba 10× lebih tinggi karena 90% request error HTTP 500.* | *Investigasi error rate; tolak run jika error > 5%; simpan sebagai DNF atau temuan jika konsisten.* |
+| Waktu eksekusi anomali | *Response Time Express.js melonjak di menit ke-8 saat WSL memory pressure tinggi.* | *Catat kondisi vmmem OS; bersihkan cache; re-run; bandingkan dengan run lain pada skenario sama.* |
+| Inkonsistensi dengan run lain | *Run 1 Throughput Express.js_1jt = 1.200 req/s, Run 2 = 800 req/s (selisih > 20%).* | *Periksa background process dan urutan eksekusi; tambahkan jumlah run; gunakan median/p95, bukan hanya rata-rata.* |
 
 **Prinsip:** Detect → Investigate → Document → Decide
 
@@ -157,6 +167,7 @@ Rencanakan bagaimana menangani anomali. Untuk setiap jenis, tentukan langkah yan
 > Pernahkah Anda melaporkan hasil riset/tugas dari single run? Apa risikonya? Bagaimana multiple run mengubah kepercayaan terhadap hasil?
 
 **Pengalaman sebelumnya:**
-> ___________________________________________________
+> *Pernah melaporkan hasil load test dari single run saat menguji endpoint API. Hasilnya terlihat cepat, tetapi tidak bisa diuji signifikansinya dan rentan terhadap spike sementara.*
+
 **Yang akan dilakukan berbeda:**
-> ___________________________________________________
+> *Menjalankan minimal 3 run per skenario, mencatat distribusi metrik, dan menggunakan ANOVA serta effect size untuk mengukur keandalan perbedaan. Anomali tidak dihapus, melainkan didokumentasi dan dianalisis sebagai bagian dari temuan.*

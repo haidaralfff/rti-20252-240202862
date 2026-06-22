@@ -63,7 +63,7 @@ LITERATURE MAPPING
 
 Topik      : Perbandingan Kinerja RESTful API pada Berbagai Framework Backend
 Database   : Google Scholar, IEEE Xplore
-Query      : "performance comparison" AND "backend framework" AND "REST API" OR ("Laravel" AND "Express.js")
+Query      : "performance comparison" AND "backend framework" AND "REST API" OR ("Express.js" AND "Gin")
 Tahun      : 2020–2025
 Hasil awal : 25 paper → Screening → 5 paper final
 
@@ -91,14 +91,13 @@ Gap 1: [Jenis: Performance Gap]
 Gap 2: [Jenis: Data + Context Gap]
   Deskripsi    : Sebagian besar penelitian (kecuali Azzahidi et al., 2025) hanya menggunakan beban data yang kecil hingga menengah (di bawah 10.000 data).
   Bukti        : Purwanto hanya menggunakan 6 virtual user, dan Siahaan hanya 1.000 user.
-  Signifikansi : Performa framework saat beban ekstrem (seperti serangan jutaan request) belum banyak dieksplorasi secara bersamaan untuk 5 framework modern.
+  Signifikansi : Performa framework saat beban ekstrem (seperti serangan jutaan request) belum banyak dieksplorasi secara bersamaan untuk 2 framework modern (Express.js dan Gin) dengan karakteristik bahasa yang berbeda (_interpreted_ vs _compiled_).
 
 ### Baseline Selection
 
 | Baseline                          | Relevansi                                              | Representatif                                      | Source                |
 |-----------------------------------|--------------------------------------------------------|----------------------------------------------------|-----------------------|
 | Express.js                        | Sama-sama diuji sebagai framework backend              | Framework Node.js paling dominan dan populer       | Hadinata (2024)       |
-| Laravel                           | Diuji kinerjanya pada sistem berbasis data relasional  | Standar de-facto untuk pengembangan web PHP        | Siahaan (2024)        |
 ```
 
 ---
@@ -107,9 +106,9 @@ Gap 2: [Jenis: Data + Context Gap]
 
 Gunakan topik riset dari WS-02. Cari minimal 5 paper relevan menggunakan Google Scholar atau database lain.
 
-**Topik riset:** *Evaluasi Komprehensif Performa REST API pada Lima Framework Backend Modern (Express.js, Laravel, Flask, Spring Boot, Gin) dalam Menangani Skala Data Besar.*
+**Topik riset:** *Evaluasi Komprehensif Performa REST API pada Dua Framework Backend Modern (Express.js dan Gin) dalam Menangani Skala Data Besar.*
 
-**Query pencarian:** *"REST API performance" AND ("Express.js" OR "Laravel") AND "throughput"* 
+**Query pencarian:** *"REST API performance" AND ("Express.js" OR "Gin") AND "throughput"* 
 
 **Database:** *Google Scholar, IEEE Xplore, Jurnal Nasional (Sinta).* 
 
@@ -138,9 +137,9 @@ Berdasarkan tabel di Latihan 1, identifikasi gap.
 | Performance Gap | [x] Ya / [ ] Tidak | *Terdapat ketidaksesuaian/kontradiksi hasil antar paper mengenai framework mana yang paling unggul (Laravel menang di Paper 1, namun kalah telak dari Express.js di Paper 4).* |
 | Method Gap | [ ] Ya / [x] Tidak | *Tidak ada method gap, semua menggunakan tool standar (JMeter/K6).* |
 | Data Gap | [x] Ya / [ ] Tidak | *Mayoritas penelitian masih membatasi ukuran dataset pengujian di bawah 10.000 record, sehingga belum menguji batas _bottleneck_ framework secara penuh.* |
-| Context Gap | [x] Ya / [ ] Tidak | *Framework terbaru atau versi _compiled_ dari bahasa (seperti Gin untuk Golang atau FrankenPHP untuk Laravel) masih jarang diteliti performa ekstremnya secara komparatif.* |
+| Context Gap | [x] Ya / [ ] Tidak | *Framework _compiled_ seperti Gin (Golang) masih jarang diteliti performa ekstremnya secara komparatif terhadap framework _interpreted_ seperti Express.js (Node.js) pada beban skala masif.* |
 
-**Gap utama yang dipilih:** (Kekosongan konsensus mengenai performa ekstrem komparatif dari kelima framework backend (Express, Laravel, Flask, Spring, Gin) saat dihadapkan pada pengujian dengan beban skala masif hingga jutaan request, untuk melihat _breaking point_ CPU dan Memory secara nyata).
+**Gap utama yang dipilih:** (Kekosongan konsensus mengenai performa ekstrem komparatif antara framework backend Express.js dan Gin saat dihadapkan pada pengujian dengan beban skala masif hingga jutaan request, untuk melihat _breaking point_ CPU dan Memory secara nyata).
 **Mengapa gap ini penting (bukan sekadar "belum ada yang meneliti")?**
 > Gap ini esensial karena di level produksi perusahaan (Enterprise), kegagalan sistem terjadi saat beban trafik ekstrem (traffic spikes), bukan saat beban rendah. Menguji framework di skala 1.000 user mungkin memperlihatkan framework A menang, namun di skala 1.000.000 user, framework A bisa mengalami _memory leak_ dan framework B yang lebih stabil justru bertahan. Membuktikan ini akan menyelamatkan _cost_ infrastruktur server perusahaan.
 
@@ -148,15 +147,14 @@ Berdasarkan tabel di Latihan 1, identifikasi gap.
 
 ## Latihan 3 — Baseline Selection
 
-Pilih 2 baseline dari literatur yang sudah dibaca.
+Pilih 1 baseline dari literatur yang sudah dibaca.
 
 | # | Baseline                           | Mengapa Relevan                                                                           | Mengapa Representatif                                                                  | Apakah SOTA?                                                             | Sumber                    |
 |---|------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------|---------------------------|
-| 1 | Express.js                         | Digunakan secara masif sebagai framework ringan untuk microservices                       | Node.js merupakan _runtime_ backend non-blocking I/O yang sangat populer               | Ya, sering dijadikan tolak ukur kecepatan I/O                             | Hadinata dkk. (2024)      |
-| 2 | Laravel                            | Sering digunakan untuk aplikasi web skala menengah dan besar yang bergantung pada basis data | Merupakan framework MVC PHP paling populer di seluruh dunia saat ini                   | Bukan yang paling mutakhir secara performa, tapi *de-facto* di industri   | Siahaan & Wijaya (2024)   |
+| 1 | Express.js                         | Digunakan secara masif sebagai framework ringan untuk microservices dan REST API           | Node.js merupakan _runtime_ backend non-blocking I/O yang sangat populer               | Ya, sering dijadikan tolak ukur kecepatan I/O                             | Hadinata dkk. (2024)      |
 
 **Apakah pemilihan baseline ini bisa dianggap straw man?** [ ] Ya / [x] Tidak
-> Justifikasi: Baseline ini sangat adil. Express.js terkenal dengan kecepatannya, dan Laravel terkenal dengan kepopulerannya. Jika kita membandingkan Spring Boot atau Gin melawan kedua framework raksasa ini, itu adalah perbandingan *apples-to-apples* dari framework yang benar-benar digunakan secara meluas di industri perangkat lunak dunia.
+> Justifikasi: Baseline ini sangat adil. Express.js merupakan framework backend yang sangat populer dengan ekosistem Node.js yang matang, sementara Gin adalah framework berbasis Go yang menawarkan performa _compiled_. Kedua framework digunakan secara luas di industri, sehingga perbandingan ini adalah *apples-to-apples* antara framework _interpreted_ (Express.js) dan _compiled_ (Gin) yang sama-sama relevan untuk pengembangan API modern.
 
 ---
 
