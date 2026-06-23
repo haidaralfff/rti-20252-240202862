@@ -57,18 +57,12 @@ Pemilihan framework backend memiliki dampak langsung terhadap biaya operasional,
 
 ## 6. Daftar Pustaka (Preliminary)
 
-[1] Aufa Syaihan Azzahidi, Bangun Wijayanto, dan Agus Darmawan, "Performance Evaluation of Backend Frameworks for REST API," *JUTIF*, 2025.
+[1] Mangapul Siahaan dan Ricky Wijaya, "Performance Comparison Between Laravel and ExpressJs Framework Using Apache JMeter," *JITE*, 2024.
 
-[2] Wira Hadinata dan Lilis Stianingsih, "Analisis Perbandingan Performa RESTful API Antara Express.js dengan Laravel," *JITET*, 2024.
+[2] Tedi Purwanto, "Analisa Perbandingan Kinerja REST API dengan Framework Flask, Laravel, dan Express JS," 2023.
 
-[3] Mangapul Siahaan dan Ricky Wijaya, "Performance Comparison Between Laravel and ExpressJs Framework Using Apache JMeter," *JITE*, 2024.
+[3] Supria et al., "Perbandingan Performa Framework Laravel, Flask API Python, dan PHP Native untuk Aplikasi API pada Data AIS Polbeng," *Politeknik Negeri Bengkalis*.
 
-[4] Tedi Purwanto, "Analisa Perbandingan Kinerja REST API dengan Framework Flask, Laravel, dan Express JS," *Scientia Sacra*, 2023.
+[4] Wira Hadinata dan Lilis Stianingsih, "Analisis Perbandingan Performa RESTful API Antara Express.js dengan Laravel Framework dengan JMeter," *JITET*, 2024.
 
-[5] Supria et al., "Perbandingan Performa Framework Laravel, Flask API Python, dan PHP Native," *Politeknik Negeri Bengkalis*, 2024.
-
-[6] Suwarno dan A. P. Yulandi, "Analisis Performa Backend Framework: Studi Komparasi Framework Golang dan Node.js," *Jurnal Riset Sistem Informasi*, 2023.
-
-[7] Grafana Labs Inc., "k6 Documentation," 2024. https://k6.io/docs/
-
-[8] I. P. A. E. Pratama, "Pengujian Performansi Lima Back-End JavaScript Framework," *Jurnal RESTI*, 2020.
+[5] Aufa Syaihan Azzahidi, Bangun Wijayanto, dan Agus Darmawan, "Performance Evaluation of Backend Frameworks for REST API: A Comparative Study of Spring Boot, Flask, Express.js, Laravel FrankenPHP, and Gin," *JUTIF*, 2025.

@@ -5,12 +5,12 @@ Dokumen perencanaan & panduan kerja penelitian.
 ## Isi
 
 - [rencana-penelitian.md](rencana-penelitian.md) — **indeks utama**, ringkasan topik & roadmap 5 tahap
-- [tahap-1-arsitektur-dan-skema-database.md](tahap-1-arsitektur-dan-skema-database.md) — arsitektur & skema DB (selesai)
-- [tahap-2-implementasi-gateway.md](tahap-2-implementasi-gateway.md) — rencana implementasi Gateway (Go)
-- [tahap-3-pengujian-k6.md](tahap-3-pengujian-k6.md) — rencana skrip pengujian k6
-- [tahap-4-analisis-data.md](tahap-4-analisis-data.md) — rencana ekstraksi data & visualisasi
-- [tahap-5-draf-paper.md](tahap-5-draf-paper.md) — rencana struktur draf paper
-- [archive/promt.md](archive/promt.md) — *(arsip)* prompt awal asisten riset, sudah dikonsolidasikan ke [.ai/research-context.md](../.ai/research-context.md)
+- [tahap-1-arsitektur-dan-skema-database.md](tahap-1-arsitektur-dan-skema-database.md) — perancangan skenario & skema tabel uji
+- [tahap-2-implementasi-backend.md](tahap-2-implementasi-backend.md) — implementasi API menggunakan Express.js dan Gin
+- [tahap-3-pengujian-k6.md](tahap-3-pengujian-k6.md) — eksekusi 400 run menggunakan k6
+- [tahap-4-analisis-data.md](tahap-4-analisis-data.md) — pipeline ekstraksi statistik deskriptif & resource
+- [tahap-5-draf-paper.md](tahap-5-draf-paper.md) — draf bagian manuskrip
+- [archive/promt.md](archive/promt.md) — *(arsip)* prompt awal asisten riset
 
 Deliverable konkret tiap tahap (kode, data, hasil, naskah) disimpan di folder bernomor terkait (lihat [README utama](../README.md)).
 

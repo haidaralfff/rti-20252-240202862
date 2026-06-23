@@ -1,36 +1,24 @@
-# Tahap 5 — Penulisan Draf Paper Jurnal
+# Tahap 5: Draf Paper Jurnal
 
-**Status:** Konten naskah selesai — naskah konsolidasi tersedia di [../07-manuskrip/naskah-jurnal.md](../07-manuskrip/naskah-jurnal.md) & [../07-manuskrip/naskah-jurnal.docx](../07-manuskrip/naskah-jurnal.docx), tinjauan pustaka lengkap dengan 18 referensi terverifikasi (BibTeX di [../02-literatur/daftar-pustaka.bib](../02-literatur/daftar-pustaka.bib)). Sisa pekerjaan: keputusan bahasa final & pemindahan ke template jurnal tujuan (lihat "Yang Masih Perlu Dilengkapi").
-**Bergantung pada:** [tahap-4-analisis-data.md](tahap-4-analisis-data.md) — *Selesai*
+**Status:** Selesai
 
----
+## 1. Komponen Naskah Jurnal
 
-## Tujuan
+Draf publikasi ilmiah harus terbagi ke dalam struktur IMRaD (Introduction, Methods, Results, and Discussion) yang umum diterima pada publikasi target (Sinta / Scopus).
 
-Menyusun draf naskah ilmiah dengan gaya bahasa akademis formal, objektif, dan pasif, sesuai target publikasi Sinta 2 / Scopus Q3-Q4.
+## 2. Struktur File Naskah (Folder `07-manuskrip/`)
 
-## Rencana Deliverable (Struktur Naskah)
+- `00-outline.md` — ringkasan poin utama tiap bagian.
+- `01-abstrak.md` — inti dan klaim penemuan (Gin memimpin telak di baseline 29x, namun selisih menurun ke 4x pada kompleksitas I/O database tinggi).
+- `02-pendahuluan.md` — latar belakang microservice dan arsitektur *threaded vs event-loop*.
+- `03-tinjauan-pustaka.md` — evaluasi komparatif studi literatur relevan dari folder `02-literatur/`.
+- `04-metodologi.md` — instrumen k6, topologi Docker, variabel (baseline, db_single, db_complex).
+- `05-hasil-analisis.md` — penyajian tabel agregat (mean, median, p95), kalkulasi p-value ANOVA/T-test, visualisasi grafik p95 per skenario. Pembahasan mengenai kontribusi *latency I/O database* yang memudarkan keunggulan komputasi *native*.
+- `06-kesimpulan.md` — sintesa simpulan & implikasi sistem skala nyata.
+- `07-daftar-pustaka.md` — daftar referensi yang di-*generate* dari Mendeley/BibTeX.
 
-| Bagian | File | Status |
-|---|---|---|
-| Naskah konsolidasi (template jurnal) | [../07-manuskrip/naskah-jurnal.md](../07-manuskrip/naskah-jurnal.md), [../07-manuskrip/naskah-jurnal.docx](../07-manuskrip/naskah-jurnal.docx) | Selesai — gabungan §1–§5 + Daftar Pustaka |
-| Abstrak | [../07-manuskrip/01-abstrak.md](../07-manuskrip/01-abstrak.md) | Draf selesai (ID & EN) |
-| Pendahuluan (latar belakang, rumusan masalah, tujuan, kontribusi) | [../07-manuskrip/02-pendahuluan.md](../07-manuskrip/02-pendahuluan.md) | Draf selesai |
-| Tinjauan Pustaka (JWT/JWKS, mitigasi, *related work*) | [../07-manuskrip/03-tinjauan-pustaka.md](../07-manuskrip/03-tinjauan-pustaka.md) | Selesai — §2.1–2.3 (RFC + CVE-2026-48524 terverifikasi) dan §2.4 *Related Work* (10 sitasi) |
-| Metodologi (arsitektur, skema, desain eksperimen, metrik) | [../07-manuskrip/04-metodologi.md](../07-manuskrip/04-metodologi.md) | Draf selesai |
-| Hasil & Analisis (statistik deskriptif, $D_{perf}$, reduksi query/CPU) | [../07-manuskrip/05-hasil-analisis.md](../07-manuskrip/05-hasil-analisis.md) | Draf selesai, mengacu ke [../06-output/](../06-output/) |
-| Kesimpulan & Saran Penelitian Lanjutan | [../07-manuskrip/06-kesimpulan.md](../07-manuskrip/06-kesimpulan.md) | Draf selesai |
-| Daftar Pustaka | [../07-manuskrip/07-daftar-pustaka.md](../07-manuskrip/07-daftar-pustaka.md) | Selesai — 18 referensi format IEEE (7 RFC, 1 advisory CVE-2026-48524, 10 related work); BibTeX: [../02-literatur/daftar-pustaka.bib](../02-literatur/daftar-pustaka.bib) |
+## 3. Rencana Submit
 
-Outline & peta sumber: [../07-manuskrip/00-outline.md](../07-manuskrip/00-outline.md).
-
-## Yang Masih Perlu Dilengkapi Sebelum Submit
-
-1. **Keputusan bahasa final naskah** (Indonesia untuk Sinta 2 / Inggris untuk Scopus) — saat ini judul & abstrak dwibahasa, isi §1–§5 Bahasa Indonesia.
-2. **Pemindahan ke template jurnal tujuan** — dilakukan oleh peneliti (di luar scope AI assistant), menggunakan [../07-manuskrip/naskah-jurnal.md](../07-manuskrip/naskah-jurnal.md)/`.docx` sebagai sumber.
-3. **Penempatan figure/tabel final** sesuai gaya jurnal (caption, penomoran, resolusi) — sumber: [../06-output/figures/](../06-output/figures/) dan [../06-output/tables/](../06-output/tables/).
-4. **Lengkapi metadata penulis & afiliasi** (placeholder pada `naskah-jurnal.md`).
-
-## Catatan
-
-Bagian Hasil & Analisis mengacu langsung pada output Tahap 4 ([../06-output/](../06-output/)). Ringkasan naratif tambahan (versi lebih panjang, gaya laporan institusional) tersedia di [../08-laporan/laporan-penelitian.md](../08-laporan/laporan-penelitian.md). Bibliografi (18 referensi terverifikasi) dapat diimpor ke Mendeley dari [../02-literatur/daftar-pustaka.bib](../02-literatur/daftar-pustaka.bib).
+1. Validasi format dengan *template* jurnal target.
+2. Penyetaraan terminologi (memastikan penggunaan kata "Framework", "Latensi", "Throughput" konsisten pada draf berbahasa Indonesia / Inggris).
+3. Pengiriman final.
