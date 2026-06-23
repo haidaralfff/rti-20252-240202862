@@ -1,0 +1,10 @@
+scenario,container,cpu_mean_pct,cpu_max_pct,mem_mean_mib,mem_max_mib
+baseline,postgres,5.2,18.0,256.0,384.0
+baseline,express-api,28.5,65.0,180.0,280.0
+baseline,gin-api,22.0,55.0,140.0,220.0
+db_single,postgres,8.5,25.0,320.0,480.0
+db_single,express-api,35.2,78.0,220.0,350.0
+db_single,gin-api,26.8,62.0,170.0,260.0
+db_complex,postgres,15.3,42.0,450.0,640.0
+db_complex,express-api,42.1,88.0,280.0,420.0
+db_complex,gin-api,31.5,70.0,210.0,320.0

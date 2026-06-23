@@ -18,3 +18,6 @@ PROJECT-TRACKER.md
 .vscode/
 Thumbs.db
 .DS_Store
+
+# Large CSV benchmark data (too big to commit)
+example-riset-directory/04-data/*.csv

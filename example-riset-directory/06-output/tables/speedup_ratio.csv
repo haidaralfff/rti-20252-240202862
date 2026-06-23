@@ -1,0 +1,4 @@
+scenario,express_mean_ms,gin_mean_ms,express_median_ms,gin_median_ms,slowdown_mean,slowdown_median
+baseline,118.8768,4.0447,51.9781,3.5230,29.39,14.76
+db_single,73.3565,10.0600,54.9943,7.3014,7.29,7.53
+db_complex,36.8848,9.0920,35.0099,7.2822,4.06,4.81
