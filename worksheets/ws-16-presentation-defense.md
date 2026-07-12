@@ -121,17 +121,17 @@ Rencanakan presentasi 15 menit untuk riset Anda.
 
 | # | Pesan Utama | Visual yang Digunakan | Waktu |
 |---|-------------|----------------------|-------|
-| 1 | *Contoh: Judul + konteks — rekomendasi vs kepuasan* | *Title slide, gambar sistem* | *1 min* |
-| 2 | *Contoh: Problem — RMSE tinggi tapi satisfaction rendah (45/100)* | *Bar chart: satisfaction vs RMSE per sistem* | *2 min* |
-| 3 | *Contoh: Gap + RQ — belum ada CF+context untuk satisfaction* | *Tabel gap literatur* | *1.5 min* |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
+| 1 | Performance Evaluation of Express.js vs Gin for REST API — studi komparatif dengan variasi kompleksitas database query | Title slide dengan judul, nama, afiliasi | 1 min |
+| 2 | Pemilihan framework backend mempengaruhi performa, biaya infrastruktur, dan user experience. Express.js (Node.js) dan Gin (Go) mewakili dua paradigma: single-threaded event loop vs multi-threaded compiled. | Diagram arsitektur: Event Loop vs Goroutine Scheduler | 2 min |
+| 3 | Gap: studi sebelumnya terbatas pada skala kecil atau tanpa variasi kompleksitas database. RQ: bagaimana perbedaan performa Express vs Gin pada baseline, single query, dan complex query? | Tabel literatur review dengan gap positioning | 1.5 min |
+| 4 | Dua aplikasi isomorfik (Express.js dan Gin) diuji dengan k6 pada 3 skenario. 40 replikasi per kombinasi. Metrik: latency (mean, median, p90, p95, p99), outlier ratio. | Diagram alur eksperimen: App → K6 → PostgreSQL → Monitoring | 2 min |
+| 5 | Tabel hasil utama: Gin median 4.0 ms (baseline), 7.3 ms (single), 7.3 ms (complex). Express: 52.0 ms, 55.0 ms, 35.0 ms. Rasio: 14.76x, 7.53x, 4.81x. | Tabel statistik latency dengan warna-highlight perbedaan | 2 min |
+| 6 | Express memiliki outlier ekstrem hingga 22 detik (9.3% outlier di baseline). Gin stabil dengan outlier maksimal 44 ms. Slowdown ratio menurun seiring kompleksitas meningkat. | Box plot distribusi latency + line chart slowdown ratio | 2 min |
+| 7 | Keunggulan Gin: compiled binary, concurrent GC, radix tree routing, zero-allocation JSON, goroutine pooling. Database bottleneck mengurangi dampak framework pada complex query. | Diagram perbandingan arsitektur + insight kunci | 2 min |
+| 8 | Limitasi: hanya diuji di WSL2 (bukan bare-metal/cloud), satu jenis database (PostgreSQL), satu endpoint pattern. Future work: pengujian di production environment, variasi database, mixed workload. | Slide teks dengan bullet points limitasi dan future work | 1.5 min |
+| 9 | Kesimpulan: Gin 4-15x lebih cepat, lebih stabil, lebih efisien resource. Rekomendasi: Gin untuk high-throughput, Express untuk rapid prototyping. Kontribusi: dataset benchmark publik. | Slide closing dengan poin-poin kontribusi | 1 min |
 
-**Total waktu estimasi:** ____ menit
+**Total waktu estimasi:** 15 menit
 
 ---
 
@@ -141,11 +141,11 @@ Prediksi 5 pertanyaan yang mungkin diajukan penguji, lalu siapkan jawaban CER.
 
 | # | Kategori | Pertanyaan | Claim | Evidence | Reasoning |
 |---|----------|-----------|-------|----------|-----------|
-| 1 | *Problem* | *Contoh: Mengapa fokus kepuasan, bukan akurasi?* | *Akurasi tinggi tidak menjamin kepuasan* | *Survey: 45/100 satisfaction meski RMSE 0.87* | *Gap antara metrik teknis dan pengalaman pengguna* |
-| 2 | *Method* | *Contoh: Mengapa hanya 3 dataset?* | *3 dataset mewakili variasi: small-clean, medium-clean, medium-noisy* | *Tabel karakteristik dataset di Bab Method* | *Generalisasi perlu validasi lanjut — tercatat sebagai limitasi* |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Problem | Mengapa membandingkan Express.js dan Gin, bukan framework lain seperti Django atau Laravel? | Express.js dan Gin mewakili dua paradigma eksekusi yang berbeda (interpreted vs compiled) dan keduanya populer untuk REST API | Stack Overflow 2024: Express.js #3 (23.82%), Go/Gin meningkat pesat. Studi sebelumnya (Siahaan, Azzahidi) menggunakan Express sebagai baseline | Perbandingan ini relevan karena menunjukkan dampak arsitektur runtime terhadap performa, bukan sekadar perbandingan framework |
+| 2 | Gap | Bukankah studi Azzahidi et al. (2025) sudah membandingkan Gin dengan framework lain? | Studi Azzahidi membandingkan 5 framework termasuk Gin, tapi tanpa variasi kompleksitas database query | Tabel di Azzahidi hanya menunjukkan endpoint sederhana (no database). Riset kami menambahkan 3 skenario database | Gap kami adalah evaluasi multi-skenario dengan kompleksitas database yang merepresentasikan aplikasi nyata |
+| 3 | Method | Mengapa menggunakan WSL2 bukan bare-metal Linux atau cloud? | WSL2 menyediakan environment yang terisolasi dan reproducible untuk pengembangan | Docker Desktop di WSL2 dengan konfigurasi identik untuk kedua framework. Cooling-down 2 menit antar pengujian | Hasil spesifik untuk WSL2 environment — disebutkan sebagai limitasi. Generalisasi ke production membutuhkan validasi lanjut |
+| 4 | Results | Mengapa slowdown ratio menurun dari 29x (baseline) ke 4x (complex query)? | Database menjadi bottleneck dominan yang mengurangi dampak perbedaan framework | Pada complex query, waktu database ~30 ms mendominasi total RT. Waktu framework (4-6 ms) menjadi proporsi kecil (<15%) | Ketika bottleneck berpindah dari application layer ke database layer, pemilihan framework menjadi kurang signifikan |
+| 5 | Generalization | Apakah hasil ini bisa diterapkan di production environment? | Hasil menunjukkan tren yang konsisten, tapi generalisasi perlu validasi lanjut | Semua pengujian menggunakan konfigurasi production-ready (gin.ReleaseMode, optimized Node.js). 40 replikasi memberikan statistical power | Limitasi: hanya WSL2, satu database, satu endpoint pattern. Future work: pengujian di cloud dengan variasi workload |
 
 ---
 
@@ -154,15 +154,15 @@ Prediksi 5 pertanyaan yang mungkin diajukan penguji, lalu siapkan jawaban CER.
 Minta teman/kolega mengajukan 3 pertanyaan tentang riset Anda. Catat pertanyaan dan evaluasi jawaban Anda.
 
 | # | Pertanyaan | Jawaban Saya | Evaluasi |
-|---|-----------|-------------|---------|| *1* | *Contoh: "Mengapa tidak membandingkan dengan metode Y?"* | *Contoh: "Karena Y memerlukan dataset labeled yang tidak tersedia. Disebutkan sebagai limitasi di halaman X."* | *[✓] Direct [✓] Data-based [✓] Honest* || 1 | | | [ ] Direct [ ] Data-based [ ] Honest |
-| 2 | | | [ ] Direct [ ] Data-based [ ] Honest |
-| 3 | | | [ ] Direct [ ] Data-based [ ] Honest |
+|---|-----------|-------------|---------|| 1 | "Mengapa menggunakan median bukan mean untuk metrik utama?" | "Karena distribusi latency sangat skewed — Express memiliki mean 118.88 ms tapi median 52.0 ms di baseline. Median lebih robust terhadap outlier dan merepresentasikan typical case lebih baik." | [✓] Direct [✓] Data-based [✓] Honest |
+| 2 | "Apakah 40 replikasi cukup untuk menarik kesimpulan?" | "Ya, dengan 40 replikasi, Central Limit Theorem mulai berlaku. Selain itu, kami menggunakan paired test (Wilcoxon signed-rank) yang tidak membutuhkan asumsi normalitas ketat. Effect size Cohen's d > 1.8 menunjukkan perbedaan yang substansial, bukan hanya signifikan secara statistik." | [✓] Direct [✓] Data-based [✓] Honest |
+| 3 | "Mengapa tidak menguji dengan jumlah VU yang berbeda?" | "Pengujian kami fokus pada perbandingan framework dengan kondisi yang terkontrol. Variasi VU bisa menjadi variabel confounding. Kami menggunakan 20 VU tetap untuk semua skenario. Ini adalah limitasi yang diakui — future work bisa mengeksplorasi.scalability dengan variasi VU." | [✓] Direct [✓] Data-based [✓] Honest |
 
 **Pertanyaan yang paling sulit dijawab:**
-> ___________________________________________________
+> "Mengapa tidak menguji dengan variasi VU yang berbeda?" — pertanyaan ini menantang karena mengungkap limitasi desain eksperimen. Perlu menjelaskan trade-off antara kontrol variabel dan generalisasi.
 
 **Apa yang perlu disiapkan lebih baik:**
-> ___________________________________________________
+> Menyiapkan data tambahan tentang bagaimana variasi VU mempengaruhi hasil (jika ada). Juga mempelajari lebih dalam tentang statistical power analysis untuk memperkuat justifikasi jumlah replikasi.
 
 ---
 
@@ -171,7 +171,7 @@ Minta teman/kolega mengajukan 3 pertanyaan tentang riset Anda. Catat pertanyaan 
 > Dari seluruh proses WS-01 sampai WS-16 — dari paradigma riset hingga presentasi — bagian mana yang paling mengubah cara Anda berpikir tentang riset? Apa satu hal yang akan selalu Anda terapkan di riset berikutnya?
 
 **Insight terbesar:**
-> ___________________________________________________
+> WS-14 tentang Failure Analysis mengubah cara saya melihat hasil negatif. Sebelumnya, saya menganggap hipotesis yang ditolak sebagai kegagalan. Sekarang saya memahami bahwa "partial failure + deep analysis = kontribusi lebih kaya daripada full success tanpa analisis." Boundary condition yang ditemukan dari hasil negatif justru memberikan insight lebih berharga — ia memberitahu di mana batas kemampuan metode berada.
 
 **Yang akan selalu diterapkan:**
-> ___________________________________________________
+> Konsistensi matrix dari WS-15. Saya akan selalu membuat matriks konsistensi sebelum menulis paper untuk memastikan bahwa setiap RQ, variabel, metrik, dan klaim terhubung di semua bagian. Ini mencegah inkonsistensi yang sering tidak disadari — misalnya, metrik yang muncul di Results tapi tidak diperkenalkan di Method, atau RQ yang dibahas di semua bagian kecuali Discussion.
