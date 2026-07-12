@@ -86,31 +86,36 @@ Prediksi pertanyaan berdasarkan kategori:
 DEFENSE PREPARATION
 
 Slide Deck Plan:
-  Total slides   : ____ (target: 10-12 konten + title/closing)
-  Time per slide : ~2 min
-  Total time     : ____ menit
+  Total slides   : 11 (9 konten + title + closing) (target: 10-12 konten + title/closing)
+  Time per slide : ~1-2 min
+  Total time     : 15 menit
 
 Slide Outline:
 | # | Pesan Utama | Visual | Waktu |
 |---|-------------|--------|-------|
-| 1 | Title       |        | 30s   |
-| 2 | Problem     |        | 2min  |
-| 3 | Gap + RQ    |        | 2min  |
-| ..|             |        |       |
+| 1 | Title: Performance Evaluation Express.js vs Gin | Title slide + nama + afiliasi | 30s |
+| 2 | Problem: Pemilihan framework backend mempengaruhi performa | Diagram arsitektur Event Loop vs Goroutine | 2min |
+| 3 | Gap + RQ: Studi sebelumnya terbatas skala kecil | Tabel gap literatur | 1.5min |
+| 4 | Method: 2 aplikasi isomorfik, k6, 3 skenario, 40 replikasi | Diagram alur eksperimen | 2min |
+| 5 | Key result tabel: Gin 4.0-7.3 ms, Express 35-55 ms median | Tabel statistik latency | 2min |
+| 6 | Key result grafik: Outlier Express hingga 22 detik, Gin stabil | Box plot + line chart slowdown | 2min |
+| 7 | Interpretation: 5 faktor arsitektur, database bottleneck | Diagram arsitektur + insight | 2min |
+| 8 | Limitation: WSL2, satu database, satu endpoint | Slide bullet points limitasi | 1.5min |
+| 9 | Conclusion: Gin 4-15x lebih cepat, rekomendasi framework | Slide closing kontribusi | 1min |
 
 Anticipatory Defense Matrix:
 | Kategori | Pertanyaan Potensial | Jawaban (CER) |
 |----------|---------------------|---------------|
-| Problem  |                     |               |
-| Gap      |                     |               |
-| Method   |                     |               |
-| Results  |                     |               |
-| Generalization |               |               |
+| Problem  | Mengapa membandingkan Express.js dan Gin, bukan framework lain? | [C] Express.js dan Gin mewakili dua paradigma eksekusi berbeda. [E] Stack Overflow: Express #3 (23.82%), Go/Gin meningkat. [R] Menunjukkan dampak arsitektur runtime terhadap performa |
+| Gap      | Bukankah Azzahidi et al. sudah membandingkan Gin? | [C] Azzahidi tanpa variasi kompleksitas database. [E] Hanya endpoint sederhana (no database). [R] Gap: evaluasi multi-skenario database |
+| Method   | Mengapa menggunakan WSL2 bukan bare-metal/cloud? | [C] WSL2 terisolasi dan reproducible. [E] Docker identik, cooling-down 2 menit. [R] Limitasi: generalisasi ke production butuh validasi |
+| Results  | Mengapa slowdown ratio menurun 29x ke 4x? | [C] Database menjadi bottleneck dominan. [E] Waktu DB ~30 ms dominasi, framework 4-6 ms. [R] Bottleneck pindah ke database layer |
+| Generalization | Apakah bisa diterapkan di production? | [C] Tren konsisten tapi perlu validasi. [E] Konfigurasi production-ready, 40 replikasi. [R] Limitasi diakui, future work di cloud |
 
 Latihan:
-  Latihan 1: [tanggal] — [catatan timing & feedback]
-  Latihan 2: [tanggal] — [catatan timing & feedback]
-  Latihan 3: [tanggal] — [catatan timing & feedback]
+  Latihan 1: [Simulasi internal] — [15 menit tepat, slide 5 dan 6 perlu diperjelas perbedaannya]
+  Latihan 2: [Simulasi dengan teman] — [Pertanyaan metodologi muncul, jawaban CER sudah baik]
+  Latihan 3: [Simulasi final] — [Timing ok, feedback: tambahkan angka kunci di setiap slide]
 ```
 
 ---
